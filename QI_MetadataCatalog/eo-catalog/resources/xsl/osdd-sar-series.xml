@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<os:OpenSearchDescription xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:eo="http://a9.com/-/opensearch/extensions/eo/1.0/" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" xmlns:param="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:semantic="http://a9.com/-/opensearch/extensions/semantic/1.0/" xmlns:sru="http://a9.com/-/opensearch/extensions/sru/2.0/" xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/">
+	<os:ShortName>@SHORT_NAME@</os:ShortName>
+	<os:Description>@DESCRIPTION@</os:Description>
+	<os:Tags>@TAG@</os:Tags>
+	<os:Url rel="self" template="@SERVER_URL@/description" type="application/opensearchdescription+xml"/>	
+	<os:Url indexOffset="1" pageOffset="1" rel="results" template="@SERVER_URL@/datasets?httpAccept=application/geo%2Bjson&amp;startRecord={os:startIndex?}&amp;startPage={os:startPage?}&amp;maximumRecords={os:count?}&amp;startDate={time:start?}&amp;endDate={time:end?}&amp;bbox={geo:box?}&amp;name={geo:name?}&amp;lat={geo:lat?}&amp;lon={geo:lon?}&amp;radius={geo:radius?}&amp;uid={geo:uid?}" type="application/geo+json">		
+		
+		<param:Parameter minInclusive="0" name="maximumRecords" pattern="[0-9]+" value="{os:count}"/>
+		<param:Parameter minInclusive="1" name="startRecord" pattern="[0-9]+" value="{os:startIndex}"/>
+		<param:Parameter minInclusive="1" name="startPage" pattern="[0-9]+" value="{os:startPage}"/>
+		<param:Parameter name="startDate" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{0,3})?(Z)$)?" value="{time:start}"/>
+		<param:Parameter name="endDate" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{0,3})?(Z)$)?" value="{time:end}"/>
+		
+		<param:Parameter name="acquisitionType" value="{eo:acquisitionType}">
+			<param:Option value="CALIBRATION" label="CALIBRATION"/>		
+			<param:Option value="NOMINAL" label="NOMINAL"/>		
+			<param:Option value="OTHER" label="OTHER"/>		
+		</param:Parameter>
+		
+		<param:Parameter name="antennaLookDirection" value="{eo:antennaLookDirection}">
+			<param:Option value="LEFT" label="LEFT"/>		
+			<param:Option value="RIGHT" label="RIGHT"/>		
+		</param:Parameter>
+		
+		<param:Parameter name="completionTimeFromAscendingNode" value="{eo:completionTimeFromAscendingNode}" pattern="\[[0-9]+,[0-9]+\]|\[?[0-9]+|[0-9]+\]?|\{[0-9]+,[0-9]+\}"/>
+		<param:Parameter name="dopplerFrequency" value="{eo:dopplerFrequency}" pattern="(\[|\])[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?(\[|\])|(\[|\])?[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?(\[|\])?|\{[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?\}"/>
+		
+		<param:Parameter name="frame" value="{eo:frame}" pattern="(\[|\])[0-9]+,[0-9]+(\[|\])|(\[|\])?[0-9]+|[0-9]+(\[|\])?|\{[0-9]+,[0-9]+\}"/>
+		
+		<param:Parameter name="illuminationAzimuthAngle" value="{eo:illuminationAzimuthAngle}" pattern="(\[|\])[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?(\[|\])|(\[|\])?[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?(\[|\])?|\{[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?\}"/>
+		<param:Parameter name="illuminationZenithAngle" value="{eo:illuminationZenithAngle}" pattern="(\[|\])[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?(\[|\])|(\[|\])?[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?(\[|\])?|\{[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?\}"/>
+		<param:Parameter name="illuminationElevationAngle" value="{eo:illuminationElevationAngle}" pattern="(\[|\])[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?(\[|\])|(\[|\])?[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?(\[|\])?|\{[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?\}"/>
+
+		<param:Parameter name="incidenceAngleVariation" value="{eo:incidenceAngleVariation}" pattern="(\[|\])[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?(\[|\])|(\[|\])?[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?(\[|\])?|\{[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?\}"/>
+		<param:Parameter name="maximumIncidenceAngle" value="{eo:maximumIncidenceAngle}" pattern="(\[|\])[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?(\[|\])|(\[|\])?[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?(\[|\])?|\{[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?\}"/>
+		<param:Parameter name="minimumIncidenceAngle" value="{eo:minimumIncidenceAngle}" pattern="(\[|\])[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?(\[|\])|(\[|\])?[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?(\[|\])?|\{[0-9]+(.[0-9]+)?,[0-9]+(.[0-9]+)?\}"/>				
+		
+		<param:Parameter name="orbitDirection" value="{eo:orbitDirection}">
+			<param:Option value="ASCENDING" label="ASCENDING"/>		
+			<param:Option value="DESCENDING" label="DESCENDING"/>		
+		</param:Parameter>
+		
+		<param:Parameter name="orbitNumber" value="{eo:orbitNumber}" pattern="(\[|\])[0-9]+,[0-9]+(\[|\])|(\[|\])?[0-9]+|[0-9]+(\[|\])?|\{[0-9]+,[0-9]+\}"/>
+		
+		<param:Parameter name="polarisationChannels" value="{eo:polarisationChannels}">
+			<param:Option value="HH" label="HH"/>		
+			<param:Option value="HV" label="HV"/>		
+			<param:Option value="VH" label="VH"/>		
+			<param:Option value="VV" label="VV"/>		
+			<param:Option value="HH, VV" label="HH, VV"/>		
+			<param:Option value="HH, VH" label="HH, VH"/>		
+			<param:Option value="HH, HV" label="HH, HV"/>		
+			<param:Option value="VH, VV" label="VH, VV"/>		
+			<param:Option value="VH, HV" label="VH, HV"/>		
+			<param:Option value="VV, HV" label="VV, HV"/>		
+			<param:Option value="VV, VH" label="VV, VH"/>		
+			<param:Option value="HV, VH" label="HV, VH"/>		
+			<param:Option value="UNDEFINED" label="UNDEFINED"/>
+		</param:Parameter>
+		
+		<param:Parameter name="polarisationMode" value="{eo:polarisationMode}">
+			<param:Option value="S" label="Single"/>		
+			<param:Option value="D" label="Dual"/>		
+		</param:Parameter>
+		
+		<param:Parameter name="productionStatus" value="{eo:productionStatus}">
+			<param:Option value="REJECTED" label="Data acquisition has been rejected for whatever reason"/>
+			<param:Option value="POTENTIAL" label="Potential data acquisition"/>		
+			<param:Option value="PLANNED" label="Data acquisition planned"/>		
+			<param:Option value="FAILED" label="Data acquisition failed"/>		
+			<param:Option value="CANCELLED" label="Data acquisition cancelled"/>		
+			<param:Option value="ACQUIRED" label="Data acquired"/>		
+			<param:Option value="ARCHIVED" label="Data acquisition archived"/>				
+		</param:Parameter>
+		
+		<param:Parameter name="productQualityStatus" value="{eo:productQualityStatus}">
+			<param:Option value="NOMINAL" label="Data acquisition passed a quality check with success"/>		
+			<param:Option value="DEGRADED" label="Data acquisition passed a quality check and degradations were found"/>		
+		</param:Parameter>
+		
+		<param:Parameter name="sensorType" value="{eo:sensorType}">
+			<param:Option value="LIMB" label="Limb Looking/Sounding Sensor"/>		
+			<param:Option value="RADAR" label="Radar Sensor"/>		
+			<param:Option value="OPTICAL" label="Optical Sensor"/>		
+			<param:Option value="ALTIMETRIC" label="Altimetric Sensor"/>		
+			<param:Option value="ATMOSPHERIC" label="Atmospheric Sensor"/>		
+		</param:Parameter>
+					
+		<param:Parameter name="specificationTitle" value="{eo:specificationTitle}">
+			<param:Option value="degradedDataPercentageMetric" label="degradedDataPercentageMetric"/>		
+			<param:Option value="degradedAncillaryDataPercentageMetric" label="degradedAncillaryDataPercentageMetric"/>		
+			<param:Option value="formatCorrectnessMetric" label="formatCorrectnessMetric"/>		
+			<param:Option value="generalQualityMetric" label="generalQualityMetric"/>		
+			<param:Option value="geometricQualityMetric" label="geometricQualityMetric"/>		
+			<param:Option value="radiometricQualityMetric" label="radiometricQualityMetric"/>		
+			<param:Option value="sensorQualityMetric" label="sensorQualityMetric"/>		
+			<param:Option value="feasibilityControlMetric" label="feasibilityControlMetric"/>		
+			<param:Option value="deliveryControlMetric" label="deliveryControlMetric"/>		
+			<param:Option value="ordinaryControlMetric" label="ordinaryControlMetric"/>		
+			<param:Option value="detailedControlMetric" label="detailedControlMetric"/>	
+			
+			<param:Option value="harmonizationControlMetric" label="harmonizationControlMetric"/>
+			<param:Option value="ipForLpInformationMetric" label="ipForLpInformationMetric"/>
+			<param:Option value="lpInterpretationMetric" label="lpInterpretationMetric"/>
+			<param:Option value="lpMetadataControlMetric" label="lpMetadataControlMetric"/>
+			<param:Option value="lpOrdinaryControlMetric" label="lpOrdinaryControlMetric"/>
+			<param:Option value="lpThematicValidationMetric" label="lpThematicValidationMetric"/>
+		</param:Parameter>
+		
+		<param:Parameter name="startTimeFromAscendingNode" value="{eo:startTimeFromAscendingNode}" pattern="(\[|\])[0-9]+,[0-9]+(\[|\])|(\[|\])?[0-9]+|[0-9]+(\[|\])?|\{[0-9]+,[0-9]+\}"/>
+		<param:Parameter name="track" value="{eo:track}" pattern="(\[|\])[0-9]+,[0-9]+(\[|\])|(\[|\])?[0-9]+|[0-9]+(\[|\])?|\{[0-9]+,[0-9]+\}"/>
+		
+		<param:Parameter maxInclusive="90" minInclusive="-90" name="lat" value="{geo:lat}"/>
+		<param:Parameter maxInclusive="180" minInclusive="-180" name="lon" value="{geo:lon}"/>
+		
+	</os:Url>	
+	<os:Query role="example" time:end="2005-05-16T00:00:00Z" time:start="2004-05-16T00:00:00Z"/>	
+	<os:LongName>Earth Observation Catalogue</os:LongName>
+	<os:Developer>Spacebel s.a.</os:Developer>
+	<os:Attribution>Copyright 2016-2017, European Space Agency.</os:Attribution>
+	<os:SyndicationRight>open</os:SyndicationRight>
+	<os:AdultContent>false</os:AdultContent>
+	<os:Language>en-us</os:Language>
+	<os:OutputEncoding>UTF-8</os:OutputEncoding>
+	<os:InputEncoding>UTF-8</os:InputEncoding>
+</os:OpenSearchDescription>

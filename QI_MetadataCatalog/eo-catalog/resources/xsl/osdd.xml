@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<os:OpenSearchDescription xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:eo="http://a9.com/-/opensearch/extensions/eo/1.0/" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" xmlns:param="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:semantic="http://a9.com/-/opensearch/extensions/semantic/1.0/" xmlns:sru="http://a9.com/-/opensearch/extensions/sru/2.0/" xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/">
+    <os:ShortName>@SHORT_NAME@</os:ShortName>
+    <os:Description>@DESCRIPTION@</os:Description>
+    <os:Tags>@TAG@</os:Tags>
+    <os:Url rel="self" template="@SERVER_URL@/description" type="application/opensearchdescription+xml"/>
+	<os:Url rel="search" template="@SERVER_URL@/series/{eo:parentIdentifier}/description" type="application/opensearchdescription+xml"/>	
+	<os:Url indexOffset="1" pageOffset="1" rel="collection" template="@SERVER_URL@/series?httpAccept=application/geo%2Bjson&amp;parentIdentifier={eo:parentIdentifier?}&amp;subject={dc:subject?}&amp;query={os:searchTerms?}&amp;startRecord={os:startIndex?}&amp;startPage={os:startPage?}&amp;maximumRecords={os:count?}&amp;startDate={time:start?}&amp;endDate={time:end?}&amp;type={dc:type?}&amp;title={dc:title?}&amp;publisher={dc:publisher?}&amp;bbox={geo:box?}&amp;name={geo:name?}&amp;lat={geo:lat?}&amp;lon={geo:lon?}&amp;radius={geo:radius?}&amp;uid={geo:uid?}&amp;geometry={geo:geometry?}&amp;organisationName={eo:organisationName?}&amp;platform={eo:platform?}&amp;instrument={eo:instrument?}&amp;processingLevel={eo:processingLevel?}&amp;useLimitation={eo:useLimitation?}&amp;otherConstraint={eo:otherConstraint?}&amp;classifiedAs={semantic:classifiedAs?}&amp;facetLimit={sru:facetLimit?}&amp;recordSchema={sru:recordSchema?}" type="application/geo+json">
+        <param:Parameter name="type" value="{dc:type}">
+            <param:Option label="dataset series" value="collection"/>
+        </param:Parameter>
+        <param:Parameter name="recordSchema" value="{sru:recordSchema}">
+            <param:Option label="ISO" value="iso"/>
+            <param:Option label="server-choice" value="server-choice"/>
+        </param:Parameter>
+        <param:Parameter minInclusive="0" name="maximumRecords" pattern="[0-9]+" value="{count}"/>
+        <param:Parameter minInclusive="1" name="startRecord" pattern="[0-9]+" value="{startIndex}"/>
+        <param:Parameter minInclusive="1" name="startPage" pattern="[0-9]+" value="{startPage}"/>
+        <param:Parameter name="startDate" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?(Z|[\+\-][0-9]{2}:[0-9]{2})$" value="{time:start}"/>
+        <param:Parameter name="endDate" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?(Z|[\+\-][0-9]{2}:[0-9]{2})$" value="{time:end}"/>
+        <param:Parameter maxInclusive="90" minInclusive="-90" name="lat" value="{geo:lat}"/>
+        <param:Parameter maxInclusive="180" minInclusive="-180" name="lon" value="{geo:lon}"/>
+    </os:Url>
+    <os:Url indexOffset="1" pageOffset="1" rel="results" template="@SERVER_URL@/series/{eo:parentIdentifier?}/datasets?httpAccept=application/geo%2Bjson&amp;startRecord={startIndex?}&amp;startPage={startPage?}&amp;maximumRecords={count?}&amp;startDate={time:start?}&amp;endDate={time:end?}&amp;subject={dc:subject?}&amp;type={dc:type?}&amp;bbox={geo:box?}&amp;name={geo:name?}&amp;lat={geo:lat?}&amp;lon={geo:lon?}&amp;radius={geo:radius?}&amp;uid={geo:uid?}&amp;recordSchema={sru:recordSchema?}" type="application/geo+json">
+        <param:Parameter name="type" value="{dc:type}">
+            <param:Option label="dataset" value="dataset"/>
+        </param:Parameter>
+        <param:Parameter name="recordSchema" value="{sru:recordSchema}">
+            <param:Option label="O&amp;M" value="om"/>
+            <param:Option label="O&amp;M 1.0" value="om10"/>
+            <param:Option label="server-choice" value="server-choice"/>
+        </param:Parameter>
+        <param:Parameter minInclusive="0" name="maximumRecords" pattern="[0-9]+" value="{count}"/>
+        <param:Parameter minInclusive="1" name="startRecord" pattern="[0-9]+" value="{startIndex}"/>
+        <param:Parameter minInclusive="1" name="startPage" pattern="[0-9]+" value="{startPage}"/>
+        <param:Parameter name="startDate" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?(Z|[\+\-][0-9]{2}:[0-9]{2})$" value="{time:start}"/>
+        <param:Parameter name="endDate" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?(Z|[\+\-][0-9]{2}:[0-9]{2})$" value="{time:end}"/>
+        <param:Parameter maxInclusive="90" minInclusive="-90" name="lat" value="{geo:lat}"/>
+        <param:Parameter maxInclusive="180" minInclusive="-180" name="lon" value="{geo:lon}"/>
+    </os:Url>
+    <os:Query role="example" time:end="2005-05-16T00:00:00Z" time:start="2004-05-16T00:00:00Z"/>
+    <os:Query role="example" semantic:classifiedAs="http://www.eionet.europa.eu/gemet/concept/3650"/>
+    <os:LongName>Earth Observation Catalogue</os:LongName>
+    <os:Developer>Spacebel s.a.</os:Developer>
+    <os:Attribution>Copyright 2016-2017, European Space Agency.</os:Attribution>
+    <os:SyndicationRight>open</os:SyndicationRight>
+    <os:AdultContent>false</os:AdultContent>
+    <os:Language>en-us</os:Language>
+    <os:OutputEncoding>UTF-8</os:OutputEncoding>
+    <os:InputEncoding>UTF-8</os:InputEncoding>
+</os:OpenSearchDescription>

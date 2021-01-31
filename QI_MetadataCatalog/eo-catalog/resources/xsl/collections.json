@@ -1,0 +1,31 @@
+{  
+   "links":[  
+      {  
+         "href":"SERVER_URL/collections",
+         "rel":"self",
+         "type":"application/json",
+         "title":"this document"
+      }
+   ],
+   "collections":[  
+      {  
+         "id":"datasets",
+         "title":"EO Products",
+         "description":"Metadata records representing EO datasets (a.k.a. EO products).",
+         "links":[  
+            {  
+               "href":"SERVER_URL/series/LANDSAT.ETM.GTC/datasets",
+               "rel":"items",
+               "type":"application/geo+json",
+               "title":"Datasets"
+            },
+			{  
+               "href":"http://schemas.opengis.net/eo-geojson/1.0/eo-geojson-schema.json",
+               "rel":"describedBy",
+               "type":"application/schema+json",
+               "title":"JSON schema for items belonging to this collection"
+            }
+         ]
+      }
+   ]
+}
