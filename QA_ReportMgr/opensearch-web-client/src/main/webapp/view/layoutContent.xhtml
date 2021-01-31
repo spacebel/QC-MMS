@@ -1,0 +1,779 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:param name="spbMap" value="fedeoclient_webapp" />
+    <ui:param name="layoutMode" value="true" />
+    <ui:include src="search/javascriptDeclarations.xhtml" />
+
+    <script>
+        var fedeoclient_webapp = new SPB_Viewer3.MapViewer('fedeoclient_webapp');
+
+        document.addEventListener('dashboard.discovery.request', fedeoclient_webapp.IPC.onDiscoveryRequest.bind(fedeoclient_webapp.IPC));
+        document.addEventListener('map.import.features', fedeoclient_webapp.IPC.onPublishFeatures.bind(fedeoclient_webapp.IPC));
+        document.addEventListener('map.remove.features', fedeoclient_webapp.IPC.onRemoveFeatures.bind(fedeoclient_webapp.IPC));
+        document.addEventListener('map.select.feature', fedeoclient_webapp.IPC.onSelectFeature.bind(fedeoclient_webapp.IPC));
+        document.addEventListener('map.zoom.selected.feature', fedeoclient_webapp.IPC.onZoomToSelectedFeature.bind(fedeoclient_webapp.IPC));
+        document.addEventListener('map.highlight.feature', fedeoclient_webapp.IPC.onHighlightFeature.bind(fedeoclient_webapp.IPC));
+        document.addEventListener('map.unhighlight.feature', fedeoclient_webapp.IPC.onUnHighlightFeature.bind(fedeoclient_webapp.IPC));
+
+
+        $(document).ready(function () {
+            
+            /* init viewer */            
+            fedeoclient_webapp.init();
+            /*
+             add full screen events
+             */
+            document.addEventListener("fullscreenchange", function () {
+                if (document.fullscreen) {
+                    //alert("full screen");	
+                } else {
+                    //alert("exit full screen");
+                    fedeoclient_webapp_exitFullScreen();
+                }
+            }, false);
+
+            document.addEventListener("mozfullscreenchange", function () {
+                if (document.mozFullScreen) {
+                    //alert("full screen");	
+                } else {
+                    fedeoclient_webapp_exitFullScreen();
+                }
+            }, false);
+
+            document.addEventListener("webkitfullscreenchange", function () {
+                if (document.webkitIsFullScreen) {
+                    //alert("full screen");	
+                } else {
+                    fedeoclient_webapp_exitFullScreen();
+                }
+            }, false);
+
+            document.addEventListener("msfullscreenchange", function () {
+                if (document.msFullscreenElement) {
+                    //alert("full screen");	
+                } else {
+                    fedeoclient_webapp_exitFullScreen();
+                }
+            }, false);
+
+
+            /*
+             var spbDefaultLayer = spbGetCookie("spbFedEOClientMapLayer");
+             if(spbDefaultLayer){				
+             fedeoclient_webapp.setVisibleLayer(spbDefaultLayer);
+             }
+             */
+
+            var viewPortHeight = getCurrentViewPort(true);
+            //printLog("viewPortHeight = " + viewPortHeight);
+
+            var __layoutDocked = #{configBean.configuration.layoutDocked};
+
+            if (__layoutDocked === true) {
+                $("#spbOsClientAdvancedSearchInputPanel").css({
+                    top: 0
+                });
+
+                $("#spbOsClientViewerPanel").css({
+                    top: 0
+                });
+            } else {
+                var dynamicHeight = viewPortHeight - 54;
+                //printLog("dynamicHeight = " + dynamicHeight);
+                $("#spbOsClientSearch2In1Panel").height(dynamicHeight);
+                $("#spbOsClientViewerPanel").height(dynamicHeight);
+            }
+
+            fedeoclient_webapp.map.updateSize();
+
+            var ___showResultPanel = false;
+            if (___showResultPanel === true) {
+                if (__layoutDocked === true) {
+                    $("#spbOsClientAdvancedSearchInputPanel").toggle();
+                } else {
+                    $("#spbOsClientUndockedResultsPanel").show();
+                    fedeoclient_webapp_advancedSearchUndockedInputPanelToggle();
+                }
+            }
+
+            var ___selectedProductUuid = "#{searchBean.selectedProductUuid}";
+            if (___selectedProductUuid) {
+                if (__layoutDocked === true) {
+                    $("#spbOsClientAdvancedSearchInputPanel").toggle();
+                } else {
+                    $("#spbOsClientUndockedResultsPanel").show();
+                    fedeoclient_webapp_advancedSearchUndockedInputPanelToggle();
+                    fedeoclient_webapp_getDatasetGMLFeatures();
+                    fedeoclient_webapp_showGMLOnMapForDataset();
+                    fedeoclient_webapp_zoomToSelectedFeature(___selectedProductUuid);
+                    fedeoclient_webapp_openUndockedResultsPanel();
+                    fedeoclient_webapp.createAllFeaturesQuicklookMap();
+                }
+            }
+
+        });
+
+        $(document).ready(function () {
+            setInterval(function () {
+                fedeoclient_webapp_onKeepSessionAlive();
+            }, #{searchBean.pollIntervalInMilliseconds});
+        });
+
+        function fedeoclient_webapp_maximumUndockedResultsPanel() {
+            jQuery("#spbOsClientUndockedResultsPanel").toggleClass("undocked-results-panel-maximum");            
+        }
+
+        function fedeoclient_webapp_closeUndockedResultsPanel() {
+            jQuery("#spbOsClientUndockedResultsPanel").hide();
+        }        
+
+        function fedeoclient_webapp_isSafari() {
+            var isSafari = false;
+            if (navigator.userAgent.indexOf('Safari') !== -1) {
+                if (navigator.userAgent.indexOf('Chrome') === -1) {
+                    isSafari = true;
+                }
+            }
+            return isSafari;
+        }
+
+        function fedeoclient_webapp_isInternetExplorer() {
+            var userAgent = window.navigator.userAgent;
+
+            var msie = userAgent.indexOf('MSIE ');
+            if (msie > 0) {
+                // IE 10 or older
+                return true;
+            }
+
+            var trident = userAgent.indexOf('Trident/');
+            if (trident > 0) {
+                return true;
+            }
+
+            var edge = userAgent.indexOf('Edge/');
+            if (edge > 0) {
+                // Edge (IE 12+)
+                return true;
+            }
+
+            // other browser
+            return false;
+        }
+
+
+        function fedeoclient_webapp_openUndockedResultsPanel() {
+            if ($("#spbOsClientSearchOutputPanel").length) {
+                if (fedeoclient_webapp_isFullScreenMode() === true) {
+                    $("#spbOsClientSearchInputPanel").css({
+                        height: 'calc(100% - 450px)'
+                    });
+                }
+                $("#spbOsClientSearchOutputPanel").show();
+            }
+            $("#spbOsClientUndockedResultsPanel").show();
+        }
+
+        function fedeoclient_webapp_customResultsPanelScrollbar() {
+            fedeoclient_webapp_setHeightSearchResultsTable(fedeoclient_webapp_isFullScreenMode());
+            if (fedeoclient_webapp_isChrome() === false) {
+                if (fedeoclient_webapp_isSafari() === true) {
+                    // this is safari, don't customize the scroll
+                } else {
+                    var container = document.getElementById("spbOsClientSearchResultsTable");
+                    if (container !== null) {
+                        Ps.initialize(container, {
+                            suppressScrollX: false
+                        });
+                    }
+                }
+            }
+        }
+
+        function fedeoclient_webapp_customInputPanelScrollbar() {
+            if (fedeoclient_webapp_isChrome() === false) {
+                if (fedeoclient_webapp_isSafari() === true) {
+                    // this is safari, don't customize the scroll
+                } else {
+                    var container = document.getElementById("osClientAdvancedSearchQueryables");
+                    if (container) {
+                        Ps.initialize(container, {
+                            suppressScrollX: false
+                        });
+                    }
+                }
+            }
+        }
+
+        PrimeFaces.widget.ExtFluidGrid.prototype.destroy = function () {
+            try {
+                /* override destroy method of ExtFluidGrid */
+            } catch (err) {
+                /*printLog(err.message);*/
+            }
+        };
+
+        function fedeoclient_webapp_selectGeoName() {
+            var selectedBBOX = $('input[id*=' + 'fedeoclient_webapp' + '_bboxHiddenInput]').val();
+
+            fedeoclient_webapp.drawGeonameBox(selectedBBOX);
+            fedeoclient_webapp_onInputTrackChanges(selectedBBOX);
+        }
+
+        function fedeoclient_webapp_toggleFullScreen() {
+            var el = document.documentElement;
+            var rfs = el.requestFullscreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+            rfs.call(el);
+
+            if (fedeoclient_webapp_isInternetExplorer() === true) {
+                $("div[id$='spbOsClientMainUI']").addClass("main-div-full-screen-ie");
+            } else {
+                $("div[id$='spbOsClientMainUI']").addClass("main-div-full-screen");
+            }
+
+            if ($("#spbOsClientSearch2In1Panel").length) {
+                $("#spbOsClientSearch2In1Panel").css({
+                    height: '100%'
+                });
+                fedeoclient_webapp_setHeightSearchResultsTable(true);
+            } else {
+                var isHidden = $("#spbOsClientSearchOutputPanel").is(":hidden");
+                if (isHidden === true) {
+                    $("#spbOsClientSearchInputPanel").css({
+                        height: '100%'
+                    });
+                } else {
+                    $("#spbOsClientSearchInputPanel").css({
+                        height: 'calc(100% - 450px)'
+                    });
+                }
+            }
+
+            /*			
+             $( "#dockbar" ).hide();
+             $( "#footer" ).hide();
+             $( "#footer-content" ).hide();
+             */
+
+            fedeoclient_webapp.map.updateSize();
+
+            $("button[id$='spbToggleFullScreen']").hide();
+            $("button[id$='spbExitFullScreen']").show();
+        }
+
+        function fedeoclient_webapp_exitFullScreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+
+            if (fedeoclient_webapp_isInternetExplorer() === true) {
+                $("div[id$='spbOsClientMainUI']").removeClass("main-div-full-screen-ie");
+            } else {
+                $("div[id$='spbOsClientMainUI']").removeClass("main-div-full-screen");
+            }
+
+            if ($("#spbOsClientSearch2In1Panel").length) {
+                var dynamicHeight = $(document).height() - 58;
+                $("#spbOsClientSearch2In1Panel").css({
+                    height: dynamicHeight
+                });
+                fedeoclient_webapp_setHeightSearchResultsTable(false);
+            } else {
+                $("#spbOsClientSearchInputPanel").css({
+                    height: 550
+                });
+            }
+            /*
+             $( "#dockbar" ).show();
+             $( "#footer" ).show();	
+             $( "#footer-content" ).show();			
+             */
+            $("button[id$='spbExitFullScreen']").hide();
+            $("button[id$='spbToggleFullScreen']").show();
+        }
+
+        function fedeoclient_webapp_advancedSearchInputPanelToggle() {
+            var leftAttr = $("#spbOsClientViewerPanel").css("left");
+            $("#spbOsClientAdvancedSearchInputPanel").toggle();
+            if (leftAttr === '0px') {
+                $("#spbOsClientViewerPanel").css({
+                    width: 'calc(100% - 350px)',
+                    left: 350
+                });
+            } else {
+                $("#spbOsClientViewerPanel").css({
+                    width: '100%',
+                    left: 0
+                });
+            }
+        }
+
+        function fedeoclient_webapp_advancedSearchUndockedInputPanelToggle() {
+            /*$("#spbOsClientAdvancedSearchUndockedInputPanel").toggle();*/
+
+            if ($("#spbOsClientUndockedResultsPanel").hasClass("undocked-results-panel-maximum") === true) {
+                //printLog("The result panel is in expand mode.");
+                $("#spbOsClientAdvancedSearchUndockedInputPanel").css({
+                    border: '1px solid #fff',
+                    '-webkit-box-sizing': 'border-box',
+                    '-moz-box-sizing': 'border-box',
+                    'box-sizing': 'border-box',
+                    'z-index': 1005
+                });
+                //$("#osClientUndockedViewButtons").hide();
+            } else {
+                //printLog("The result panel is in collapse mode.");
+                $("#spbOsClientAdvancedSearchUndockedInputPanel").css({
+                    border: 0,
+                    'z-index': 1001
+                });
+                //$("#osClientUndockedViewButtons").show();
+            }
+        }
+
+        function fedeoclient_webapp_toggleUndockedOutputHandle(xhr, status, args) {
+            if (args.open === true) {
+                fedeoclient_webapp_openUndockedResultsPanel();
+            } else {
+                fedeoclient_webapp_closeUndockedResultsPanel();
+            }
+        }
+
+        function fedeoclient_webapp_openAdvancedSearchInputPanel(layoutDocked) {
+            //printLog("_openAdvancedSearchInputPanel" + layoutDocked);
+            if (layoutDocked === true) {
+                $("#spbOsClientAdvancedSearchInputPanel").css({
+                    top: 0
+                });
+                $("#spbOsClientAdvancedSearchInputPanel").show();
+
+                $("#spbOsClientViewerPanel").css({
+                    top: 0,
+                    width: 'calc(100% - 350px)',
+                    left: 350
+                });
+            } else {
+                //printLog("OK CLICK 123" + $("#spbOsClientAdvancedSearchUndockedInputPanel").css('display'));
+                if ($("#spbOsClientAdvancedSearchUndockedInputPanel").css('display') === 'none') {
+                    // open the advanced search input if it isn't opening
+                    //printLog("OK CLICK");
+                    //PF('advancedSearchBooleanButton').jq.click();					
+                    $("#spbOsClientAdvancedSearchUndockedInputPanel").show();
+                }
+
+            }
+        }
+
+        function fedeoclient_webapp_isFullScreenMode() {
+            if (document.fullscreen) {
+                return true;
+            }
+            if (document.mozFullScreen) {
+                return true;
+            }
+            if (document.webkitIsFullScreen) {
+                return true;
+            }
+            if (document.msFullscreenElement) {
+                return true;
+            }
+            return false;
+        }
+
+        function fedeoclient_webapp_setHeightSearchResultsTable(isFullScreen) {
+            if (isFullScreen === true) {
+                if ($("#spbOsClientUndockedResultsPanel").hasClass("undocked-results-panel-maximum") === true) {
+                    //printLog(window.screen.availHeight);
+
+                    //var panelHeight = window.screen.availHeight - 60;
+                    var tableHeight = 'calc(100vh - 85px)';//window.screen.availHeight - 85;
+
+                    //$("#spbOsClientUndockedResultsPanel").height(panelHeight);					
+                    $("#spbOsClientSearchResultsTable").height(tableHeight);
+                } else {
+                    //printLog(window.screen.availHeight);
+
+                    //var panelHeight = window.screen.availHeight - 530;
+                    var tableHeight = 'calc(100vh - 554px)';//window.screen.availHeight - 554;
+
+                    //$("#spbOsClientUndockedResultsPanel").height(panelHeight);
+                    $("#spbOsClientSearchResultsTable").height(tableHeight);
+                }
+            } else {
+                if ($("#spbOsClientUndockedResultsPanel").hasClass("undocked-results-panel-maximum") === true) {
+                    var tableHeight = $(document).height() - 150;
+                    $("#spbOsClientSearchResultsTable").height(tableHeight);
+                } else {
+                    /*
+                     var tableHeight = $(document).height() - 620;
+                     $("#spbOsClientSearchResultsTable").height(tableHeight);
+                     */
+                    var inputPanelHeight = $("#spbOsClientAdvancedSearchUndockedInputPanel").height();
+                    //printLog("inputPanelHeight1 = " + inputPanelHeight);
+                    var tableHeight = $(document).height() - (inputPanelHeight + 165);
+                    //printLog("tableHeight1 = " + tableHeight);				
+                    $("#spbOsClientSearchResultsTable").height(tableHeight);
+                }
+            }
+        }
+        
+        function fedeoclient_webapp_changeHighlightRow(rowId) {
+            var highlightRowHidden = document.getElementById("fedeoclient_webapp_currentHighlightRow");
+            if (highlightRowHidden) {
+                var prevHighlightFeatureId = highlightRowHidden.value;
+                if (prevHighlightFeatureId) {
+                    // printLog("prevHighlightFeatureId = " + prevHighlightFeatureId);
+                    var prevHighlightRow = document.getElementById(prevHighlightFeatureId);
+                    if (prevHighlightRow) {
+                        var keepDoing = true;
+
+                        var elemClasses = prevHighlightRow.classList;
+                        if (elemClasses) {
+                            if (elemClasses.contains("selected")) {
+                                keepDoing = false;
+                            }
+                        }
+
+                        if (keepDoing === true) {
+                            fedeoclient_webapp.changeCssClass(prevHighlightRow, "highlight", "normal");
+                        }
+
+                    }
+                    highlightRowHidden.value = "";
+                }
+
+                var highlightRow = document.getElementById(rowId);
+                if (highlightRow) {
+                    var keepDoing = true;
+
+                    var elemClasses = highlightRow.classList;
+                    if (elemClasses) {
+                        if (elemClasses.contains("selected")) {
+                            keepDoing = false;
+                        }
+                    }
+
+                    if (keepDoing === true) {
+                        fedeoclient_webapp.changeCssClass(highlightRow, "normal", "highlight");
+                        highlightRowHidden.value = rowId;
+                    }
+                }
+            }
+        }
+
+        function fedeoclient_webapp_unhighlightRow(rowId) {
+            var unhighlightRow = document.getElementById(rowId);
+            if (unhighlightRow) {
+                var keepDoing = true;
+
+                var elemClasses = unhighlightRow.classList;
+                if (elemClasses) {
+                    if (elemClasses.contains("selected")) {
+                        keepDoing = false;
+                    }
+                }
+
+                if (keepDoing === true) {
+                    fedeoclient_webapp.changeCssClass(unhighlightRow, "highlight", "normal");
+                }
+            }
+            var highlightRowHidden = document.getElementById("fedeoclient_webapp_currentHighlightRow");
+            if (highlightRowHidden) {
+                highlightRowHidden.value = "";
+            }
+        }        
+
+        function fedeoclient_webapp_onClickDatasetItemOnList(datasetUuid) {
+            //printLog("Select dataset " + datasetUuid);
+            fedeoclient_webapp_selectDatasetItem(datasetUuid);
+            fedeoclient_webapp_zoomToSelectedFeature(datasetUuid);
+            //printLog("Selected dataset " + datasetUuid);
+        }
+
+        function fedeoclient_webapp_onClickRelatedProductOnList(relatedUuid) {
+            //printLog("Select dataset " + datasetUuid);
+            fedeoclient_webapp_selectRelatedProduct(relatedUuid);
+            fedeoclient_webapp_zoomToSelectedFeature(relatedUuid);
+            //printLog("Selected dataset " + datasetUuid);
+        }
+
+        function fedeoclient_webapp_scrollIntoView(xhr, status, args) {
+            if (args.found === true) {
+                if (args.datasetUuid) {
+                    var selectedElement = document.getElementById(args.datasetUuid);
+                    //printLog(selectedElement);
+                    if (selectedElement) {
+                        var keepScroll = true;
+                        try {
+                            var bdcRect = selectedElement.getBoundingClientRect();
+                            if (bdcRect) {
+                                var elemTop = bdcRect.top;
+                                //printLog("elemTop = " + elemTop);
+
+                                var elemBottom = bdcRect.bottom;
+                                //printLog("elemBottom = " + elemBottom);
+
+                                //printLog("window.innerHeight = " + window.innerHeight);
+
+                                if (spbAndOperator(spbGreaterThanOrEqual(elemTop, 0), spbLessThanOrEqual(elemBottom, window.innerHeight))) {
+                                    keepScroll = false;
+                                }
+                            }
+                        } catch (e) {
+                        }
+
+                        //printLog("keepScroll = " + keepScroll);
+                        if (keepScroll === true) {
+                            selectedElement.scrollIntoView();
+                        }
+                    }
+                }
+            }
+        }        
+
+        function fedeoclient_webapp_onInputTrackChanges(value) {
+            //console.log("_onInputTrackChanges: " + value);
+            var hasValue = false;
+            if (value) {
+                hasValue = true;
+            }
+            //console.log("hasValue: " + hasValue);
+
+            var bboxValue = $('input[id*=' + 'fedeoclient_webapp' + '_bboxHiddenInput]').val();
+            //console.log("bboxValue: " + bboxValue);
+
+            if (bboxValue) {
+                hasValue = true;
+            }
+
+            //console.log("hasValue: " + hasValue);
+
+            if (hasValue === false) {
+                for (var propertyName in PrimeFaces.widgets) {
+                    var _widgetObj = PrimeFaces.widgets[propertyName];
+                    if (_widgetObj !== null) {
+                        if (_widgetObj.widgetVar) {
+                            //console.log(_widgetObj.widgetVar);
+                            if (spbEndsWith(_widgetObj.widgetVar, "SpbAdvancedInput")) {
+                                //console.log("Input:");
+                                //console.log(_widgetObj);
+                                if (_widgetObj.input) {
+                                    //console.log("Have input");
+                                    //console.log(_widgetObj.input);
+                                    if (_widgetObj.input["0"]) {
+                                        //console.log(_widgetObj.input["0"].value);
+                                        if (_widgetObj.input["0"].value) {
+                                            hasValue = true;
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    //console.log("Have no input");
+                                    var jqObj = _widgetObj.getJQ();
+                                    if (jqObj) {
+                                        //console.log(jqObj);
+                                        if (jqObj["0"]) {
+                                            //console.log(jqObj["0"]);
+                                            if (jqObj["0"].value) {
+                                                //console.log(jqObj["0"].value);
+                                                hasValue = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (spbEndsWith(_widgetObj.widgetVar, "SpbPassInput")) {
+                                    //console.log(_widgetObj);
+                                } else {
+                                    if (spbEndsWith(_widgetObj.widgetVar, "SpbDateQuery")) {
+                                        //console.log("Date value " + _widgetObj.getDate());
+                                        if (_widgetObj.getDate()) {
+                                            hasValue = true;
+                                            break;
+                                        }
+                                    } else {
+                                        if (spbEndsWith(_widgetObj.widgetVar, "placeNameQueryable")) {
+                                            //console.log("Place: ");
+                                            if (_widgetObj.input) {
+                                                if (_widgetObj.input["0"]) {
+                                                    if (_widgetObj.input["0"].value) {
+                                                        hasValue = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //console.log("hasValue: " + hasValue);
+
+            fedeoclient_webapp_switchAdvancedIcon(hasValue);
+        }
+
+        function fedeoclient_webapp_cleanPlaceName() {
+            for (var propertyName in PrimeFaces.widgets) {
+                var _widgetObj = PrimeFaces.widgets[propertyName];
+                if (_widgetObj !== null) {
+                    if (_widgetObj.widgetVar) {
+                        if (spbEndsWith(_widgetObj.widgetVar, "placeNameQueryable")) {
+                            if (_widgetObj.id) {
+                                //console.log("Reset Place: ");
+                                if (_widgetObj.input) {
+                                    //console.log(_widgetObj.input);
+                                    if (_widgetObj.input["0"]) {
+                                        _widgetObj.input["0"].value = "";
+                                        break;
+                                    }
+                                    //console.log(_widgetObj.input);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        function fedeoclient_webapp_doAfterSearchFormResetting(sType) {
+            fedeoclient_webapp.cleanAOI();
+            fedeoclient_webapp.cleanGeonamesBox();
+            fedeoclient_webapp_cleanPlaceName();
+        }
+
+
+    </script>
+
+    <h:outputStylesheet id="icons">        
+        span.ui-icon.satelliteIcon {
+        background-image: url("#{resource['/images/satellite.gif']}") !important;
+        background-position: inherit;
+        background-size: contain;
+        }		
+
+        span.ui-icon.layersIcon {
+        background-image: url("#{resource['/images/layers.png']}") !important;
+        background-position: inherit;
+        background-size: contain;
+        }
+
+        span.ui-icon.viewerAoiIcon {
+        background-image: url("#{resource['/images/draw.gif']}") !important;
+        background-position: inherit;
+        background-size: contain;
+        }
+
+        span.ui-icon.viewerPanIcon {
+        background-image: url("#{resource['/images/pan.gif']}") !important;
+        background-position: inherit;
+        background-size: contain;
+        }
+
+        span.ui-icon.fullScreenIcon {
+        background-image: url("#{resource['/images/fullscreen.gif']}") !important;
+        background-position: inherit;
+        background-size: contain;
+        }
+
+        span.ui-icon.exitFullScreenIcon {
+        background-image: url("#{resource['/images/exit-fullscreen.gif']}") !important;
+        background-position: inherit;
+        background-size: contain;
+        }
+
+        span.ui-icon.twoDMapIcon {
+        background-image: url("#{resource['/images/2d.png']}") !important;
+        background-position: inherit;
+        background-size: contain;
+        }
+
+        span.ui-icon.colab-quality-report {
+            background-image: url("#{resource['/images/colab.png']}") !important;
+            background-position: inherit;
+            background-size: contain;
+            width: 22px;
+            height:22px;
+        }
+        
+        span.ui-icon.spb-report-icon {
+            background-image: url("#{resource['/images/report.png']}") !important;
+            background-position: inherit;
+            background-size: contain;
+            width: 22px;
+            height:22px;
+        }
+
+    </h:outputStylesheet>  
+
+    <ui:include src="header.xhtml" />
+
+    <h:form>
+        <p:remoteCommand name="fedeoclient_webapp_onKeepSessionAlive"	
+                         actionListener="#{searchBean.keepSessionAlive}"/>	
+
+        <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
+                                update="viewExpiredMessageDialog" 
+                                onexception="PF('viewExpiredMessageDialog').show();" />
+
+        <p:dialog id="viewExpiredMessageDialog" widgetVar="viewExpiredMessageDialog"
+                  closable="false"
+                  header="Timeout Exception"
+                  height="200" width="400"
+                  styleClass="expired-message-dialog">					
+
+            <h:outputText value="The application has been expired." styleClass="error-message"/>
+
+            <br/>
+            <br/>
+            <p:button
+                value="Reload FedEO Client"
+                icon="fa fa-fw fa-repeat"
+                styleClass="reload-button"
+                onclick="document.location.href = document.location.href;"/>
+        </p:dialog>				
+    </h:form>
+
+    <h:form id="messageForm">
+        <p:growl showDetail="true" showSummary="false" sticky="false" life="18000"/>
+    </h:form>	
+
+    <c:choose>
+        <c:when test="#{configBean.configuration.layoutDocked}">							
+            <div id="spbOsClientSearchInputPanel" class="os-client-input-layout-normal">
+                <ui:include src="search/searchInputs.xhtml" />
+            </div>
+
+            <div id="spbOsClientSearchOutputPanel" class="os-client-output-layout-normal" style="display:none;">
+                <ui:include src="search/searchResults.xhtml" />
+            </div>
+        </c:when>		
+        <c:otherwise>
+            <div id="spbOsClientSearch2In1Panel" class="os-client-input-layout-maximum">
+                <ui:include src="search/searchInputs.xhtml" />		
+            </div>	
+        </c:otherwise>
+    </c:choose>
+    <pe:fluidGrid value="#{searchBean.emptyFluidItems}" var="justForInitExtFluidGrid" rendered="false">
+        <pe:fluidGridItem/>
+    </pe:fluidGrid>
+</ui:composition>

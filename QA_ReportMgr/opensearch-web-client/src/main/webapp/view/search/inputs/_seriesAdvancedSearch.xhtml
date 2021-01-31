@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <input type="hidden" name="fedeoclient_webapp_seriesInputFilterName" 
+           id="fedeoclient_webapp_seriesInputFilter" 
+           value="seriesPanel"/>
+
+    <div class="advanced-search-title">
+        <ui:include src="searchInputTitle.xhtml" />	
+    </div>
+    <div class="#{(configBean.configuration.series.seriesMenu and (layoutBean.init or layoutBean.seriesThumbnailsView)) ? 'advanced-search-input advanced-short':'advanced-search-input'}">
+        <ui:include src="advancedSearch.xhtml" />
+    </div>		
+</ui:composition>

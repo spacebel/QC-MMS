@@ -1,0 +1,594 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"                
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"               
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:param name="layoutMode" value="#{true}" />
+    <table class="results-list-view" onmouseout="fedeoclient_webapp_unhighlightFeatures('Dataset')">
+        <ui:repeat var="item" value="#{searchBean.searchData.datasetPaginator.data.items}">
+            <tr onmouseover="fedeoclient_webapp_highlightFeatures('#{item.uuid}', 'Dataset'); fedeoclient_webapp_changeHighlightRow('#{item.uuid}')"
+                onmouseout="fedeoclient_webapp_unhighlightFeatures('Dataset'); fedeoclient_webapp_unhighlightRow('#{item.uuid}')"
+                id="#{item.uuid}"
+                class="#{searchBean.datasetItemClass(item.uuid)}">
+                <td style="width: 80px; text-align:center;">					
+
+                    <a href="#" title="Select this product"
+                       onclick="fedeoclient_webapp_onClickDatasetItemOnList('#{item.uuid}')" >
+                        
+                        <c:set var="imageUrl" value="#{spb:setImageSize(item.previewUrl,'100,100')}" />
+
+                        <p:graphicImage value="#{imageUrl}" styleClass="preview-image" rendered="#{not empty imageUrl and imageUrl ne 'CUSTOMQUICKLOOKMAP'}"/>
+
+                        <h:panelGroup rendered="#{not empty imageUrl and imageUrl eq 'CUSTOMQUICKLOOKMAP'}">
+                            <div id="quicklookMap#{item.uuid}" class="spacemap-quicklook-map" />
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{empty imageUrl}">	
+                            <div class="preview-no-image">
+                                <h:outputText value=" "/>
+                            </div>
+                        </h:panelGroup>
+
+
+                    </a>
+                </td>
+                <td style="width:100%">
+                    <a href="#" onclick="fedeoclient_webapp_onClickDatasetItemOnList('#{item.uuid}')" 
+                       title="Select this product" style="color: inherit;">
+                        <pe:fluidGrid hGutter="1" vGutter="1" style="height:100%">
+                            <c:choose>
+                                <c:when test="#{configBean.configuration.layoutDocked or (not configBean.configuration.layoutDocked and layoutBean.outputToggle)}">
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['parentId'].show}">
+                                        <h:outputText value="Parent id " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(item.properties['parentId'].value,configBean.configuration.identifierPrefix),25)}" 
+                                                      title="#{spb:removeIdPrefix(item.properties['parentId'].value,configBean.configuration.identifierPrefix)}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+                                    
+                                     <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['collection'].show}">
+                                        <h:outputText value="Parent id " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(item.properties['collection'].value,configBean.configuration.identifierPrefix),25)}" 
+                                                      title="#{spb:removeIdPrefix(item.properties['collection'].value,configBean.configuration.identifierPrefix)}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.showProductId}">
+                                        <h:outputText value="Identifier: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(item.productId,configBean.configuration.identifierPrefix),25)}" 
+                                                      title="#{spb:removeIdPrefix(item.productId,configBean.configuration.identifierPrefix)}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['productType'].show}">
+                                        <h:outputText value="Product type: "  styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['productType'].value}"/>						
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['title'].show}" >
+                                        <h:outputText value="Title: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(item.properties['title'].value,configBean.configuration.identifierPrefix),25)}"
+                                                      title="#{spb:removeIdPrefix(item.properties['title'].value,configBean.configuration.identifierPrefix)}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['abstract'].show}">
+                                        <h:outputText value="Abstract: "  styleClass="text-label"/>
+                                        <h:outputText value="#{spb:shortStr(item.properties['abstract'].value,100)}"
+                                                      title="#{item.properties['abstract'].value}" />						
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['orbitNumber'].show}">
+                                        <h:outputText value="Orbit number: " styleClass="text-label" />
+                                        <h:outputText value="#{item.properties['orbitNumber'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['orbitDirection'].show}">
+                                        <h:outputText value="Orbit direction: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['orbitDirection'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['lastOrbitNumber'].show}">
+                                        <h:outputText value="Last orbit: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['lastOrbitNumber'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['startDate'].show}">
+                                        <h:outputText value="Start date: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['startDate'].value}"/>	
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['endDate'].show}">
+                                        <h:outputText value="End date: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['endDate'].value}"/>	
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['updatedDate'].show}">
+                                        <h:outputText value="Modified: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['updatedDate'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['publishedDate'].show}">
+                                        <h:outputText value="Published: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['publishedDate'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['soShortName'].show}">
+                                        <h:outputText value="Platform: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soShortName'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['soSerialIdentifier'].show}">
+                                        <h:outputText value="Serial identifier: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soSerialIdentifier'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['soOrbitType'].show}">
+                                        <h:outputText value="Orbit type: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soOrbitType'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['soInstrumentShortName'].show}">
+                                        <h:outputText value="Instrument: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soInstrumentShortName'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['soSensorType'].show}">
+                                        <h:outputText value="Sensor type: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soSensorType'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['soOperationalMode'].show}">
+                                        <h:outputText value="Sensor mode: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soOperationalMode'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['soResolution'].show}">
+                                        <h:outputText value="Sensor resolution: " styleClass="text-label" />
+                                        <h:outputText value="#{item.properties['soResolution'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['soSwathIdentifier'].show}">
+                                        <h:outputText value="Swath identifier: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soSwathIdentifier'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['polarisationMode'].show}">
+                                        <h:outputText value="Polarisation mode: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['polarisationMode'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['polarisationChannels'].show}">
+                                        <h:outputText value="Polarisation channels: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['polarisationChannels'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['antennaLookDirection'].show}">
+                                        <h:outputText value="Antenna look direction: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['antennaLookDirection'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['minimumIncidenceAngle'].show}">
+                                        <h:outputText value="Minimum incidence angle: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:substring(item.properties['minimumIncidenceAngle'].value,0,9)}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['incidenceAngleVariation'].show}">
+                                        <h:outputText value="Incidence angle variation: " styleClass="text-label" />
+                                        <h:outputText value="#{spb:substring(item.properties['incidenceAngleVariation'].value,0,9)}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['dopplerFrequency'].show}">
+                                        <h:outputText value="Doppler frequency: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['dopplerFrequency'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['cloudCoverPercentage'].show}">
+                                        <h:outputText value="Cloud cover: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['cloudCoverPercentage'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['snowCoverPercentage'].show}">
+                                        <h:outputText value="Snow cover: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['snowCoverPercentage'].value}"/>					
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['illuminationElevationAngle'].show}">
+                                        <h:outputText value="Illumination elevation angle: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:substring(item.properties['illuminationElevationAngle'].value,0,9)}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['illuminationAzimuthAngle'].show}" >
+                                        <h:outputText value="Illumination azimuth angle: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:substring(item.properties['illuminationAzimuthAngle'].value,0,9)}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['species'].show}">
+                                        <h:outputText value="Specy: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['species'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['unit'].show}">
+                                        <h:outputText value="Unit: " styleClass="text-label" />
+                                        <h:outputText value="#{item.properties['unit'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['algorithmName'].show}">
+                                        <h:outputText value="Algorithm name: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['algorithmName'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['algorithmVersion'].show}">
+                                        <h:outputText value="Algorithm version:" styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['algorithmVersion'].value}"/>
+                                    </pe:fluidGridItem>
+                                </c:when>
+                                <c:otherwise>
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['parentId'].show}">
+                                        <h:outputText value="Parent id: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(item.properties['parentId'].value,configBean.configuration.identifierPrefix),25)}" 
+                                                      title="#{spb:removeIdPrefix(item.properties['parentId'].value,configBean.configuration.identifierPrefix)}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.showProductId}">
+                                        <h:outputText value="Identifier: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(item.productId,configBean.configuration.identifierPrefix),25)}" 
+                                                      title="#{spb:removeIdPrefix(item.productId,configBean.configuration.identifierPrefix)}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell" 
+                                                      rendered="#{item.properties['productType'].show}">
+                                        <h:outputText value="Product type: "  styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['productType'].value}"/>						
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['title'].show}" >
+                                        <h:outputText value="Title: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(item.properties['title'].value,configBean.configuration.identifierPrefix),25)}"
+                                                      title="#{spb:removeIdPrefix(item.properties['title'].value,configBean.configuration.identifierPrefix)}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['abstract'].show}">
+                                        <h:outputText value="Abstract: "  styleClass="text-label"/>                                        
+                                        <h:outputText value="#{spb:shortStr(item.properties['abstract'].value,100)}"
+                                                      title="#{item.properties['abstract'].value}" />
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['orbitNumber'].show}">
+                                        <h:outputText value="Orbit number: " styleClass="text-label" />
+                                        <h:outputText value="#{item.properties['orbitNumber'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['orbitDirection'].show}">
+                                        <h:outputText value="Orbit direction: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['orbitDirection'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['lastOrbitNumber'].show}">
+                                        <h:outputText value="Last orbit: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['lastOrbitNumber'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['startDate'].show}">
+                                        <h:outputText value="Start date: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['startDate'].value}"/>	
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['endDate'].show}">
+                                        <h:outputText value="End date: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['endDate'].value}"/>	
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['updatedDate'].show}">
+                                        <h:outputText value="Modified: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['updatedDate'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['publishedDate'].show}">
+                                        <h:outputText value="Published: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['publishedDate'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['soShortName'].show}">
+                                        <h:outputText value="Platform: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soShortName'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['soSerialIdentifier'].show}">
+                                        <h:outputText value="Serial identifier: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soSerialIdentifier'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small"
+                                                      rendered="#{item.properties['soOrbitType'].show}">
+                                        <h:outputText value="Orbit type: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soOrbitType'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['soInstrumentShortName'].show}">
+                                        <h:outputText value="Instrument: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soInstrumentShortName'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['soSensorType'].show}">
+                                        <h:outputText value="Sensor type: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soSensorType'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['soOperationalMode'].show}">
+                                        <h:outputText value="Sensor mode: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soOperationalMode'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['soResolution'].show}">
+                                        <h:outputText value="Sensor resolution: " styleClass="text-label" />
+                                        <h:outputText value="#{item.properties['soResolution'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['soSwathIdentifier'].show}">
+                                        <h:outputText value="Swath identifier: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['soSwathIdentifier'].value}"/>
+                                        <br/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['polarisationMode'].show}">
+                                        <h:outputText value="Polarisation mode: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['polarisationMode'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['polarisationChannels'].show}">
+                                        <h:outputText value="Polarisation channels: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['polarisationChannels'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['antennaLookDirection'].show}">
+                                        <h:outputText value="Antenna look direction: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['antennaLookDirection'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['minimumIncidenceAngle'].show}">
+                                        <h:outputText value="Minimum incidence angle: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:substring(item.properties['minimumIncidenceAngle'].value,0,9)}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['incidenceAngleVariation'].show}">
+                                        <h:outputText value="Incidence angle variation: " styleClass="text-label" />
+                                        <h:outputText value="#{spb:substring(item.properties['incidenceAngleVariation'].value,0,9)}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['dopplerFrequency'].show}">
+                                        <h:outputText value="Doppler frequency: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['dopplerFrequency'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['cloudCoverPercentage'].show}">
+                                        <h:outputText value="Cloud cover: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['cloudCoverPercentage'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['snowCoverPercentage'].show}">
+                                        <h:outputText value="Snow cover: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['snowCoverPercentage'].value}"/>					
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['illuminationElevationAngle'].show}">
+                                        <h:outputText value="Illumination elevation angle: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:substring(item.properties['illuminationElevationAngle'].value,0,9)}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['illuminationAzimuthAngle'].show}" >
+                                        <h:outputText value="Illumination azimuth angle: " styleClass="text-label"/>
+                                        <h:outputText value="#{spb:substring(item.properties['illuminationAzimuthAngle'].value,0,9)}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['species'].show}">
+                                        <h:outputText value="Specy: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['species'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['unit'].show}">
+                                        <h:outputText value="Unit: " styleClass="text-label" />
+                                        <h:outputText value="#{item.properties['unit'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['algorithmName'].show}">
+                                        <h:outputText value="Algorithm name: " styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['algorithmName'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{item.properties['algorithmVersion'].show}">
+                                        <h:outputText value="Algorithm version:" styleClass="text-label"/>
+                                        <h:outputText value="#{item.properties['algorithmVersion'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <c:set var="processing" value="#{item.properties['processingInformation'].groups[0]}" />									
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{not empty processing['center'].value}">
+                                        <h:outputText value="Processing center: " styleClass="text-label"/>
+                                        <h:outputText value="#{processing['center'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{not empty processing['date'].value}">
+                                        <h:outputText value="Processing date: " styleClass="text-label"/>
+                                        <h:outputText value="#{processing['date'].value}"/>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem styleClass="fluidgrid-dataset-listview-cell-small" 
+                                                      rendered="#{not empty processing['processorName'].value}">
+                                        <h:outputText value="Processor name: " styleClass="text-label"/>
+                                        <h:outputText value="#{processing['processorName'].value}"/>
+                                    </pe:fluidGridItem>
+                                </c:otherwise>
+                            </c:choose>
+                        </pe:fluidGrid>  
+                    </a>					
+                </td>
+
+                <td style="width:100px;">
+                    <p:commandButton actionListener="#{searchBean.onSelectDatasetItem(item)}"
+                                     title="Show details" disabled="#{not layoutMode}"
+                                     immediate="true" global="true"
+                                     icon="fa fa-fw fa-info-circle"
+                                     onstart="PF('waitingBlockUI').block()"
+                                     oncomplete="fedeoclient_webapp_showGMLOnMapForDataset();PF('waitingBlockUI').unblock()"
+                                     onerror="PF('waitingBlockUI').unblock()"
+                                     update=":toolbarForm :searchInputForm :resultsForm :messageForm"/>
+
+                    <p:spacer width="5" height="5" rendered="#{item.hasFootprint}"/>
+
+                    <p:commandButton type="button"
+                                     title="Zoom to this product"
+                                     immediate="true" global="true"
+                                     icon="fa fa-fw fa-globe"
+                                     rendered="#{item.hasFootprint}"
+                                     onclick="fedeoclient_webapp_zoomToSelectedFeature('#{item.uuid}')"/>
+
+                    <c:set var="productFileUrl" value="#{spb:validateUrl(item.properties['productFileUrl'].value)}" />
+                    <c:set var="onlineResourceUrl" value="#{spb:validateUrl(item.properties['onlineResource'].value)}" />
+
+                    <p:spacer width="5" height="5" 
+                              rendered="#{not empty productFileUrl or (not empty onlineResourceUrl) or (not empty item.jupyterNotebookReportLink)}"/>                   
+
+                    <h:panelGroup rendered="#{not empty productFileUrl}">
+                        <a target="_blank" class="download-icon" href="#{productFileUrl}" title="Download">
+                            <span class="fa fa-fw fa-cloud-download"/>
+                        </a>	
+                    </h:panelGroup>
+                    
+                    <h:panelGroup rendered="#{not empty item.jupyterNotebookReportLink}">                        
+                        <a target="_blank" class="download-icon" href="#{item.jupyterNotebookReportLink}" title="Download Jupyter Notebook">
+                            <span class="fa fa-fw fa-cloud-download"/>
+                        </a>	
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{empty productFileUrl and (not empty onlineResourceUrl)}">
+                        <a target="_blank" class="download-icon" href="#{onlineResourceUrl}" title="Download">
+                            <span class="fa fa-fw fa-cloud-download"/>
+                        </a>	
+                    </h:panelGroup>
+
+
+                    <h:panelGroup rendered="#{(not empty item.properties['mediaQuicklook'].value) 
+                                              or (not empty item.properties['mediaThumbnail'].value) 
+                                              or (not empty item.properties['alternateLinks'].groups)
+                                              or (not empty item.properties['productIdLink'].value)}">                        
+                        <p:commandButton id="datasetListViewMoreOptionsBtn" 
+                                         title="More options"
+                                         type="button" icon="fa fa-fw fa-ellipsis-v" />
+                        <p:menu overlay="true" trigger="datasetListViewMoreOptionsBtn" 
+                                my="left top" at="left bottom" 
+                                styleClass="more-options-context-menu"
+                                model="#{searchBean.buildMenuModel(item,'Dataset')}"/>
+                    </h:panelGroup>                   
+                </td>					
+            </tr>
+        </ui:repeat>
+    </table>
+</ui:composition>

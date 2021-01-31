@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">	
+    <ui:param name="spbMap" value="fedeoclient_webapp" />
+    <div class="viewModeButtons" style="position: absolute; left: 5px; top: 5px;">
+        <table>
+            <tr>
+                <td style="padding-left: 5px;">
+                    <p:selectBooleanButton value="#{layoutBean.thumbnailsView}"
+                                           rendered="#{not layoutBean.thumbnailsView}"
+                                           title="Grid view" onLabel="ui-button" offLabel="ui-button"
+                                           styleClass="circleButton ui-button-icon-only" onIcon="fa fa-th-large"
+                                           offIcon="fa fa-th-large">
+                        <p:ajax listener="#{layoutBean.showThumbnailsView}"
+                                onstart="PF('waitingBlockUI').block(); fedeoclient_webapp.footprintToNormalStyle(true)"
+                                onclick="this.blur();"
+                                oncomplete="PF('waitingBlockUI').unblock(); fedeoclient_webapp.createAllFeaturesQuicklookMap()"
+                                onerror="PF('waitingBlockUI').unblock()"
+                                update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                    </p:selectBooleanButton>
+                    <p:selectBooleanButton value="#{layoutBean.thumbnailsView}"
+                                           rendered="#{layoutBean.thumbnailsView}"
+                                           title="Grid view" onLabel="ui-button" offLabel="ui-button"
+                                           styleClass="circleButton ui-button-icon-only" onIcon="fa fa-th-large"
+                                           offIcon="fa fa-th-large">
+                        <p:ajax listener="#{layoutBean.showThumbnailsView}"
+                                update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                    </p:selectBooleanButton>	
+                </td>
+                <td style="padding-left: 5px;">
+                    <p:selectBooleanButton value="#{layoutBean.listView}"
+                                           rendered="#{not layoutBean.listView}"
+                                           title="List view" onLabel="ui-button" offLabel="ui-button"
+                                           styleClass="circleButton ui-button-icon-only"
+                                           onIcon="fa fa-fw fa-list" offIcon="fa fa-fw fa-list">
+                        <p:ajax listener="#{layoutBean.showListView}"
+                                onstart="PF('waitingBlockUI').block();fedeoclient_webapp.footprintToNormalStyle(true)"
+                                onclick="this.blur();"
+                                oncomplete="PF('waitingBlockUI').unblock(); fedeoclient_webapp.createAllFeaturesQuicklookMap()"
+                                onerror="PF('waitingBlockUI').unblock()"
+                                update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                    </p:selectBooleanButton>
+
+                    <p:selectBooleanButton value="#{layoutBean.listView}"
+                                           rendered="#{layoutBean.listView}"
+                                           title="List view" onLabel="ui-button" offLabel="ui-button"
+                                           styleClass="circleButton ui-button-icon-only"
+                                           onIcon="fa fa-fw fa-list" offIcon="fa fa-fw fa-list">
+                        <p:ajax listener="#{layoutBean.showListView}"
+                                update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                    </p:selectBooleanButton>
+                </td>
+                <td style="padding-left: 5px;">
+                    <c:choose>
+                        <c:when test="#{layoutBean.relatedMode}">
+                            <p:selectBooleanButton value="#{layoutBean.entryView}"
+                                                   rendered="#{not layoutBean.entryView}"
+                                                   title="Details view" onLabel="ui-button" offLabel="ui-button"
+                                                   styleClass="circleButton ui-button-icon-only"
+                                                   onIcon="fa fa-fw fa-file" offIcon="fa fa-fw fa-file">
+                                <p:ajax listener="#{searchBean.clickEntryView}"
+                                        onstart="PF('waitingBlockUI').block(); fedeoclient_webapp.footprintToNormalStyle(false)"
+                                        oncomplete="fedeoclient_webapp_showGMLOnMapForRelated();PF('waitingBlockUI').unblock()"
+                                        onerror="PF('waitingBlockUI').unblock()"
+                                        update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                            </p:selectBooleanButton>
+
+                            <p:selectBooleanButton value="#{layoutBean.entryView}"
+                                                   rendered="#{layoutBean.entryView}"
+                                                   title="Details view" onLabel="ui-button" offLabel="ui-button"
+                                                   styleClass="circleButton ui-button-icon-only"
+                                                   onIcon="fa fa-fw fa-file" offIcon="fa fa-fw fa-file">
+                                <p:ajax listener="#{searchBean.clickEntryView}"
+                                        update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                            </p:selectBooleanButton>
+                        </c:when>
+                        <c:when test="#{layoutBean.datasetMode}">
+                            <p:selectBooleanButton value="#{layoutBean.entryView}"
+                                                   rendered="#{not layoutBean.entryView}"
+                                                   title="Details view" onLabel="ui-button" offLabel="ui-button"
+                                                   styleClass="circleButton ui-button-icon-only"
+                                                   onIcon="fa fa-fw fa-file" offIcon="fa fa-fw fa-file">
+                                <p:ajax listener="#{searchBean.clickEntryView}"
+                                        onstart="PF('waitingBlockUI').block(); fedeoclient_webapp.footprintToNormalStyle(false)"
+                                        oncomplete="fedeoclient_webapp_showGMLOnMapForDataset();PF('waitingBlockUI').unblock()"
+                                        onerror="PF('waitingBlockUI').unblock()"
+                                        update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                            </p:selectBooleanButton>
+
+                            <p:selectBooleanButton value="#{layoutBean.entryView}"
+                                                   rendered="#{layoutBean.entryView}"
+                                                   title="Details view" onLabel="ui-button" offLabel="ui-button"
+                                                   styleClass="circleButton ui-button-icon-only"
+                                                   onIcon="fa fa-fw fa-file" offIcon="fa fa-fw fa-file">
+                                <p:ajax listener="#{searchBean.clickEntryView}"
+                                        update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                            </p:selectBooleanButton>
+                        </c:when>
+                        <c:otherwise>
+                            <p:selectBooleanButton value="#{layoutBean.entryView}"
+                                                   rendered="#{not layoutBean.entryView}"
+                                                   title="Details view" onLabel="ui-button" offLabel="ui-button"
+                                                   styleClass="circleButton ui-button-icon-only"
+                                                   onIcon="fa fa-fw fa-file" offIcon="fa fa-fw fa-file">
+                                <p:ajax listener="#{searchBean.clickEntryView}"
+                                        onstart="PF('waitingBlockUI').block(); fedeoclient_webapp.footprintToNormalStyle(false)"
+                                        oncomplete="PF('waitingBlockUI').unblock()"
+                                        onerror="PF('waitingBlockUI').unblock()"
+                                        update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                            </p:selectBooleanButton>
+
+                            <p:selectBooleanButton value="#{layoutBean.entryView}"
+                                                   rendered="#{layoutBean.entryView}"
+                                                   title="Details view" onLabel="ui-button" offLabel="ui-button"
+                                                   styleClass="circleButton ui-button-icon-only"
+                                                   onIcon="fa fa-fw fa-file" offIcon="fa fa-fw fa-file">							
+                                <p:ajax listener="#{searchBean.clickEntryView}"
+                                        update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                            </p:selectBooleanButton>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+            </tr>	
+        </table>
+    </div>
+</ui:composition>

@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+  <!-- Load Javascript and scripts-related CSS !-->
+  <h:outputStylesheet library="js" name="openLayers3/ol.css"/>
+  <h:outputStylesheet library="js" name="openLayers3/ol3-layerswitcher.css"/>  
+  <h:outputStylesheet library="js" name="customScrollbar/perfect-scrollbar.css"/>  
+
+  <h:outputScript library="js" name="main.js"/>
+  <h:outputScript library="js" name="ipc-utility.js"/>
+  <h:outputScript library="js" name="ipc.js"/>
+  <h:outputScript library="js" name="util/cycle.js"/>
+  <h:outputScript library="js" name="openLayers3/Cesium/Cesium.js"/>
+  <h:outputScript library="js" name="openLayers3/ol3cesium.js"/>
+  <h:outputScript library="js" name="openLayers3/ol3-layerswitcher.js"/>
+  <h:outputScript library="js" name="spbViewer3/mapviewer-core.js"/>
+  <h:outputScript library="js" name="spbViewer3/mapviewer-ipc.js"/>
+  <h:outputScript library="js" name="spbViewer3/mapviewer-aoi.js"/>
+  <h:outputScript library="js" name="proj4js-combined.js"/>
+  <h:outputScript library="js" name="util/html2canvas.js"/>  
+  <h:outputScript library="js" name="customScrollbar/perfect-scrollbar.js"/>
+  
+  <script>
+    function getCurrentViewPort(isHeight) {
+      var viewPortWidth = -1;
+      var viewPortHeight = -1;
+
+      // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
+      if (typeof window.innerWidth !== 'undefined') {
+        viewPortWidth = window.innerWidth;
+        viewPortHeight = window.innerHeight;
+      } else if (typeof document.documentElement !== 'undefined') {
+        // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
+        if (typeof document.documentElement.clientWidth !== 'undefined') {
+          if (document.documentElement.clientWidth !== 0) {
+            viewPortWidth = document.documentElement.clientWidth;
+            viewPortHeight = document.documentElement.clientHeight;
+          }
+        }
+      } else {
+        // older versions of IE
+        viewPortWidth = document.getElementsByTagName('body')[0].clientWidth;
+        viewPortHeight = document.getElementsByTagName('body')[0].clientHeight;
+      }
+
+      if (viewPortWidth === -1) {
+        viewPortWidth = $(document).width();
+      }
+
+      if (viewPortHeight === -1) {
+        viewPortHeight = $(document).height();
+      }
+
+      if (isHeight === true) {
+        return viewPortHeight;
+      } else {
+        return viewPortWidth;
+      }
+    }
+
+    $(window).resize(function () {
+      var viewPortHeight = getCurrentViewPort(true);
+      //console.log("viewPortHeight = " + viewPortHeight);
+      if (spbLessThan(viewPortHeight, 650) === true) {
+        viewPortHeight = 650;
+      }
+      //console.log("final viewPortHeight = " + viewPortHeight);
+
+      $("#spbOsClientSearch2In1Panel").height(viewPortHeight - 54);
+      $("#spbOsClientViewerPanel").height(viewPortHeight - 54);
+
+      if ($("#spbOsClientUndockedResultsPanel").hasClass("undocked-results-panel-maximum") === true) {
+        var tableHeight = viewPortHeight - 150;
+        $("#spbOsClientSearchResultsTable").height(tableHeight);
+      } else {
+        /*
+         var tableHeight = viewPortHeight - 620;
+         $("#spbOsClientSearchResultsTable").height(tableHeight);
+         */
+        var inputPanelHeight = $("#spbOsClientAdvancedSearchUndockedInputPanel").height();
+        //console.log("inputPanelHeight = " + inputPanelHeight);
+        var tableHeight = viewPortHeight - (inputPanelHeight + 165);
+        //console.log("tableHeight = " + tableHeight);				
+        $("#spbOsClientSearchResultsTable").height(tableHeight);
+      }
+    });
+  </script>
+</ui:composition>

@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>		
+        <ui:include src="view/css.xhtml"/>
+    </h:head>
+
+    <h:body>
+        <h:panelGroup id="spbOsClientMainFrame">
+            <ui:include src="header.xhtml" />	
+            <h:form>
+                <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
+                                        update="viewExpiredMessageDialog" 
+                                        onexception="PF('viewExpiredMessageDialog').show();" />
+
+                <p:dialog id="viewExpiredMessageDialog" header="Timeout Exception" 
+                          widgetVar="viewExpiredMessageDialog"
+                          styleClass="expired-message-dialog">
+                    (Error page) The application has been expired.
+                    <br/>
+                    <br/>
+                    <p:button onclick="document.location.href = document.location.href;" value="Reload FedEO Client"/>
+                </p:dialog>
+            </h:form>
+        </h:panelGroup>
+    </h:body>
+</html>

@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"		
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:panelGroup>
+        <c:choose>
+            <c:when test="#{configBean.configuration.series.seriesMenu and (layoutBean.init or layoutBean.seriesThumbnailsView) }">
+                <h:outputText value="Selection"/>
+            </c:when>
+            <c:otherwise>
+                <c:choose>
+                    <c:when test="#{layoutBean.init or layoutBean.seriesListView or layoutBean.seriesThumbnailsView}">
+                        <h:outputText value="Collection search"/>
+                    </c:when>
+                    <c:when test="#{layoutBean.datasetListView or layoutBean.datasetThumbnailsView or layoutBean.datasetDetails}">
+                        <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(searchBean.searchData.datasetParentId,configBean.configuration.identifierPrefix),32)}"
+                                      title="#{spb:removeIdPrefix(searchBean.searchData.datasetParentTitle,configBean.configuration.identifierPrefix)}"/>
+                    </c:when>
+                    <c:when test="#{layoutBean.seriesDetails or layoutBean.datasetInit}">
+                        <c:choose>
+                            <c:when test="#{not empty searchBean.searchData.selectedSeriesItem}">
+                                <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(searchBean.searchData.selectedSeriesItem.productId,configBean.configuration.identifierPrefix),32)}" 
+                                              title="#{spb:removeIdPrefix(searchBean.searchData.selectedSeriesItem.properties['title'].value,configBean.configuration.identifierPrefix)}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <h:outputText value="Collection search"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:when>
+                    <c:when test="#{layoutBean.relatedListView 
+                                    or layoutBean.relatedThumbnailsView 
+                                    or layoutBean.relatedDetails}">
+                        <c:choose>
+                            <c:when test="#{not empty searchBean.searchData.relatedPaginator and not empty searchBean.searchData.relatedPaginator.relatedByProductId}">
+                                <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(searchBean.searchData.relatedPaginator.relatedByProductId,configBean.configuration.identifierPrefix),32)}" 
+                                              title="Related products of #{searchBean.searchData.relatedPaginator.relatedByProductId}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <h:outputText value="Related product"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:when>
+                </c:choose>
+            </c:otherwise>
+        </c:choose>
+    </h:panelGroup>
+</ui:composition>

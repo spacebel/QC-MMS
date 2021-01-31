@@ -1,0 +1,310 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"                
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <script>
+
+        document.addEventListener('dashboard.discovery.request', fedeoclient_webapp_onDiscoveryRequest);
+        document.addEventListener('map.drawn.aoi.rectangle', fedeoclient_webapp_onPublishedAOI);
+        document.addEventListener('map.clean.geonames.box', fedeoclient_webapp_onCleanPlacenameTextbox);
+
+        function fedeoclient_webapp_onDiscoveryRequest() {
+            var publishedTopics = new Array('map.import.features', 'map.remove.features', 'map.select.feature', 'map.unselect.feature', 'eodata.publish.product.url');
+            var subscribedTopics = new Array('map.drawn.aoi.rectangle', "map.clean.geonames.box");
+            CommunicationUtil.sendDiscoveryResponse('fedeoclient_webapp', publishedTopics, subscribedTopics);
+        }
+
+        function fedeoclient_webapp_onPublishedAOI(message) {
+            if (CommunicationUtil.isTarget('fedeoclient_webapp', message)) {
+                $('input[id*=' + 'fedeoclient_webapp' + '_aoiHiddenInput]').val(message.data.aoi);
+                $('input[id*=' + 'fedeoclient_webapp' + '_bboxHiddenInput]').val(message.data.bbox);
+                fedeoclient_webapp_uploadAOI();
+
+                try {
+                    if (message.data.aoi) {                       
+                        fedeoclient_webapp_onInputTrackChanges("aoi");
+                    } else {                        
+                        fedeoclient_webapp_cleanPlaceName();
+                        fedeoclient_webapp_onInputTrackChanges("");
+                    }
+                } catch (e) {
+                }
+            }
+        }
+
+        function fedeoclient_webapp_onCleanPlacenameTextbox(message) {
+            if (CommunicationUtil.isTarget('fedeoclient_webapp', message)) {
+                $('input[id*=placeNameQueryable]').val("");
+                fedeoclient_webapp_cleanPlaceName();
+            }
+        }
+        function fedeoclient_webapp_onObtainGmlFeaturesResponse(xhr, status, args) {
+            //console.log("fedeoclient_webapp_onObtainGmlFeaturesResponse " + args.success);
+            if (args.success) {
+                fedeoclient_webapp_publishFootprint(args.searchType);
+            }
+        }
+
+        function fedeoclient_webapp_showGMLOnMap(xhr, status, args) {
+            if (args.success) {
+                var messageData = new Object();
+                messageData.type = "gml3";
+                messageData.selectedFeatures = args.selectedUuid;
+                messageData.unselectedFeatures = args.prevSelectedUuid;
+                printLog(messageData);
+
+                CommunicationUtil.sendMessageToAll('map.select.feature', 'fedeoclient_webapp', messageData);
+
+            } else {
+                //console.log('No showGMLOnMap');
+            }
+        }        
+
+        function fedeoclient_webapp_showDatasetFootprint() {
+            var isShowDatasetFootprintVar = $('input[id*=' + 'fedeoclient_webapp' + '_isShowDatasetFootprintBoolean]').val();
+            //console.log("isShowDatasetFootprintVar = " + isShowDatasetFootprintVar);
+
+            if (isShowDatasetFootprintVar === "true") {
+                //console.log("Show");
+                fedeoclient_webapp_publishFootprint('Dataset');
+
+                // select feature if any
+                var selectedFeature = $('input[id*=' + 'fedeoclient_webapp' + '_currentDatasetSelectedFeature]').val();
+
+                if (selectedFeature) {
+                    var messageData = new Object();
+                    messageData.type = "gml3";
+                    messageData.selectedFeatures = selectedFeature;
+                    messageData.unselectedFeatures = "";
+                    printLog(messageData);
+
+                    CommunicationUtil.sendMessageToAll('map.select.feature', 'fedeoclient_webapp', messageData);
+                }
+            } else {
+                //console.log("not show");
+            }
+        }
+
+        function fedeoclient_webapp_showRelatedFootprint() {
+            var isShowRelatedFootprintVar = $('input[id*=' + 'fedeoclient_webapp' + '_isShowRelatedFootprintBoolean]').val();
+
+            if (isShowRelatedFootprintVar === "true") {
+                //console.log("Show");
+                fedeoclient_webapp_publishFootprint('Related');
+
+                // select feature if any
+                var selectedFeature = $('input[id*=' + 'fedeoclient_webapp' + '_currentRelatedSelectedFeature]').val();
+
+                if (selectedFeature) {
+                    var messageData = new Object();
+                    messageData.type = "gml3";
+                    messageData.selectedFeatures = selectedFeature;
+                    messageData.unselectedFeatures = "";
+                    printLog(messageData);
+
+                    CommunicationUtil.sendMessageToAll('map.select.feature', 'fedeoclient_webapp', messageData);
+                }
+            } else {
+                //console.log("not show");
+            }
+
+        }
+
+        function fedeoclient_webapp_publishFootprint(jspSearchType) {
+            //console.log("fedeoclient_webapp_publishFootprin t" + jspSearchType);
+            var messageData = new Object();
+            messageData.type = "gml3";
+            if (jspSearchType === 'Series') {
+                messageData.data = $('input[id*=' + 'fedeoclient_webapp' + '_collectionGMLFeaturesInput]').val();
+            } else if (jspSearchType === 'Related') {
+                messageData.data = $('input[id*=' + 'fedeoclient_webapp' + '_relatedGMLFeaturesInput]').val();
+                //console.log(messageData);
+            } else {
+                messageData.data = $('input[id*=' + 'fedeoclient_webapp' + '_productGMLFeaturesInput]').val();
+            }
+            messageData.featureNs = "http://www.esa.int/xml/schemas/mass/serviceresult";
+
+            printLog(messageData);
+            CommunicationUtil.sendMessageToAll('map.import.features', 'fedeoclient_webapp', messageData);
+        }
+
+        function fedeoclient_webapp_removeFeatures() {
+            var messageData = new Object();
+            messageData.type = "gml3";
+            CommunicationUtil.sendMessageToAll('map.remove.features', 'fedeoclient_webapp', messageData);
+        }
+
+
+        function fedeoclient_webapp_highlightFeatures(featureId, jspSearchType) {
+            var messageData = new Object();
+            messageData.type = "gml3";
+            messageData.highlightFeatures = featureId;
+
+            if (jspSearchType === 'Series') {
+                var currentHighlightFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentSeriesHighlightFeatures]').val();
+
+                var highlightRowHidden = document.getElementById("fedeoclient_webapp_currentSeriesHighlightRow");
+                if (highlightRowHidden) {
+                    if (highlightRowHidden.value) {
+                        if (currentHighlightFeatures) {
+                            currentHighlightFeatures = currentHighlightFeatures + "#" + highlightRowHidden.value;
+                        } else {
+                            currentHighlightFeatures = highlightRowHidden.value;
+                        }
+                    }
+                }
+
+                messageData.unhighlightFeatures = currentHighlightFeatures;
+                /*
+                 * put the highlight feature Ids into the hidden input
+                 */
+                $('input[id*=' + 'fedeoclient_webapp' + '_currentSeriesHighlightFeatures]').val(featureId);
+
+                messageData.selectedFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentSeriesSelectedFeature]').val();
+
+            } else if (jspSearchType === 'Related') {
+
+                var currentHighlightFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentRelatedHighlightFeatures]').val();
+                var highlightRowHidden = document.getElementById("fedeoclient_webapp_currentRelatedHighlightRow");
+                if (highlightRowHidden) {
+                    if (highlightRowHidden.value) {
+                        if (currentHighlightFeatures) {
+                            currentHighlightFeatures = currentHighlightFeatures + "#" + highlightRowHidden.value;
+                        } else {
+                            currentHighlightFeatures = highlightRowHidden.value;
+                        }
+                    }
+                }
+
+                messageData.unhighlightFeatures = currentHighlightFeatures;
+                /*
+                 * put the highlight feature Ids into the hidden input
+                 */
+                $('input[id*=' + 'fedeoclient_webapp' + '_currentRelatedHighlightFeatures]').val(featureId);
+
+                messageData.selectedFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentRelatedSelectedFeature]').val();
+
+            } else {
+                // Dataset
+
+                var currentHighlightFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentDatasetHighlightFeatures]').val();
+                var highlightRowHidden = document.getElementById("fedeoclient_webapp_currentDatasetHighlightRow");
+                if (highlightRowHidden) {
+                    if (highlightRowHidden.value) {
+                        if (currentHighlightFeatures) {
+                            currentHighlightFeatures = currentHighlightFeatures + "#" + highlightRowHidden.value;
+                        } else {
+                            currentHighlightFeatures = highlightRowHidden.value;
+                        }
+                    }
+                }
+
+                messageData.unhighlightFeatures = currentHighlightFeatures;
+                /*
+                 * put the highlight feature Ids into the hidden input
+                 */
+                $('input[id*=' + 'fedeoclient_webapp' + '_currentDatasetHighlightFeatures]').val(featureId);
+
+                messageData.selectedFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentDatasetSelectedFeature]').val();
+
+            }
+
+            printLog(messageData);
+
+            CommunicationUtil.sendMessageToAll('map.highlight.feature', 'fedeoclient_webapp', messageData);
+        }
+
+        function fedeoclient_webapp_unhighlightFeatures(jspSearchType) {
+            var messageData = new Object();
+            messageData.type = "gml3";
+
+            if (jspSearchType === 'Series') {
+                var currentHighlightFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentSeriesHighlightFeatures]').val();
+
+                var highlightRowHidden = document.getElementById("fedeoclient_webapp_currentSeriesHighlightRow");
+                if (highlightRowHidden) {
+                    if (highlightRowHidden.value) {
+                        if (currentHighlightFeatures) {
+                            currentHighlightFeatures = currentHighlightFeatures + "#" + highlightRowHidden.value;
+                        } else {
+                            currentHighlightFeatures = highlightRowHidden.value;
+                        }
+                    }
+                }
+
+                messageData.unhighlightFeatures = currentHighlightFeatures;
+                /*
+                 * put the highlight feature Ids into the hidden input
+                 */
+                $('input[id*=' + 'fedeoclient_webapp' + '_currentSeriesHighlightFeatures]').val("");
+
+                messageData.selectedFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentSeriesSelectedFeature]').val();
+
+            } else if (jspSearchType === 'Related') {
+
+                var currentHighlightFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentRelatedHighlightFeatures]').val();
+
+                var highlightRowHidden = document.getElementById("fedeoclient_webapp_currentRelatedHighlightRow");
+                if (highlightRowHidden) {
+                    if (highlightRowHidden.value) {
+                        if (currentHighlightFeatures) {
+                            currentHighlightFeatures = currentHighlightFeatures + "#" + highlightRowHidden.value;
+                        } else {
+                            currentHighlightFeatures = highlightRowHidden.value;
+                        }
+                    }
+                }
+
+                messageData.unhighlightFeatures = currentHighlightFeatures;
+                /*
+                 * put the highlight feature Ids into the hidden input
+                 */
+                $('input[id*=' + 'fedeoclient_webapp' + '_currentRelatedHighlightFeatures]').val("");
+
+                messageData.selectedFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentRelatedSelectedFeature]').val();
+
+            } else {
+                // Dataset
+                var currentHighlightFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentDatasetHighlightFeatures]').val();
+
+                var highlightRowHidden = document.getElementById("fedeoclient_webapp_currentDatasetHighlightRow");
+                if (highlightRowHidden) {
+                    if (highlightRowHidden.value) {
+                        if (currentHighlightFeatures) {
+                            currentHighlightFeatures = currentHighlightFeatures + "#" + highlightRowHidden.value;
+                        } else {
+                            currentHighlightFeatures = highlightRowHidden.value;
+                        }
+                    }
+                }
+
+                messageData.unhighlightFeatures = currentHighlightFeatures;
+                /*
+                 * put the highlight feature Ids into the hidden input
+                 */
+                $('input[id*=' + 'fedeoclient_webapp' + '_currentDatasetHighlightFeatures]').val("");
+
+                messageData.selectedFeatures = $('input[id*=' + 'fedeoclient_webapp' + '_currentDatasetSelectedFeature]').val();
+            }
+
+
+            //printLog(messageData);
+
+            CommunicationUtil.sendMessageToAll('map.unhighlight.feature', 'fedeoclient_webapp', messageData);
+        }
+
+        function fedeoclient_webapp_zoomToSelectedFeature(featureId) {
+            var messageData = new Object();
+            messageData.featureId = featureId;
+            printLog(messageData);
+            CommunicationUtil.sendMessageToAll('map.zoom.selected.feature', 'fedeoclient_webapp', messageData);
+        }
+
+        function printLog(message) {
+            if (typeof console === 'undefined') {
+
+            } else {
+                //console.log(message);
+            }
+        }
+
+    </script>	
+</ui:composition>

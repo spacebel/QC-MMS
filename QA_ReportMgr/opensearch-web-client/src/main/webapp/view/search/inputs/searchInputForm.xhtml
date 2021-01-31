@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:param name="spbMap" value="fedeoclient_webapp" />           	
+
+    <p:remoteCommand
+        actionListener="#{searchBean.reset('Dataset')}"
+        name="fedeoclient_webapp_resetDatasetSearchForm"												
+        oncomplete="fedeoclient_webapp_doAfterSearchFormResetting('Dataset')"		
+        onsuccess="fedeoclient_webapp_doAfterSearchFormResetting('Dataset')"
+        update=":searchInputForm :messageForm" />
+    
+    <p:remoteCommand
+        actionListener="#{searchBean.reset('Related')}"
+        name="fedeoclient_webapp_resetRelatedSearchForm"												
+        oncomplete="fedeoclient_webapp_doAfterSearchFormResetting('Related')"		
+        onsuccess="fedeoclient_webapp_doAfterSearchFormResetting('Related')"
+        update=":searchInputForm :messageForm" />        
+
+    <p:remoteCommand
+        actionListener="#{searchBean.obtainGmlFeatures('Dataset')}"
+        name="fedeoclient_webapp_getDatasetGMLFeatures"
+        oncomplete="fedeoclient_webapp_onObtainGmlFeaturesResponse(xhr, status, args);"
+        update="fedeoclient_webapp_productGMLFeaturesInput" />
+
+    <p:remoteCommand
+        actionListener="#{searchBean.obtainGmlFeatures('Related')}"
+        name="fedeoclient_webapp_getRelatedGMLFeatures"
+        oncomplete="fedeoclient_webapp_onObtainGmlFeaturesResponse(xhr, status, args);"
+        update="fedeoclient_webapp_relatedGMLFeaturesInput" />
+
+    <p:remoteCommand
+        actionListener="#{searchBean.doAdvancedSearch('Dataset')}"
+        name="fedeoclient_webapp_submitProductSearchForm"										
+        onstart="PF('searchingBlockUI').block()"
+        oncomplete="PF('searchingBlockUI').unblock();fedeoclient_webapp_openUndockedResultsPanel()"
+        onerror="PF('searchingBlockUI').unblock()"
+        onsuccess="fedeoclient_webapp_getDatasetGMLFeatures();PF('searchingBlockUI').unblock();fedeoclient_webapp_openUndockedResultsPanel(); fedeoclient_webapp.createAllFeaturesQuicklookMap()"
+        update=":toolbarForm :resultsForm :searchInputForm :messageForm" />
+    
+    <p:remoteCommand
+        actionListener="#{searchBean.doAdvancedSearch('Related')}"
+        name="fedeoclient_webapp_submitRelatedSearchForm"										
+        onstart="PF('searchingBlockUI').block()"
+        oncomplete="PF('searchingBlockUI').unblock();"
+        onerror="PF('searchingBlockUI').unblock()"
+        onsuccess="fedeoclient_webapp_getRelatedGMLFeatures();PF('searchingBlockUI').unblock();fedeoclient_webapp.createAllFeaturesQuicklookMap()"
+        update=":toolbarForm :resultsForm :searchInputForm :messageForm" />
+
+    <p:remoteCommand
+        actionListener="#{searchBean.cleanBbox()}"
+        name="fedeoclient_webapp_cleanPlaceBbox"/>
+
+    <h:inputHidden
+        id="fedeoclient_webapp_productGMLFeaturesInput"
+        value="#{searchBean.searchData.datasetGMLFeatures}" />
+
+    <h:inputHidden
+        id="fedeoclient_webapp_relatedGMLFeaturesInput"
+        value="#{searchBean.searchData.relatedGMLFeatures}" />   
+
+    <h:inputHidden id="fedeoclient_webapp_currentDatasetSelectedFeature" 
+                   value="#{searchBean.searchData.datasetSelectedFeature}"/>
+
+    <h:inputHidden id="fedeoclient_webapp_currentRelatedSelectedFeature" 
+                   value="#{searchBean.searchData.relatedSelectedFeature}"/>
+
+    <input type="hidden" name="fedeoclient_webapp_currentSeriesHighlightFeatures" 
+           id="fedeoclient_webapp_currentSeriesHighlightFeatures" />
+
+    <input type="hidden" name="fedeoclient_webapp_currentDatasetHighlightFeatures" 
+           id="fedeoclient_webapp_currentDatasetHighlightFeatures" />
+
+    <input type="hidden" name="fedeoclient_webapp_currentRelatedHighlightFeatures" 
+           id="fedeoclient_webapp_currentRelatedtHighlightFeatures" />
+
+    <h:inputHidden
+        id="fedeoclient_webapp_isShowDatasetFootprintBoolean"
+        value="#{searchBean.searchData.showDatasetFootprint}" />
+
+    <h:inputHidden
+        id="fedeoclient_webapp_isShowRelatedFootprintBoolean"
+        value="#{searchBean.searchData.showRelatedFootprint}" />
+
+    <p:remoteCommand
+        actionListener="#{searchBean.showOnMap('Dataset')}"
+        name="fedeoclient_webapp_showGMLOnMapForDataset"
+        oncomplete="fedeoclient_webapp_showGMLOnMap(xhr, status, args);"
+        update=":searchInputForm :messageForm"/>
+
+    <p:remoteCommand
+        actionListener="#{searchBean.showOnMap('Related')}"
+        name="fedeoclient_webapp_showGMLOnMapForRelated"
+        oncomplete="fedeoclient_webapp_showGMLOnMap(xhr, status, args);"
+        update=":searchInputForm :messageForm"/>
+
+    <pe:remoteCommand name="fedeoclient_webapp_switchAdvancedIcon"
+                      actionListener="#{searchBean.onSwitchAdvancedIcon}"		
+                      update=":searchInputForm :messageForm">  
+        <pe:methodSignature parameters="java.lang.Boolean" />		
+        <pe:methodParam name="hasFilter"/>		
+    </pe:remoteCommand>
+</ui:composition>

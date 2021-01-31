@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:form>						
+        <div style="position:absolute; right: 10px;top:10px; width:35px; height:35px; z-index: 1000;" class="toolbarFormStyle">
+            <p:commandButton type="button" id="spbToggleFullScreen" styleClass="circleButton" title="Toggle full screen" 
+                             icon="fullScreenIcon" onclick="fedeoclient_webapp_toggleFullScreen()"/>	
+            <p:commandButton type="button" id="spbExitFullScreen" title="Exit full screen" 
+                             styleClass="circleButton" style="display:none;"
+                             icon="exitFullScreenIcon" onclick="fedeoclient_webapp_exitFullScreen()"/>
+        </div>		
+    </h:form>
+
+    <h:form id="toolbarForm" onkeypress="if (event.keyCode === 13) {
+                return false;
+            }">
+        <p:remoteCommand name="fedeoclient_webapp_redrawFullScreen" update=":viewerForm :messageForm"/>
+
+        <p:remoteCommand name="fedeoclient_webapp_clickListView"	
+                         actionListener="#{layoutBean.showListView}"
+                         onstart="PF('waitingBlockUI').block();"
+                         onclick="this.blur();"
+                         oncomplete="PF('waitingBlockUI').unblock()"
+                         onerror="PF('waitingBlockUI').unblock()"
+                         update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+
+        <p:remoteCommand name="fedeoclient_webapp_clickGridView"	
+                         actionListener="#{layoutBean.showThumbnailsView}"
+                         onstart="PF('waitingBlockUI').block()"
+                         onclick="this.blur();"
+                         oncomplete="PF('waitingBlockUI').unblock(); "
+                         onerror="PF('waitingBlockUI').unblock();"
+                         update=":toolbarForm :searchInputForm :resultsForm :messageForm"/>
+
+        <p:remoteCommand name="fedeoclient_webapp_clickDetailsView"	
+                         actionListener="#{searchBean.clickEntryView}"
+                         onstart="PF('waitingBlockUI').block();"
+                         oncomplete="PF('waitingBlockUI').unblock()"
+                         onerror="PF('waitingBlockUI').unblock()"
+                         update=":toolbarForm :searchInputForm :resultsForm :messageForm"/>				
+
+        <p:remoteCommand
+            actionListener="#{searchBean.onToggleUndockedOutput}"
+            name="fedeoclient_webapp_toggleUndockedOutput"
+            oncomplete="fedeoclient_webapp_toggleUndockedOutputHandle(xhr, status, args)"/>        
+       			
+
+        <div style="position:relative;top:0px;z-index:1000;left:0px" class="toolbarFormStyle">            
+
+            <c:if test="#{((layoutBean.datasetListView or layoutBean.datasetThumbnailsView) 
+                          and (not empty searchBean.searchData.datasetPaginator) 
+                          and (not empty  searchBean.searchData.datasetPaginator.data)) 
+                          or (layoutBean.datasetDetails and not empty searchBean.searchData.selectedDatasetItem)
+                          or ((layoutBean.relatedListView or layoutBean.relatedThumbnailsView) 
+                          and (not empty searchBean.searchData.relatedPaginator) 
+                          and (not empty  searchBean.searchData.relatedPaginator.data.items)) 
+                          or (layoutBean.relatedDetails and not empty searchBean.searchData.selectedRelatedProduct)}">
+                <div class="searchOutputToggleButton">
+                    <p:selectBooleanButton value="#{layoutBean.showUndockedOutput}"
+                                           onIcon="fa fa-fw fa-list" offIcon="fa fa-fw fa-list" 
+                                           title="Toggle search result panel"
+                                           onLabel="ui-button" offLabel="ui-button"
+                                           styleClass="circleButton ui-button-icon-only">
+                        <p:ajax oncomplete="fedeoclient_webapp_toggleUndockedOutput(); fedeoclient_webapp_redrawResultsForm()"
+                                update=":searchInputForm :messageForm" />
+                    </p:selectBooleanButton>
+                </div>
+            </c:if>	
+
+            <div style="position:absolute; right: 10px;top:90px; width:35px; height:35px;">
+                <p:commandButton actionListener="#{layoutBean.activeAOI()}"
+                                 styleClass="circleButton" title="Draw bounding box"
+                                 icon="viewerAoiIcon"								
+                                 rendered="#{not layoutBean.aoi}"
+                                 oncomplete="fedeoclient_webapp.toggleAOI()"
+                                 update=":toolbarForm :messageForm"/>
+
+                <p:commandButton 
+                    actionListener="#{layoutBean.deactiveAOI()}"
+                    styleClass="circleButton" title="Navigate on map"
+                    icon="viewerPanIcon"
+                    rendered="#{layoutBean.aoi}"								
+                    oncomplete="fedeoclient_webapp.toggleAOI()"
+                    update=":toolbarForm :messageForm"/>
+            </div>			
+        </div>
+    </h:form>
+</ui:composition>

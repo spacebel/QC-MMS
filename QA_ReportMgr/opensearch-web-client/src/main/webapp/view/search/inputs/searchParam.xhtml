@@ -1,0 +1,209 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"		
+                xmlns:spb="http://www.spacebel.be/jsf"		
+                xmlns:p="http://primefaces.org/ui"	
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:panelGroup rendered="#{osParam.show and osParam.name eq 'os_searchTerms'}">
+        <h:panelGroup rendered="#{osParam.spacePosition ne 'noneAbove'}">		
+            <tr>
+                <td class="column-empty">
+                    <h:outputText value="&#160; &#160; &#160; &#160; &#160;"/>
+                </td>
+                <td class="column-empty">
+                    <h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+                </td>
+            </tr>
+        </h:panelGroup>
+        <tr>
+            <td class="column-label">
+                <h:outputText value="•" style="color:#e74c3c;font-size:12pt; float: left;" rendered="#{osParam.required}" />
+                <h:outputText value="#{osParam.shortLabel}"
+                              styleClass="input-label" 
+                              title="#{osParam.labelTooltip}"/>
+                <h:panelGroup rendered="#{not empty osParam.help}">
+                    <span class="fa fa-fw fa-question-circle input-help" 
+                          title="#{osParam.help}"/>
+                </h:panelGroup>	
+            </td>
+            <td class="column-input">                
+                <p:inputText size="50" value="#{osParam.formValue}">					
+                    <p:ajax event="blur" process="@this" />
+                </p:inputText>
+            </td>
+        </tr>
+        <tr>
+            <td class="column-empty">
+                <h:outputText value="&#160; &#160; &#160; &#160; &#160;"/>
+            </td>
+            <td class="column-empty">
+                <h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+            </td>
+        </tr>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{osParam.show and osParam.name eq 'time_start'}">
+        <h:panelGroup rendered="#{osParam.spacePosition eq 'above'}">
+            <tr>
+                <td class="column-empty">
+                    <h:outputText value="&#160; &#160; &#160; &#160; &#160;"/>
+                </td>
+                <td class="column-empty">
+                    <h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+                </td>
+            </tr>
+        </h:panelGroup>		
+        <tr>
+            <td class="column-label">
+                <div style="width: 100%;">										
+                    <h:outputText value="Sensing period" styleClass="input-label"/>					
+                    <div style=" position: absolute; left: 120px;">
+                        <h:outputText value="•" style="color:#e74c3c;font-size:12pt; float: left;" rendered="#{osParam.required}" />
+                        <h:outputText value="From" styleClass="input-label"/>
+                    </div>
+                    <h:panelGroup rendered="#{not empty osParam.help}">
+                        <span class="fa fa-fw fa-question-circle input-help" title="#{osParam.help}"/>
+                    </h:panelGroup>
+                </div>				
+            </td>
+            <td class="column-input">                            
+                <spb:formcalendar name="#{osParam.name}" value="#{osParam.formValue}"
+                                  minDate="#{osParam.minDate}" maxDate="#{osParam.maxDate}"
+                                  pattern="yyyy-MM-dd" timeZone="#{searchBean.timeZone}"
+                                  rendered="#{osParam.type eq 'date'}"/>
+            </td>
+        </tr>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{osParam.show and osParam.name eq 'time_end'}">		
+        <tr>
+            <td class="column-label">				
+                <div style=" position: absolute; left: 120px;">
+                    <h:outputText value="•" style="color:#e74c3c;font-size:12pt; float: left;" rendered="#{osParam.required}" />
+                    <h:outputText value="To" styleClass="input-label"/>
+                </div>
+
+                <h:panelGroup rendered="#{not empty osParam.help}">
+                    <span class="fa fa-fw fa-question-circle input-help" title="#{osParam.help}"/>
+                </h:panelGroup>
+            </td>
+            <td class="column-input">
+                <spb:formcalendar name="#{osParam.name}" value="#{osParam.formValue}"
+                                  minDate="#{osParam.minDate}" maxDate="#{osParam.maxDate}"
+                                  pattern="yyyy-MM-dd" timeZone="#{searchBean.timeZone}"
+                                  rendered="#{osParam.type eq 'date'}"/>
+            </td>
+        </tr>
+
+        <h:panelGroup rendered="#{osParam.spacePosition eq 'below'}">
+            <tr>
+                <td class="column-empty">
+                    <h:outputText value="&#160; &#160; &#160; &#160; &#160;"/>
+                </td>
+                <td class="column-empty">
+                    <h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+                </td>
+            </tr>
+        </h:panelGroup>	
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{osParam.show and osParam.type eq 'geonames' and not empty configBean.configuration.geonamesAccount}">
+        <h:panelGroup rendered="#{osParam.spacePosition ne 'noneAbove'}">		
+            <tr>
+                <td class="column-empty">
+                    <h:outputText value="&#160; &#160; &#160; &#160; &#160;"/>
+                </td>
+                <td class="column-empty">
+                    <h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+                </td>
+            </tr>
+        </h:panelGroup>
+        <tr>
+            <td class="column-label">
+                <h:outputText value="•" style="color:#e74c3c;font-size:12pt; float: left;" rendered="#{osParam.required}" />
+                <h:outputText value="#{osParam.shortLabel}" styleClass="input-label"/>
+                <h:panelGroup>
+                    <span class="fa fa-fw fa-question-circle input-help" title="Search on the geographical bounding box covering the selected place name area (city or country). This search box received from the gazetteer service is shown on the map after the place name selection."/>
+                </h:panelGroup>
+            </td>
+            <td class="column-input">
+                <p:autoComplete style="width:174px;" id="placeNameQueryable"						
+                                value="#{searchBean.searchData.selectedGeoname}" 
+                                completeMethod="#{searchBean.geonameSearch}"  
+                                converter="geonamesOptionConverter" scrollHeight="200"
+                                placeholder="e.g., Italy"                                                                       
+                                var="entry" itemLabel="#{entry.name}" itemValue="#{entry}">
+                    <p:column>
+                        <h:outputText value="#{entry.name}" />		
+                        <br/>
+                        <h:outputText value="#{entry.countryName}" />		 							
+                    </p:column>						 
+
+                    <p:ajax event="itemSelect" listener="#{searchBean.onGeonameSelect}" 
+                            update=":viewerForm:fedeoclient_webapp_bboxHiddenInput" 
+                            oncomplete="fedeoclient_webapp_selectGeoName()" />
+                </p:autoComplete>
+            </td>
+        </tr>
+        <tr>
+            <td class="column-empty">
+                <h:outputText value="&#160; &#160; &#160; &#160; &#160;"/>
+            </td>
+            <td class="column-empty">
+                <h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+            </td>
+        </tr>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{osParam.show and osParam.name ne 'os_searchTerms' and osParam.name ne 'time_start' and osParam.name ne 'time_end' and osParam.type ne 'geonames'}">
+        <tr>
+            <td class="column-label">
+                <h:outputText value="•" style="color:#e74c3c;font-size:12pt; float: left;" rendered="#{osParam.required}" />
+                <h:outputText value="#{osParam.shortLabel}"  styleClass="input-label" 
+                              title="#{osParam.labelTooltip}" rendered="#{osParam.name ne 'time_start'}"/>
+                <h:panelGroup rendered="#{not empty osParam.help}">
+                    <span class="fa fa-fw fa-question-circle input-help" title="#{osParam.help}"/>
+                </h:panelGroup>	
+            </td>
+            <td class="column-input">
+                <p:inputText size="50" value="#{osParam.formValue}"
+                             widgetVar="#{osParam.name}SpbAdvancedInput"
+                             onchange="fedeoclient_webapp_onInputTrackChanges(this.value)"
+                             rendered="#{osParam.type eq 'text'}">
+                    <p:ajax event="blur" process="@this" />
+                </p:inputText>
+
+                <p:password size="50" value="#{osParam.formValue}"
+                            widgetVar="#{osParam.name}SpbPassInput"					
+                            rendered="#{osParam.type eq 'password'}">
+                </p:password>
+
+                <spb:formcalendar name="#{osParam.name}" value="#{osParam.formValue}"
+                                  minDate="#{osParam.minDate}" maxDate="#{osParam.maxDate}"						
+                                  pattern="yyyy-MM-dd" timeZone="#{searchBean.timeZone}" 
+                                  rendered="#{osParam.type eq 'date'}"/>
+
+                <p:selectOneMenu styleClass="dropdown-list" 
+                                 widgetVar="#{osParam.name}SpbAdvancedInput"
+                                 value="#{osParam.formValue}" name="#{osParam.name}"
+                                 onchange="fedeoclient_webapp_onInputTrackChanges(this.value)"
+                                 editable="false" rendered="#{(osParam.type eq 'list')}">
+                    <f:selectItem itemLabel="" itemValue="" />
+                    <f:selectItems value="#{osParam.optionsAsSelectItems}" />						
+                </p:selectOneMenu>               
+
+                <p:autoComplete dropdown="true"					
+                                styleClass="spb-autocomplete-input"
+                                widgetVar="#{osParam.name}SpbAdvancedInput"
+                                value="#{osParam.selectedOption}" completeMethod="#{osParam.completeFormValue}"
+                                converter="paramOptionConverter" scrollHeight="200"
+                                rendered="#{osParam.type eq 'open-list'}" var="entry"					
+                                itemLabel="#{entry.label}" itemValue="#{entry}">
+                    <p:ajax event="change" onstart="if(PF('#{osParam.name}SpbAdvancedInput').panel.is(':visible')) return false;" oncomplete="fedeoclient_webapp_onInputTrackChanges('')" />
+                    <p:ajax event="itemSelect" oncomplete="fedeoclient_webapp_onInputTrackChanges('')" />
+                </p:autoComplete>
+            </td>
+        </tr>	
+    </h:panelGroup>
+</ui:composition>

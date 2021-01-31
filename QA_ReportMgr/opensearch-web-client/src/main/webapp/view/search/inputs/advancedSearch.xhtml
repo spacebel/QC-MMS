@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+
+    <c:choose> 
+        <c:when test="#{configBean.configuration.series.seriesMenu and (layoutBean.init or layoutBean.seriesThumbnailsView or layoutBean.seriesListView) }">
+
+            <br/>
+
+            <p:selectOneMenu value="#{searchBean.selectedSeries}"  valueChangeListener="#{searchBean.onSelectSeriesFromMenu}" style="margin-left:10px;" >
+                <p:ajax event="itemSelect" listener="#{searchBean.onSelectSeriesFromMenu}" 
+                        onstart="PF('waitingBlockUI').block(); fedeoclient_webapp.footprintToNormalStyle(false)"
+                        oncomplete="fedeoclient_webapp_scrollIntoView(xhr, status, args); fedeoclient_webapp_closeUndockedResultsPanel(); PF('waitingBlockUI').unblock()"
+                        onerror="PF('waitingBlockUI').unblock()"
+                        update=":toolbarForm :searchInputForm :resultsForm :messageForm"/>
+                <f:selectItem itemLabel="Select One" itemValue="" />
+                <f:selectItems value="#{configBean.configuration.series.seriesMenuList}" />
+            </p:selectOneMenu>
+
+        </c:when>
+        <c:otherwise>
+            <div id="osClientAdvancedSearchQueryables" class="os-client-advanced-search-queryables">
+                <c:choose>
+                    <c:when test="#{layoutBean.init or layoutBean.seriesListView or layoutBean.seriesThumbnailsView}">                        
+                    </c:when>
+                    <c:when test="#{layoutBean.seriesDetails or layoutBean.datasetInit}">
+                        <c:choose>
+                            <c:when test="#{not empty searchBean.searchData.selectedSeriesItem}">
+                                <c:choose>
+                                    <c:when test="#{searchBean.searchData.supportedDatasetSearch}">
+                                        <table>
+                                            <ui:repeat var="osParam" value="#{searchBean.searchData.datasetOpenSearchUrl.parameters}">
+                                                <ui:include src="searchParam.xhtml" />
+                                            </ui:repeat>
+                                        </table>									
+                                    </c:when>
+                                    <c:otherwise>
+                                        <br/>
+                                        <h:outputText value="No product search available." style="font-weight: bold; margin-left: 5px;"/>
+                                    </c:otherwise>
+                                </c:choose>							
+                            </c:when>
+                            <c:otherwise>                               
+                            </c:otherwise>
+                        </c:choose>					
+                    </c:when>
+                    <c:when test="#{layoutBean.datasetListView or layoutBean.datasetThumbnailsView or layoutBean.datasetDetails}">
+                        <table>
+                            <ui:repeat var="osParam" value="#{searchBean.searchData.datasetOpenSearchUrl.parameters}">
+                                <ui:include src="searchParam.xhtml" />
+                            </ui:repeat>
+                        </table>
+                    </c:when>
+                    <c:when test="#{layoutBean.relatedListView or layoutBean.relatedThumbnailsView or layoutBean.relatedDetails}">
+                        <table>
+                            <ui:repeat var="osParam" value="#{searchBean.searchData.relatedOpenSearchUrl.parameters}">
+                                <ui:include src="searchParam.xhtml" />
+                            </ui:repeat>
+                        </table>
+                    </c:when>
+                </c:choose>			
+            </div>
+        </c:otherwise>
+    </c:choose>
+
+
+    <c:choose>        
+        <c:when test="#{layoutBean.datasetListView or layoutBean.datasetThumbnailsView or layoutBean.datasetDetails}">
+            <p:commandButton type="button"
+                             value="Reset" title="Reset"
+                             styleClass="reset-button reset-button-dataset" icon="fa fa-fw fa-close"
+                             widgetVar="datasetAdvancedSearchResetButton"											
+                             onclick="fedeoclient_webapp_resetDatasetSearchForm()"/>						
+
+            <p:commandButton type="button"
+                             icon="ui-icon-search" styleClass="search-button"
+                             value="Products" title="Search for product"
+                             onclick="fedeoclient_webapp_submitProductSearchForm()" />
+        </c:when>
+        <c:when test="#{layoutBean.relatedListView or layoutBean.relatedThumbnailsView or layoutBean.relatedDetails}">
+            <p:commandButton type="button"
+                             value="Reset" title="Reset"
+                             styleClass="reset-button reset-button-dataset" icon="fa fa-fw fa-close"
+                             widgetVar="relatedAdvancedSearchResetButton"											
+                             onclick="fedeoclient_webapp_resetRelatedSearchForm()"/>						
+
+            <p:commandButton type="button"
+                             icon="ui-icon-search" styleClass="search-button"
+                             value="Products" title="Search for product"
+                             onclick="fedeoclient_webapp_submitRelatedSearchForm()" />
+        </c:when>
+        <c:when test="#{layoutBean.seriesDetails or layoutBean.datasetInit}">					
+            <c:choose>
+                <c:when test="#{not empty searchBean.searchData.selectedSeriesItem}">
+                    <c:choose>
+                        <c:when test="#{searchBean.searchData.supportedDatasetSearch}">
+                            <p:commandButton type="button"
+                                             value="Reset" title="Reset"
+                                             styleClass="reset-button reset-button-dataset" icon="fa fa-fw fa-close"
+                                             widgetVar="datasetAdvancedSearchResetButton"											
+                                             onclick="fedeoclient_webapp_resetDatasetSearchForm()"/>													
+
+                            <p:commandButton type="button"
+                                             icon="ui-icon-search" styleClass="search-button"
+                                             value="Products" title="Search for product"
+                                             onclick="fedeoclient_webapp_submitProductSearchForm()" />
+                        </c:when>							
+                    </c:choose>
+                </c:when>                
+            </c:choose>	
+        </c:when>
+
+    </c:choose>				
+
+
+    <h:outputScript>        
+        fedeoclient_webapp_customInputPanelScrollbar();        
+    </h:outputScript>
+
+</ui:composition>

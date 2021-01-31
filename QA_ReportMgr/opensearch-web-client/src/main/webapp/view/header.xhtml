@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"	
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <div class="spbOsClientBanner">
+        <div class="ui-g">
+            <div class="ui-g-4">
+                <a href="#{configBean.configuration.earthObservationPortalUrl}" title="Earth Observation Portal" target="_blank">
+                    <h:graphicImage value="resources/images/home.png" style="position: absolute; left: 1px;height: inherit;"/>
+                </a>
+            </div>
+            <div class="ui-g-4 title">QA Report Manager</div>
+            <div class="ui-g-4">
+                <p:spacer width="1"/>
+            </div>			
+        </div>
+    </div>	
+</ui:composition>
