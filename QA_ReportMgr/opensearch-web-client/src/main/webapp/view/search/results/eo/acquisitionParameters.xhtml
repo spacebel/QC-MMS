@@ -1,0 +1,253 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"			
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    <div class="details-unit">
+        <div class="details-unit-header">
+            Acquisition parameters
+        </div>
+        <div class="details-unit-content">
+            <h:panelGroup rendered="#{not empty presentItem.properties['acrossTrackIncidenceAngle'].value}">
+                <h:outputText value="Across track incidence angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['acrossTrackIncidenceAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['alongTrackIncidenceAngle'].value}">
+                <h:outputText value="Along track incidence angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['alongTrackIncidenceAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['illuminationAzimuthAngle'].value}">
+                <h:outputText value="Illumination azimuth angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['illuminationAzimuthAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['illuminationElevationAngle'].value}">
+                <h:outputText value="Illumination elevation angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['illuminationElevationAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['instrumentZenithAngle'].value}">
+                <h:outputText value="Instrument zenith angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['instrumentZenithAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['incidenceAngle'].value}">
+                <h:outputText value="Incidence angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['incidenceAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['incidenceAngleVariation'].value}">
+                <h:outputText value="Incidence angle variation: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['incidenceAngleVariation'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['instrumentAzimuthAngle'].value}">
+                <h:outputText value="Instrument azimuth angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['instrumentAzimuthAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['instrumentElevationAngle'].value}">
+                <h:outputText value="Instrument elevation angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['instrumentElevationAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['instrumentZenithAngle'].value}">
+                <h:outputText value="Instrument zenith angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['instrumentZenithAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['maximumIncidenceAngle'].value}">
+                <h:outputText value="Maximum incidence angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['maximumIncidenceAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['minimumIncidenceAngle'].value}">
+                <h:outputText value="Minimum incidence angle: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['minimumIncidenceAngle'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['pitch'].value}">
+                <h:outputText value="Pitch: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['pitch'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['roll'].value}">
+                <h:outputText value="Roll: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['roll'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['yaw'].value}">
+                <h:outputText value="Yaw: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['yaw'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['acquisitionStation'].value}">
+                <h:outputText value="Acquisition station: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['acquisitionStation'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['acquisitionType'].value}">
+                <h:outputText value="Acquisition type: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['acquisitionType'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['acquisitionSubType'].value}">
+                <h:outputText value="Acquisition sub type: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['acquisitionSubType'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['antennaLookDirection'].value}">
+                <h:outputText value="Antenna look direction: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['antennaLookDirection'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['ascendingNodeDate'].value}">
+                <h:outputText value="Ascending node date: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['ascendingNodeDate'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['ascendingNodeLongitude'].value}">
+                <h:outputText value="Ascending node longitude: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['ascendingNodeLongitude'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['completionTimeFromAscendingNode'].value}">
+                <h:outputText value="Completion time from ascending node: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['completionTimeFromAscendingNode'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['cycleNumber'].value}">
+                <h:outputText value="Cycle number: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['cycleNumber'].value}" />
+                <br/>
+            </h:panelGroup>
+            
+            <h:panelGroup rendered="#{not empty presentItem.properties['beginningDateTime'].value}">
+                <h:outputText value="Beginning date time: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['beginningDateTime'].value}" />
+                <br/>
+            </h:panelGroup>
+            
+            <h:panelGroup rendered="#{not empty presentItem.properties['endingDateTime'].value}">
+                <h:outputText value="Ending date time: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['endingDateTime'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['groundTrackUncertainty'].value}">
+                <h:outputText value="Ground track uncertainty: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['groundTrackUncertainty'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['highestLocation'].value}">
+                <h:outputText value="Highest location: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['highestLocation'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['lastOrbitDirection'].value}">
+                <h:outputText value="Last orbit direction: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['lastOrbitDirection'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['lastOrbitNumber'].value}">
+                <h:outputText value="Last orbit number: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['lastOrbitNumber'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['locationUnit'].value}">
+                <h:outputText value="Location unit: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['locationUnit'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['lowestLocation'].value}">
+                <h:outputText value="Lowest location: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['lowestLocation'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['operationalMode'].value}">
+                <h:outputText value="Operational mode: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['operationalMode'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['orbitDirection'].value}">
+                <h:outputText value="Orbit direction: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['orbitDirection'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['orbitDuration'].value}">
+                <h:outputText value="Orbit duration: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['orbitDuration'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['orbitNumber'].value}">
+                <h:outputText value="Orbit number: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['orbitNumber'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['relativeOrbitNumber'].value}">
+                <h:outputText value="Relative orbit number: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['relativeOrbitNumber'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['startTimeFromAscendingNode'].value}">
+                <h:outputText value="Start time from ascending node: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['startTimeFromAscendingNode'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['tileId'].value}">
+                <h:outputText value="Tile Id: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['tileId'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['wrsLongitudeGrid'].value}">
+                <h:outputText value="WRS longitude grid: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['wrsLongitudeGrid'].value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['wrsLatitudeGrid'].value}">
+                <h:outputText value="WRS latitude grid: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['wrsLatitudeGrid'].value}" />                    
+            </h:panelGroup>                
+        </div>
+    </div>	
+</ui:composition>

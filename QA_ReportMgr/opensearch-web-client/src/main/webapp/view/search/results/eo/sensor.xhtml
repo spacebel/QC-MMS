@@ -1,0 +1,184 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"			
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:repeat var="sensor" value="#{presentItem.properties['sensorDetails'].groups}">														
+        <h:outputText value="Sensor type: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['sensorType'].value}"/>
+        <h:outputText value="#{sensor['sensorType'].value}" 
+                      rendered="#{not empty sensor['sensorType'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['operationalMode'].value}"><br /></ui:fragment>
+        <h:outputText value="Operational mode: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['operationalMode'].value}"/>
+        <h:outputText value="#{sensor['operationalMode'].value}" rendered="#{not empty sensor['operationalMode'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['resolution'].value}"><br /></ui:fragment>
+        <h:outputText value="Resolution:" styleClass="details-text-label"
+                      rendered="#{not empty sensor['resolution'].value}"/>
+        <h:outputText value="#{sensor['resolution'].value}" rendered="#{not empty sensor['resolution'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['swathIdentifier'].value}"><br /></ui:fragment>
+        <h:outputText value="Swath identifier: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['swathIdentifier'].value}"/>
+        <h:outputText value="#{sensor['swathIdentifier'].value}" 
+                      rendered="#{not empty sensor['swathIdentifier'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['measurementType'].value}"><br /></ui:fragment>
+        <h:outputText value="Measurement type: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['measurementType'].value}"/>
+        <h:outputText value="#{sensor['measurementType'].value}" 
+                      rendered="#{not empty sensor['measurementType'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['discrete1'].value}"><br /></ui:fragment>
+        <h:outputText value="Discrete wavelengths: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['discrete1'].value}"/>
+        <h:outputText value="#{sensor['discrete1'].value}" rendered="#{not empty sensor['discrete1'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['start1'].value}"><br /></ui:fragment>
+        <h:outputText value="Start wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['start1'].value}"/>
+        <h:outputText value="#{sensor['start1'].value}" 
+                      rendered="#{not empty sensor['start1'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['end1'].value}"><br /></ui:fragment>
+        <h:outputText value="End wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['end1'].value}"/>
+        <h:outputText value="#{sensor['end1'].value}" 
+                      rendered="#{not empty sensor['end1'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['spectralRange1'].value}"><br /></ui:fragment>
+        <h:outputText value="Spectral range: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['spectralRange1'].value}"/>
+        <h:outputText value="#{sensor['spectralRange1'].value}" 
+                      rendered="#{not empty sensor['spectralRange1'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['resolution1'].value}"><br /></ui:fragment>
+        <h:outputText value="Wavelength resolution: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['resolution1'].value}"/>
+        <h:outputText value="#{sensor['resolution1'].value}" 
+                      rendered="#{not empty sensor['resolution1'].value}"/>
+
+
+        <ui:fragment rendered="#{not empty sensor['discrete2'].value}"><br /></ui:fragment>
+        <h:outputText value="Discrete wavelengths: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['discrete2'].value}"/>
+        <h:outputText value="#{sensor['discrete2'].value}" rendered="#{not empty sensor['discrete2'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['start2'].value}"><br /></ui:fragment>
+        <h:outputText value="Start wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['start2'].value}"/>
+        <h:outputText value="#{sensor['start2'].value}" 
+                      rendered="#{not empty sensor['start2'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['end2'].value}"><br /></ui:fragment>
+        <h:outputText value="End wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['end2'].value}"/>
+        <h:outputText value="#{sensor['end2'].value}" 
+                      rendered="#{not empty sensor['end2'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['spectralRange2'].value}"><br /></ui:fragment>
+        <h:outputText value="Spectral range: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['spectralRange2'].value}"/>
+        <h:outputText value="#{sensor['spectralRange2'].value}" 
+                      rendered="#{not empty sensor['spectralRange2'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['resolution2'].value}"><br /></ui:fragment>
+        <h:outputText value="Wavelength resolution: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['resolution2'].value}"/>
+        <h:outputText value="#{sensor['resolution2'].value}" 
+                      rendered="#{not empty sensor['resolution2'].value}"/>
+
+
+        <ui:fragment rendered="#{not empty sensor['discrete3'].value}"><br /></ui:fragment>
+        <h:outputText value="Discrete wavelengths: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['discrete3'].value}"/>
+        <h:outputText value="#{sensor['discrete3'].value}" rendered="#{not empty sensor['discrete3'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['start3'].value}"><br /></ui:fragment>
+        <h:outputText value="Start wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['start3'].value}"/>
+        <h:outputText value="#{sensor['start3'].value}" 
+                      rendered="#{not empty sensor['start3'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['end3'].value}"><br /></ui:fragment>
+        <h:outputText value="End wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['end3'].value}"/>
+        <h:outputText value="#{sensor['end3'].value}" 
+                      rendered="#{not empty sensor['end3'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['spectralRange3'].value}"><br /></ui:fragment>
+        <h:outputText value="Spectral range: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['spectralRange3'].value}"/>
+        <h:outputText value="#{sensor['spectralRange3'].value}" 
+                      rendered="#{not empty sensor['spectralRange3'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['resolution3'].value}"><br /></ui:fragment>
+        <h:outputText value="Wavelength resolution: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['resolution3'].value}"/>
+        <h:outputText value="#{sensor['resolution3'].value}" 
+                      rendered="#{not empty sensor['resolution3'].value}"/>
+
+
+        <ui:fragment rendered="#{not empty sensor['discrete4'].value}"><br /></ui:fragment>
+        <h:outputText value="Discrete wavelengths: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['discrete4'].value}"/>
+        <h:outputText value="#{sensor['discrete4'].value}" rendered="#{not empty sensor['discrete4'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['start4'].value}"><br /></ui:fragment>
+        <h:outputText value="Start wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['start4'].value}"/>
+        <h:outputText value="#{sensor['start4'].value}" 
+                      rendered="#{not empty sensor['start4'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['end4'].value}"><br /></ui:fragment>
+        <h:outputText value="End wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['end4'].value}"/>
+        <h:outputText value="#{sensor['end4'].value}" 
+                      rendered="#{not empty sensor['end4'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['spectralRange4'].value}"><br /></ui:fragment>
+        <h:outputText value="Spectral range: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['spectralRange4'].value}"/>
+        <h:outputText value="#{sensor['spectralRange4'].value}" 
+                      rendered="#{not empty sensor['spectralRange4'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['resolution4'].value}"><br /></ui:fragment>
+        <h:outputText value="Wavelength resolution: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['resolution4'].value}"/>
+        <h:outputText value="#{sensor['resolution4'].value}" 
+                      rendered="#{not empty sensor['resolution4'].value}"/>
+
+
+        <ui:fragment rendered="#{not empty sensor['discrete5'].value}"><br /></ui:fragment>
+        <h:outputText value="Discrete wavelengths: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['discrete5'].value}"/>
+        <h:outputText value="#{sensor['discrete5'].value}" rendered="#{not empty sensor['discrete5'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['start5'].value}"><br /></ui:fragment>
+        <h:outputText value="Start wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['start5'].value}"/>
+        <h:outputText value="#{sensor['start5'].value}" 
+                      rendered="#{not empty sensor['start5'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['end5'].value}"><br /></ui:fragment>
+        <h:outputText value="End wavelength: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['end5'].value}"/>
+        <h:outputText value="#{sensor['end5'].value}" 
+                      rendered="#{not empty sensor['end5'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['spectralRange5'].value}"><br /></ui:fragment>
+        <h:outputText value="Spectral range: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['spectralRange5'].value}"/>
+        <h:outputText value="#{sensor['spectralRange5'].value}" 
+                      rendered="#{not empty sensor['spectralRange5'].value}"/>
+
+        <ui:fragment rendered="#{not empty sensor['resolution5'].value}"><br /></ui:fragment>
+        <h:outputText value="Wavelength resolution: " styleClass="details-text-label"
+                      rendered="#{not empty sensor['resolution5'].value}"/>
+        <h:outputText value="#{sensor['resolution5'].value}" 
+                      rendered="#{not empty sensor['resolution5'].value}"/>		
+    </ui:repeat>	
+</ui:composition>

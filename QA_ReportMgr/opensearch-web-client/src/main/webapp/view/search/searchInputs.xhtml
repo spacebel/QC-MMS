@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <c:if test="#{configBean.configuration.layoutDocked}">		
+        <div id="spbOsClientAdvancedSearchInputPanel" class="advanced-search-panel">
+            <div class="advanced-search-title">
+                <ui:include src="inputs/searchInputTitle.xhtml" />	
+            </div>
+            <div class="#{(configBean.configuration.series.seriesMenu and (layoutBean.init or layoutBean.seriesThumbnailsView)) ? 'advanced-short':'advanced-search-input'}">
+                <ui:include src="inputs/searchInputForm.xhtml" />
+            </div>			
+        </div>
+    </c:if> 
+
+    <div id="spbOsClientViewerPanel">
+        <ui:include src="inputs/toolbar.xhtml" />
+        <c:if test="#{not configBean.configuration.layoutDocked}">
+            <div id="spbOsClientAdvancedSearchUndockedInputPanel" class="undocked-advanced-search-panel">				
+                <h:form id="searchInputForm">
+                    <ui:include src="inputs/searchInputForm.xhtml" />
+
+                    <div class="advanced-search-tab">
+
+                        <p:commandButton type="button" styleClass="btn-collection-tab btn-tab-active"
+                                         value="Collections" title="Collections"
+                                         rendered="#{layoutBean.visibleSeriesTab and layoutBean.activeSeriesTab}"
+                                         onclick="return false;" />
+
+                        <p:commandButton styleClass="btn-collection-tab btn-tab"
+                                         value="Collections" title="Collections"
+                                         actionListener="#{searchBean.activateSeriesTab}"
+                                         rendered="#{layoutBean.visibleSeriesTab and (not layoutBean.activeSeriesTab)}"
+                                         onstart="PF('waitingBlockUI').block();"
+                                         oncomplete="PF('waitingBlockUI').unblock(); fedeoclient_webapp_closeUndockedResultsPanel()"
+                                         onerror="PF('waitingBlockUI').unblock()"
+                                         update=":toolbarForm :searchInputForm :resultsForm :messageForm"/>
+
+                        <p:commandButton type="button" styleClass="btn-product-tab btn-tab-active"
+                                         value="Products" title="Products" 
+                                         rendered="#{layoutBean.visibleDatasetTab and layoutBean.activeDatasetTab}"
+                                         onclick="return false;" />
+
+                        <p:commandButton styleClass="btn-product-tab btn-tab"
+                                         value="Products" title="Products" 
+                                         actionListener="#{searchBean.activateDatasetTab}"
+                                         rendered="#{layoutBean.visibleDatasetTab and (not layoutBean.activeDatasetTab)}"
+                                         onstart="PF('waitingBlockUI').block();"
+                                         oncomplete="PF('waitingBlockUI').unblock(); fedeoclient_webapp_getDatasetGMLFeatures(); fedeoclient_webapp_openUndockedResultsPanel(); fedeoclient_webapp_showDatasetFootprint()"
+                                         onerror="PF('waitingBlockUI').unblock()"
+                                         update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+
+                        <p:commandButton type="button" styleClass="btn-related-tab btn-tab-active"
+                                         value="Related" title="Related" 
+                                         rendered="#{layoutBean.visibleRelatedTab and layoutBean.activeRelatedTab}"
+                                         onclick="return false;" />
+
+                        <p:commandButton styleClass="btn-related-tab btn-tab"
+                                         value="Related" title="Related" 
+                                         actionListener="#{searchBean.activateRelatedTab}"
+                                         rendered="#{layoutBean.visibleRelatedTab and (not layoutBean.activeRelatedTab)}"
+                                         onstart="PF('waitingBlockUI').block();"                                         
+                                         oncomplete="PF('waitingBlockUI').unblock(); fedeoclient_webapp_openUndockedResultsPanel(); fedeoclient_webapp_getRelatedGMLFeatures(); fedeoclient_webapp_showRelatedFootprint()"
+                                         onerror="PF('waitingBlockUI').unblock()"
+                                         update=":toolbarForm :searchInputForm :resultsForm :messageForm" />
+                    </div>
+                    <c:choose>
+                        <c:when test="#{(layoutBean.init or layoutBean.seriesListView or layoutBean.seriesThumbnailsView)}">
+                            <ui:include src="inputs/_seriesAdvancedSearch.xhtml" />
+                        </c:when>
+                        <c:when test="#{layoutBean.seriesDetails or layoutBean.datasetInit}">	
+                            <c:choose>
+                                <c:when test="#{not empty searchBean.searchData.selectedSeriesItem}">
+
+                                    <c:choose>
+                                        <c:when test="#{searchBean.searchData.supportedDatasetSearch}">
+                                            <ui:include src="inputs/_datasetAdvancedSearch.xhtml" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <ui:include src="inputs/_seriesAdvancedSearch.xhtml" />
+                                        </c:otherwise>	
+                                    </c:choose>							
+                                </c:when>
+                                <c:otherwise>									
+                                    <ui:include src="inputs/_seriesAdvancedSearch.xhtml" />										
+                                </c:otherwise>
+                            </c:choose>					
+                        </c:when>
+                        <c:when test="#{(layoutBean.datasetListView or layoutBean.datasetThumbnailsView or layoutBean.datasetDetails)}">						
+                            <ui:include src="inputs/_datasetAdvancedSearch.xhtml" />					
+                        </c:when>
+                        <c:when test="#{(layoutBean.relatedListView 
+                                        or layoutBean.relatedThumbnailsView 
+                                        or layoutBean.relatedDetails)}">
+                            <ui:include src="inputs/_relatedAdvancedSearch.xhtml" />                           
+                        </c:when>                        
+                    </c:choose>
+                </h:form>
+            </div>					
+        </c:if>
+
+        <c:if test="#{not configBean.configuration.layoutDocked}">
+            <div id="spbOsClientUndockedResultsPanel" class="undocked-results-panel-normal">
+                <ui:include src="searchResults.xhtml" />
+            </div>
+        </c:if>
+
+        <h:form id="viewerForm">
+            <h:inputHidden id="fedeoclient_webapp_aoiHiddenInput"
+                           value="#{searchBean.searchData.aoi}" />
+            <h:inputHidden id="fedeoclient_webapp_bboxHiddenInput"
+                           value="#{searchBean.searchData.bbox}" />                                                    
+            <p:remoteCommand name="fedeoclient_webapp_uploadAOI"
+                             update="fedeoclient_webapp_bboxHiddenInput"/>							
+
+            <div id="SPBViewerContainer" class="spacemap-canvas">
+                <div id="spacemapfedeoclient_webapp" class="spacemap map" />		
+                <input type="hidden" name="olAOI" id="olAOI" value="" />
+                <div id="mousePositionfedeoclient_webapp" class="spacemap-mouse-position"/>
+            </div>
+        </h:form>
+    </div>
+</ui:composition>

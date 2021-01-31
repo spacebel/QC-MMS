@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"                
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"               
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:param name="layoutMode" value="#{true}" />
+    <div id="#{fluidItem.thumbnailDivId}" 
+         style="#{spb:setImageSize(fluidItem.thumbnailDivStyle,'300,300')}" 
+         class="#{fluidItem.thumbnailDivClass}">
+        <div class="#{fluidItem.thumbnailCellClass} #{searchBean.datasetItemClass(fluidItem.uuid)}"
+             id="#{fluidItem.uuid}"
+             onmouseover="fedeoclient_webapp_highlightFeatures('#{fluidItem.uuid}', 'Dataset'); fedeoclient_webapp_changeHighlightRow('#{fluidItem.uuid}')" 
+             onmouseout="fedeoclient_webapp_unhighlightFeatures('Dataset'); fedeoclient_webapp_unhighlightRow('#{fluidItem.uuid}')"
+             title="#{spb:removeIdPrefix(fluidItem.properties['title'].value,configBean.configuration.identifierPrefix)}">
+
+            <a href="#" class="whole-link" title="Select this product"
+               onclick="fedeoclient_webapp_onClickDatasetItemOnList('#{fluidItem.uuid}')" />
+
+            <div class="title">
+                <p>
+                    <h:outputText
+                        value="#{spb:shortStr(spb:removeIdPrefix(fluidItem.properties['title'].value,configBean.configuration.identifierPrefix),20)}"
+                        styleClass="h1"
+                        rendered="#{not empty fluidItem.properties['title'].value}" />
+                    <br/>
+                    <h:outputText
+                        value="#{spb:humanReadableFormatDate(fluidItem.properties['startDate'].value)}"										
+                        rendered="#{not empty fluidItem.properties['startDate'].value}" />
+                </p>
+                <br/>
+                <h:outputText value="#{spb:shortStr(spb:removeIdPrefix(fluidItem.properties['parentId'].value,configBean.configuration.identifierPrefix),20)}" 
+                              rendered="#{not empty fluidItem.properties['parentId'].value}"
+                              title="#{spb:removeIdPrefix(fluidItem.properties['parentId'].value,configBean.configuration.identifierPrefix)}"
+                              styleClass="h2"/>
+            </div>
+            <div class="actions">
+                <p:commandButton actionListener="#{searchBean.onSelectDatasetItem(fluidItem)}"					
+                                 title="Show details" disabled="#{not layoutMode}"
+                                 icon="fa fa-fw fa-info-circle"
+                                 immediate="true" global="true"
+                                 process="os-product-search-results-carrousel"				
+                                 onstart="PF('waitingBlockUI').block()"
+                                 oncomplete="fedeoclient_webapp_showGMLOnMapForDataset();PF('waitingBlockUI').unblock()"
+                                 onerror="PF('waitingBlockUI').unblock()"
+                                 update=":toolbarForm :searchInputForm :resultsForm :messageForm"/>
+
+                <c:set var="productFileUrl" value="#{spb:validateUrl(fluidItem.properties['productFileUrl'].value)}" />
+                <c:set var="onlineResourceUrl" value="#{spb:validateUrl(fluidItem.properties['onlineResource'].value)}" />
+
+                <p:spacer width="5" height="5" rendered="#{not empty productFileUrl or (not empty onlineResourceUrl)}"/>
+
+                <p:commandButton type="button"
+                                 title="Download" disabled="#{not layoutMode}"
+                                 rendered="#{not empty productFileUrl}"
+                                 immediate="true" global="true"                                    
+                                 onclick="window.open('#{productFileUrl}');"
+                                 icon="fa fa-fw fa-cloud-download" />
+                
+                <p:commandButton type="button"
+                                 title="Download Jupyter Notebook" disabled="#{not layoutMode}"
+                                 rendered="#{not empty fluidItem.jupyterNotebookReportLink}"
+                                 immediate="true" global="true"                                    
+                                 onclick="window.open('#{fluidItem.jupyterNotebookReportLink}');"
+                                 icon="fa fa-fw fa-cloud-download" />
+                
+                <p:spacer width="5" height="10" rendered="#{fluidItem.hasFootprint}"/>
+
+                <p:commandButton type="button"
+                                 title="Zoom to this product"
+                                 immediate="true" global="true"
+                                 icon="fa fa-fw fa-globe"
+                                 rendered="#{fluidItem.hasFootprint}"
+                                 onclick="fedeoclient_webapp_zoomToSelectedFeature('#{fluidItem.uuid}')"/>
+
+                <p:spacer width="5" height="10" 
+                          rendered="#{empty productFileUrl and (not empty onlineResourceUrl)}"/>
+
+                <p:commandButton type="button"
+                                 title="Download" disabled="#{not layoutMode}"
+                                 rendered="#{empty productFileUrl and (not empty onlineResourceUrl)}"
+                                 immediate="true" global="true"                                    
+                                 onclick="window.open('#{onlineResourceUrl}');"
+                                 icon="fa fa-fw fa-cloud-download" />                
+
+                <h:panelGroup rendered="#{(not empty fluidItem.properties['mediaQuicklook'].value) 
+                                          or (not empty fluidItem.properties['mediaThumbnail'].value) 
+                                          or (not empty fluidItem.properties['alternateLinks'].groups) 
+                                          or (not empty fluidItem.properties['productIdLink'].value)}">
+
+                    <p:spacer width="5" height="10" rendered="false"/>
+
+                    <p:commandButton id="datasetThumbnailsViewMoreOptionsBtn" 
+                                     title="More options"
+                                     type="button" icon="fa fa-fw fa-ellipsis-v"/>
+                    <p:menu overlay="true" trigger="datasetThumbnailsViewMoreOptionsBtn" 
+                            my="left top" at="left bottom"
+                            styleClass="more-options-context-menu" 
+                            model="#{searchBean.buildMenuModel(fluidItem,'Dataset')}"/>
+                </h:panelGroup>
+            </div>		
+        </div>
+    </div>
+</ui:composition>

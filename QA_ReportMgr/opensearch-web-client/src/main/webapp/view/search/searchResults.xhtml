@@ -1,0 +1,469 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:param name="spbMap" value="fedeoclient_webapp" />
+    <h:form id="resultsForm">
+        <p:remoteCommand name="fedeoclient_webapp_redrawResultsForm"													
+                         update=":resultsForm :toolbarForm :messageForm" 
+                         oncomplete="fedeoclient_webapp.createAllFeaturesQuicklookMap()"/>
+
+        <pe:remoteCommand name="fedeoclient_webapp_selectDatasetItem"
+                          actionListener="#{searchBean.onSelectDatasetItem}"
+                          onstart="PF('waitingBlockUI').block(); fedeoclient_webapp.footprintToNormalStyle(false)"
+                          oncomplete="fedeoclient_webapp_showGMLOnMapForDataset(); fedeoclient_webapp_scrollIntoView(xhr, status, args); PF('waitingBlockUI').unblock()"
+                          onerror="PF('waitingBlockUI').unblock()"
+                          update=":toolbarForm :searchInputForm :resultsForm :messageForm">
+            <pe:methodSignature parameters="java.lang.String" />  
+            <pe:methodParam name="datasetUuid"/>
+        </pe:remoteCommand>
+
+        <pe:remoteCommand name="fedeoclient_webapp_selectRelatedProduct"
+                          actionListener="#{searchBean.onSelectRelatedProduct}"
+                          onstart="PF('waitingBlockUI').block(); fedeoclient_webapp.footprintToNormalStyle(false)"
+                          oncomplete="fedeoclient_webapp_showGMLOnMapForRelated(); fedeoclient_webapp_scrollIntoView(xhr, status, args); PF('waitingBlockUI').unblock()"
+                          onerror="PF('waitingBlockUI').unblock()"
+                          update=":toolbarForm :searchInputForm :resultsForm :messageForm">
+            <pe:methodSignature parameters="java.lang.String" />  
+            <pe:methodParam name="relatedProductUuid"/>
+        </pe:remoteCommand>       
+
+        <pe:remoteCommand name="viewDatasetItemDetails" 
+                          actionListener="#{searchBean.onSelectDatasetItem}"
+                          onstart="PF('waitingBlockUI').block()"
+                          oncomplete="fedeoclient_webapp_showGMLOnMapForDataset();PF('waitingBlockUI').unblock();"
+                          onerror="PF('searchingBlockUI').unblock()"
+                          update=":resultsForm :messageForm">  
+            <pe:methodSignature parameters="java.lang.String" />  
+            <pe:methodParam name="datasetUuid"/>
+        </pe:remoteCommand>
+
+        <pe:remoteCommand name="viewRelatedItemDetails" 
+                          actionListener="#{searchBean.onSelectRelatedProduct}"
+                          onstart="PF('waitingBlockUI').block()"
+                          oncomplete="fedeoclient_webapp_showGMLOnMapForRelated();PF('waitingBlockUI').unblock();"
+                          onerror="PF('searchingBlockUI').unblock()"
+                          update=":resultsForm :messageForm">  
+            <pe:methodSignature parameters="java.lang.String" />  
+            <pe:methodParam name="relatedProductUuid"/>
+        </pe:remoteCommand>
+
+        <pe:remoteCommand name="fedeoclient_webapp_datasetJumpToPage"
+                          actionListener="#{searchBean.datasetJumpToPage}"
+                          onstart="PF('searchingBlockUI').block();"
+                          oncomplete="fedeoclient_webapp_getDatasetGMLFeatures();PF('searchingBlockUI').unblock();"
+                          onerror="PF('searchingBlockUI').unblock()"
+                          update=":resultsForm :messageForm">  
+            <pe:methodSignature parameters="java.lang.Integer" />
+            <pe:methodParam name="targetPage"/>
+        </pe:remoteCommand>
+
+        <pe:remoteCommand name="fedeoclient_webapp_relatedJumpToPage"
+                          actionListener="#{searchBean.relatedJumpToPage}"
+                          onstart="PF('searchingBlockUI').block();"
+                          oncomplete="fedeoclient_webapp_getRelatedGMLFeatures();PF('searchingBlockUI').unblock();"
+                          onerror="PF('searchingBlockUI').unblock()"
+                          update=":resultsForm :messageForm">  
+            <pe:methodSignature parameters="java.lang.Integer" />
+            <pe:methodParam name="targetPage"/>
+        </pe:remoteCommand>
+
+        <input type="hidden" name="fedeoclient_webapp_currentSeriesHighlightRow" 
+               id="fedeoclient_webapp_currentSeriesHighlightRow" />
+
+        <input type="hidden" name="fedeoclient_webapp_currentDatasetHighlightRow" 
+               id="fedeoclient_webapp_currentDatasetHighlightRow" />
+
+        <input type="hidden" name="fedeoclient_webapp_currentRelatedHighlightRow" 
+               id="fedeoclient_webapp_currentRelatedHighlightRow" />
+
+
+        <c:choose>
+            <c:when test="#{(layoutBean.seriesDetails or layoutBean.datasetInit) and not empty searchBean.searchData.selectedSeriesItem}">
+                <div id="fedeoclient_webapp_seriesDetailsPanel" style="display:none"/>
+                <p:outputPanel styleClass="ui-paginator ui-widget-header paginatorDetailsStyle paginator-bar"> 
+                    <ui:include src="toggleButtons.xhtml" />
+                </p:outputPanel>
+            </c:when>
+            <c:when test="#{(layoutBean.datasetListView or layoutBean.datasetThumbnailsView) and (not empty searchBean.searchData.datasetPaginator) and (not empty  searchBean.searchData.datasetPaginator.data)}">
+                <div id="fedeoclient_webapp_datasetSearchResultsPanel" style="display:none"/>
+                <p:outputPanel styleClass="ui-paginator ui-widget-header paginatorFormStyle paginator-bar">
+                    <p:commandButton icon="fa fa-step-backward"
+                                     actionListener="#{searchBean.datasetPageNavigate('first')}"
+                                     title="First page"
+                                     disabled="#{empty searchBean.searchData.datasetPaginator.first or empty searchBean.searchData.datasetPaginator.previous}"                                 
+                                     onclick="PF('searchingBlockUI').block(); this.blur();"
+                                     oncomplete="fedeoclient_webapp_getDatasetGMLFeatures();PF('searchingBlockUI').unblock();"
+                                     onerror="PF('searchingBlockUI').unblock()"
+                                     update=":resultsForm :messageForm"/>
+
+                    <p:spacer width="10" />
+
+                    <p:commandButton icon="fa fa-backward"
+                                     actionListener="#{searchBean.datasetPageNavigate('prev')}"
+                                     title="Previous page"
+                                     disabled="#{empty searchBean.searchData.datasetPaginator.previous}"
+                                     onclick="PF('searchingBlockUI').block();this.blur();"
+                                     oncomplete="fedeoclient_webapp_getDatasetGMLFeatures();PF('searchingBlockUI').unblock()"
+                                     onerror="PF('searchingBlockUI').unblock()"
+                                     update=":resultsForm :messageForm"/>
+
+                    <p:spacer width="10" />
+
+                    <c:choose>
+                        <c:when test="#{searchBean.searchData.datasetPaginator.showPageInfo}">
+                            <h:outputText value="Page "/>
+                            <p:inputNumber value="#{searchBean.searchData.datasetPaginator.page}" 
+                                           minValue="0" maxValue="#{searchBean.searchData.datasetPaginator.pageCount}"
+                                           styleClass="jumpPageText"
+                                           onkeypress="if (event.keyCode === 13) {
+                                                       fedeoclient_webapp_datasetJumpToPage(this.value);
+                                                       return false;
+                                                   }"/>
+                            <h:outputText value=" of #{searchBean.searchData.datasetPaginator.pageCount}"/>
+
+                            <p:spacer width="10" />
+                        </c:when>
+                    </c:choose>
+
+                    <p:commandButton icon="fa fa-forward"
+                                     actionListener="#{searchBean.datasetPageNavigate('next')}"
+                                     title="Go to the next page"
+                                     disabled="#{empty searchBean.searchData.datasetPaginator.next}"					
+                                     onclick="PF('searchingBlockUI').block();this.blur();"
+                                     oncomplete="fedeoclient_webapp_getDatasetGMLFeatures();PF('searchingBlockUI').unblock()" 
+                                     onerror="PF('searchingBlockUI').unblock()"
+                                     update=":resultsForm :messageForm"/>
+
+                    <p:spacer width="10" />
+
+                    <p:commandButton icon="fa fa-step-forward"
+                                     actionListener="#{searchBean.datasetPageNavigate('last')}"
+                                     title="Last page"
+                                     disabled="#{empty searchBean.searchData.datasetPaginator.last or empty searchBean.searchData.datasetPaginator.next}"					
+                                     onclick="PF('searchingBlockUI').block();
+                                             this.blur();"
+                                     oncomplete="fedeoclient_webapp_getDatasetGMLFeatures();PF('searchingBlockUI').unblock()"
+                                     onerror="PF('searchingBlockUI').unblock()"
+                                     update=":resultsForm :messageForm"/>                   
+
+                    <ui:include src="inputs/viewModeButtons.xhtml" />
+
+                    <h:outputText value="#{searchBean.searchData.datasetPaginator.recordInfo}" 
+                                  styleClass="ui-paginator-current" style="right: 5px;"
+                                  rendered="#{not empty searchBean.searchData.datasetPaginator.recordInfo and configBean.configuration.layoutDocked}"/>
+
+                    <h:outputText value="#{searchBean.searchData.datasetPaginator.recordInfo}" 
+                                  styleClass="ui-paginator-current" style="right: 0px; margin-right: 60px;"
+                                  rendered="#{not empty searchBean.searchData.datasetPaginator.recordInfo and (not configBean.configuration.layoutDocked)}"/>
+
+                    <ui:include src="toggleButtons.xhtml" />
+
+                </p:outputPanel>
+            </c:when>
+            <c:when test="#{layoutBean.datasetDetails and not empty searchBean.searchData.selectedDatasetItem}">
+                <div id="fedeoclient_webapp_datasetDetailsPanel" style="display:none"/>
+                <p:outputPanel styleClass="ui-paginator ui-widget-header paginatorDetailsStyle paginator-bar">
+
+                    <div class="ui-g">
+                        <div class="ui-g-5" style="text-align: left;">                            
+                            <ui:include src="inputs/viewModeButtons.xhtml" />							
+                        </div>
+                        <div class="ui-g-2">
+                            <c:choose>
+                                <c:when test="#{searchBean.presentItem.index == 0 and (not empty searchBean.paginator.previous)}">
+                                    <p:commandButton icon="fa fa-backward"
+                                                     actionListener="#{searchBean.navigateDatasetItemDetails('prev')}"
+                                                     title="View the previous product details"										
+                                                     onclick="PF('waitingBlockUI').block();
+                                                             this.blur();"
+                                                     oncomplete="fedeoclient_webapp_getDatasetGMLFeatures(); fedeoclient_webapp_showGMLOnMapForDataset(); PF('waitingBlockUI').unblock()"
+                                                     onerror="PF('waitingBlockUI').unblock()"								
+                                                     update=":resultsForm :messageForm" />	
+                                </c:when>
+                                <c:otherwise>
+                                    <p:commandButton icon="fa fa-backward"
+                                                     actionListener="#{searchBean.navigateDatasetItemDetails('prev')}"
+                                                     title="View the previous product details"
+                                                     disabled="#{searchBean.presentItem.index == 0 and (empty searchBean.paginator.previous)}"										 
+                                                     onclick="PF('waitingBlockUI').block();
+                                                             this.blur();"
+                                                     oncomplete="fedeoclient_webapp_showGMLOnMapForDataset();PF('waitingBlockUI').unblock()"
+                                                     onerror="PF('waitingBlockUI').unblock()"								
+                                                     update=":resultsForm :messageForm" />
+                                </c:otherwise>
+                            </c:choose>	
+
+                            <p:spacer width="10" />
+
+                            <c:choose>
+                                <c:when test="#{((searchBean.presentItem.index + 1)>=  searchBean.searchData.datasetPaginator.data.itemCount) and (not empty searchBean.paginator.next)}">
+                                    <p:commandButton icon="fa fa-forward"
+                                                     actionListener="#{searchBean.navigateDatasetItemDetails('next')}"
+                                                     title="View the next product details"
+                                                     onclick="PF('waitingBlockUI').block();this.blur();"
+                                                     oncomplete="fedeoclient_webapp_getDatasetGMLFeatures(); fedeoclient_webapp_showGMLOnMapForDataset();PF('waitingBlockUI').unblock()"
+                                                     onerror="PF('waitingBlockUI').unblock()"
+                                                     update=":resultsForm :messageForm" />	
+                                </c:when>
+                                <c:otherwise>
+                                    <p:commandButton icon="fa fa-forward"
+                                                     actionListener="#{searchBean.navigateDatasetItemDetails('next')}"
+                                                     title="View the next product details"
+                                                     disabled="#{((searchBean.presentItem.index + 1)>=  searchBean.searchData.datasetPaginator.data.itemCount) and (empty searchBean.paginator.next)}"
+                                                     onclick="PF('waitingBlockUI').block();
+                                                             this.blur();"
+                                                     oncomplete="fedeoclient_webapp_showGMLOnMapForDataset();PF('waitingBlockUI').unblock()"
+                                                     onerror="PF('waitingBlockUI').unblock()"
+                                                     update=":resultsForm :messageForm" />
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="ui-g-3" >
+                            <c:set var="productFileUrl" value="#{spb:validateUrl(searchBean.presentItem.properties['productFileUrl'].value)}" />
+                            <c:set var="onlineResourceUrl" value="#{spb:validateUrl(searchBean.presentItem.properties['onlineResource'].value)}" />
+
+                            <p:commandButton type="button"
+                                             title="Zoom to this product"
+                                             immediate="true" global="true"
+                                             icon="fa fa-fw fa-globe"
+                                             rendered="#{searchBean.presentItem.hasFootprint}"
+                                             onclick="fedeoclient_webapp_zoomToSelectedFeature('#{searchBean.presentItem.uuid}')"/>														
+
+                            <h:panelGroup rendered="#{not empty productFileUrl}">
+                                <p:spacer width="5" />
+                                <a target="_blank" class="href-icon" href="#{productFileUrl}" title="Download">
+                                    <span class="fa fa-fw fa-cloud-download awefont-icon"/>
+                                </a>	
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="#{not empty searchBean.presentItem.jupyterNotebookReportLink}">
+                                <p:spacer width="5" />
+                                <a target="_blank" class="href-icon" href="#{searchBean.presentItem.jupyterNotebookReportLink}" 
+                                   title="Download Jupyter Notebook">
+                                    <span class="fa fa-fw fa-cloud-download awefont-icon"/>
+                                </a>	
+                            </h:panelGroup>
+                            
+                            <h:panelGroup rendered="#{empty productFileUrl and (not empty onlineResourceUrl)}">
+                                <p:spacer width="5" />
+                                <a target="_blank" class="href-icon" href="#{onlineResourceUrl}" title="Download">
+                                    <span class="fa fa-fw fa-cloud-download awefont-icon"/>
+                                </a>	
+                            </h:panelGroup>                            
+
+                            <h:panelGroup rendered="#{(not empty searchBean.presentItem.properties['mediaQuicklook'].value) 
+                                                      or (not empty searchBean.presentItem.properties['mediaThumbnail'].value) 
+                                                      or (not empty searchBean.presentItem.properties['alternateLinks'].groups) 
+                                                      or (not empty searchBean.presentItem.properties['productIdLink'].value)}">
+                                <p:commandButton id="datasetMoreOptionsBtn" type="button"
+                                                 title="More options"						
+                                                 icon="fa fa-fw fa-ellipsis-v" style="margin-top: -1px;"/>
+                                <p:menu overlay="true" trigger="datasetMoreOptionsBtn" my="left top" at="right bottom"
+                                        styleClass="more-options-context-menu"
+                                        model="#{searchBean.buildMenuModel(searchBean.presentItem,'Dataset')}"/>
+                            </h:panelGroup>
+                        </div>
+                        <div class="ui-g-2" style="padding-top: 3px;">
+                            <c:set var="datasetDetailsInfo" 
+                                   value="#{searchBean.searchData.datasetPaginator.getRecordDetailsInfo(searchBean.searchData.selectedDatasetItem.index)}" />
+                            <h:outputText value="#{datasetDetailsInfo}" 
+                                          rendered="#{not empty datasetDetailsInfo and configBean.configuration.layoutDocked}"
+                                          style="position: absolute;right: 20px;"
+                                          styleClass="dataset-details-page-info"/>
+
+                            <h:outputText value="#{datasetDetailsInfo}" 
+                                          rendered="#{not empty datasetDetailsInfo and (not configBean.configuration.layoutDocked)}"
+                                          style="position: absolute;right: 60px;"
+                                          styleClass="dataset-details-page-info"/>
+
+                            <ui:include src="toggleButtons.xhtml" />							
+                        </div>
+                    </div>                
+                </p:outputPanel>
+            </c:when>
+
+            <c:when test="#{(layoutBean.relatedListView or layoutBean.relatedThumbnailsView) 
+                            and (not empty searchBean.searchData.relatedPaginator) 
+                            and (not empty  searchBean.searchData.relatedPaginator.data.items)}">
+
+                <div id="fedeoclient_webapp_relatedSearchResultsPanel" style="display:none"/>
+                <p:outputPanel styleClass="ui-paginator ui-widget-header paginatorFormStyle paginator-bar">
+
+                    <p:commandButton icon="fa fa-step-backward"
+                                     actionListener="#{searchBean.relatedPageNavigate('first')}"
+                                     title="First page"                                     
+                                     disabled="#{empty searchBean.searchData.relatedPaginator.first or empty searchBean.searchData.relatedPaginator.previous}"   
+                                     onclick="PF('searchingBlockUI').block();
+                                             this.blur();"
+                                     oncomplete="fedeoclient_webapp_getRelatedGMLFeatures();PF('searchingBlockUI').unblock();"
+                                     onerror="PF('searchingBlockUI').unblock()"
+                                     update=":resultsForm :messageForm"/>
+
+                    <p:spacer width="10" />
+
+                    <p:commandButton icon="fa fa-backward"
+                                     actionListener="#{searchBean.relatedPageNavigate('prev')}"
+                                     title="Previous page"                                     
+                                     disabled="#{empty searchBean.searchData.relatedPaginator.previous}"
+                                     onclick="PF('searchingBlockUI').block();this.blur();"
+                                     oncomplete="fedeoclient_webapp_getRelatedGMLFeatures();PF('searchingBlockUI').unblock()"
+                                     onerror="PF('searchingBlockUI').unblock()"
+                                     update=":resultsForm :messageForm"/>
+
+                    <p:spacer width="10" />
+
+
+                    <h:outputText value="Page "/>
+                    <p:inputNumber value="#{searchBean.searchData.relatedPaginator.page}" 
+                                   minValue="0" maxValue="#{searchBean.searchData.relatedPaginator.pageCount}"
+                                   styleClass="jumpPageText"
+                                   onkeypress="if (event.keyCode === 13) {
+                                               fedeoclient_webapp_relatedJumpToPage(this.value);
+                                               return false;
+                                           }"/>
+                    <h:outputText value=" of #{searchBean.searchData.relatedPaginator.pageCount}"/>
+
+                    <p:spacer width="10" />                    
+
+                    <p:commandButton icon="fa fa-forward"
+                                     actionListener="#{searchBean.relatedPageNavigate('next')}"
+                                     title="Go to the next page"                                     
+                                     disabled="#{empty searchBean.searchData.relatedPaginator.next}"
+                                     onclick="PF('searchingBlockUI').block();
+                                             this.blur();"
+                                     oncomplete="fedeoclient_webapp_getRelatedGMLFeatures();PF('searchingBlockUI').unblock()" 
+                                     onerror="PF('searchingBlockUI').unblock()"
+                                     update=":resultsForm :messageForm"/>
+
+                    <p:spacer width="10" />
+
+                    <p:commandButton icon="fa fa-step-forward"
+                                     actionListener="#{searchBean.relatedPageNavigate('last')}"
+                                     title="Last page"                                     
+                                     disabled="#{empty searchBean.searchData.relatedPaginator.last or empty searchBean.searchData.relatedPaginator.next}"	
+                                     onclick="PF('searchingBlockUI').block();
+                                             this.blur();"
+                                     oncomplete="fedeoclient_webapp_getRelatedGMLFeatures();PF('searchingBlockUI').unblock()"
+                                     onerror="PF('searchingBlockUI').unblock()"
+                                     update=":resultsForm :messageForm"/>
+
+                    <ui:include src="inputs/viewModeButtons.xhtml" />
+
+                    <h:outputText value="#{searchBean.searchData.relatedPaginator.recordInfo}" 
+                                  styleClass="ui-paginator-current" style="right: 5px;"
+                                  rendered="#{not empty searchBean.searchData.relatedPaginator.recordInfo and configBean.configuration.layoutDocked}"/>
+
+                    <h:outputText value="#{searchBean.searchData.relatedPaginator.recordInfo}" 
+                                  styleClass="ui-paginator-current" style="right: 0px; margin-right: 60px;"
+                                  rendered="#{not empty searchBean.searchData.relatedPaginator.recordInfo and (not configBean.configuration.layoutDocked)}"/>
+
+                    <ui:include src="toggleButtons.xhtml" />
+
+                </p:outputPanel>
+            </c:when>
+
+            <c:when test="#{layoutBean.relatedDetails and (not empty searchBean.searchData.selectedRelatedProduct)}">
+                <div id="fedeoclient_webapp_relatedDetailsPanel" style="display:none"/>
+                <p:outputPanel styleClass="ui-paginator ui-widget-header paginatorDetailsStyle paginator-bar">
+
+                    <div class="ui-g">
+                        <div class="ui-g-5" style="text-align: left;">                           
+                            <ui:include src="inputs/viewModeButtons.xhtml" />							
+                        </div>
+                        <div class="ui-g-2">
+                            <p:commandButton icon="fa fa-backward"
+                                             actionListener="#{searchBean.navigateRelatedProductDetails('prev')}"                                             
+                                             title="View the previous related product details"                                             
+                                             disabled="#{searchBean.searchData.selectedRelatedProduct.index == 0 and (empty searchBean.searchData.relatedPaginator.previous)}"	
+                                             onclick="PF('waitingBlockUI').block();this.blur();"
+                                             oncomplete="fedeoclient_webapp_getRelatedGMLFeatures(); fedeoclient_webapp_showGMLOnMapForRelated(); PF('waitingBlockUI').unblock()"
+                                             onerror="PF('waitingBlockUI').unblock()"								
+                                             update=":resultsForm :messageForm" />
+
+                            <p:spacer width="10" />
+
+                            <p:commandButton icon="fa fa-forward"
+                                             actionListener="#{searchBean.navigateRelatedProductDetails('next')}"
+                                             title="View the next related product details"                                             
+                                             disabled="#{((searchBean.searchData.selectedRelatedProduct.index + 1)>=  searchBean.searchData.relatedPaginator.data.itemCount) and (empty searchBean.searchData.relatedPaginator.next)}"
+                                             onclick="PF('waitingBlockUI').block();
+                                                     this.blur();"
+                                             oncomplete="fedeoclient_webapp_getRelatedGMLFeatures(); fedeoclient_webapp_showGMLOnMapForRelated();PF('waitingBlockUI').unblock()"
+                                             onerror="PF('waitingBlockUI').unblock()"
+                                             update=":resultsForm :messageForm" />                                
+                        </div>
+                        <div class="ui-g-3" >
+                            <c:set var="productFileUrl" value="#{spb:validateUrl(searchBean.searchData.selectedRelatedProduct.properties['productFileUrl'].value)}" />
+                            <c:set var="onlineResourceUrl" value="#{spb:validateUrl(searchBean.searchData.selectedRelatedProduct.properties['onlineResource'].value)}" />
+
+                            <p:commandButton type="button"
+                                             title="Zoom to this related product"
+                                             immediate="true" global="true"
+                                             icon="fa fa-fw fa-globe"
+                                             rendered="#{searchBean.searchData.selectedRelatedProduct.hasFootprint}"
+                                             onclick="fedeoclient_webapp_zoomToSelectedFeature('#{searchBean.searchData.selectedRelatedProduct.uuid}')"/>														
+
+                            <h:panelGroup rendered="#{not empty productFileUrl}">
+                                <p:spacer width="5" />
+                                <a target="_blank" class="href-icon" href="#{productFileUrl}" title="Download">
+                                    <span class="fa fa-fw fa-cloud-download awefont-icon"/>
+                                </a>	
+                            </h:panelGroup>				
+                            <h:panelGroup rendered="#{empty productFileUrl and (not empty onlineResourceUrl)}">
+                                <p:spacer width="5" />
+                                <a target="_blank" class="href-icon" href="#{onlineResourceUrl}" title="Download">
+                                    <span class="fa fa-fw fa-cloud-download awefont-icon"/>
+                                </a>	
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{(not empty searchBean.searchData.selectedRelatedProduct.properties['mediaQuicklook'].value) 
+                                                      or (not empty searchBean.searchData.selectedRelatedProduct.properties['mediaThumbnail'].value) 
+                                                      or (not empty searchBean.searchData.selectedRelatedProduct.properties['alternateLinks'].groups)
+                                                      or (not empty searchBean.searchData.selectedRelatedProduct.properties['productIdLink'].value)}">
+                                <p:commandButton id="relatedMoreOptionsBtn" type="button"
+                                                 title="More options"						
+                                                 icon="fa fa-fw fa-ellipsis-v" style="margin-top: -1px;"/>
+                                <p:menu overlay="true" trigger="relatedMoreOptionsBtn" my="left top" at="right bottom"
+                                        styleClass="more-options-context-menu"
+                                        model="#{searchBean.buildMenuModel(searchBean.searchData.selectedRelatedProduct,'Related')}"/>
+                            </h:panelGroup>
+                        </div>
+                        <div class="ui-g-2" style="padding-top: 3px;">
+                            <c:set var="datasetDetailsInfo" value="#{searchBean.searchData.relatedPaginator.getRecordDetailsInfo(searchBean.searchData.selectedRelatedProduct.index)}" />
+                            <h:outputText value="#{datasetDetailsInfo}" rendered="#{not empty datasetDetailsInfo and configBean.configuration.layoutDocked}"
+                                          style="position: absolute;right: 20px;"
+                                          styleClass="dataset-details-page-info"/>
+
+                            <h:outputText value="#{datasetDetailsInfo}" 
+                                          rendered="#{not empty datasetDetailsInfo and (not configBean.configuration.layoutDocked)}"
+                                          style="position: absolute;right: 60px;"
+                                          styleClass="dataset-details-page-info"/>
+
+                            <ui:include src="toggleButtons.xhtml" />							
+                        </div>
+                    </div>                
+                </p:outputPanel>
+            </c:when>
+
+            <c:otherwise>
+                <p:outputPanel styleClass="ui-paginator ui-widget-header paginatorFormStyle paginator-bar">
+                    <ui:include src="toggleButtons.xhtml" />
+                </p:outputPanel>
+            </c:otherwise>
+        </c:choose>
+
+        <div id="spbOsClientSearchResultsTable" class="spb-search-results-table">
+            <ui:include src="results/results.xhtml" />
+        </div>						
+
+        <h:outputScript>            
+            fedeoclient_webapp_customResultsPanelScrollbar();  
+        </h:outputScript>                              
+
+    </h:form>	
+</ui:composition>

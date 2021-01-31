@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <c:set var="varNoResultsText" value="No search results found." />	
+    <c:choose>        
+        <c:when test="#{layoutBean.datasetThumbnailsView}">
+            <c:choose>
+                <c:when test="#{(not empty searchBean.searchData.datasetPaginator) 
+                                and (not empty searchBean.searchData.datasetPaginator.data)}">
+                    <ui:include src="datasetThumbnailsView.xhtml" />
+                </c:when>
+                <c:otherwise>
+                    <br/>
+                    <h:outputText value="#{varNoResultsText}" styleClass="no-results-text" />
+                </c:otherwise>
+            </c:choose>	
+        </c:when>
+        <c:when test="#{layoutBean.datasetListView}">
+            <c:choose>
+                <c:when test="#{(not empty searchBean.searchData.datasetPaginator) 
+                                and (not empty searchBean.searchData.datasetPaginator.data)}">
+                    <ui:include src="datasetListView.xhtml" />
+                </c:when>
+                <c:otherwise>
+                    <br/>
+                    <h:outputText value="#{varNoResultsText}" styleClass="no-results-text" />
+                </c:otherwise>
+            </c:choose>	
+        </c:when>
+
+        <c:when test="#{layoutBean.datasetDetails}">
+            <c:choose>
+                <c:when test="#{not empty searchBean.presentItem}">                    
+                    <ui:include src="eo/details.xhtml" >
+                        <ui:param name="presentItem" value="#{searchBean.presentItem}" />
+                    </ui:include>
+                </c:when>
+                <c:otherwise>
+                    <br/>
+                    <h:outputText value="#{varNoResultsText}" styleClass="no-results-text" />
+                </c:otherwise>
+            </c:choose>
+        </c:when>
+
+        <c:when test="#{layoutBean.seriesDetails or layoutBean.datasetInit}">
+            <c:choose>
+                <c:when test="#{not empty searchBean.presentItem}">
+                    
+                </c:when>
+                <c:otherwise>
+                    <br/>
+                    <h:outputText value="#{varNoResultsText}" styleClass="no-results-text" />
+                </c:otherwise>
+            </c:choose>	
+        </c:when>
+
+        <c:when test="#{layoutBean.relatedListView}">
+            <c:choose>
+                <c:when test="#{(not empty searchBean.searchData.relatedPaginator) 
+                                and (not empty searchBean.searchData.relatedPaginator.data)}">
+                    <ui:include src="relatedListView.xhtml" />
+                </c:when>
+                <c:otherwise>
+                    <br/>
+                    <h:outputText value="#{varNoResultsText}" styleClass="no-results-text" />
+                </c:otherwise>
+            </c:choose>	
+        </c:when>
+
+        <c:when test="#{layoutBean.relatedThumbnailsView}">
+            <c:choose>
+                <c:when test="#{(not empty searchBean.searchData.relatedPaginator) 
+                                and (not empty searchBean.searchData.relatedPaginator.data)}">
+                    <ui:include src="relatedThumbnailsView.xhtml" />
+                </c:when>
+                <c:otherwise>
+                    <br/>
+                    <h:outputText value="#{varNoResultsText}" styleClass="no-results-text" />
+                </c:otherwise>
+            </c:choose>	
+        </c:when>
+
+        <c:when test="#{layoutBean.relatedDetails}">            
+            <c:choose>
+                <c:when test="#{not empty searchBean.searchData.selectedRelatedProduct}">
+                    <c:choose>
+                        <c:when test="#{searchBean.searchData.selectedRelatedProduct.eoProductAndCollection}">
+                            <ui:include src="eo/details.xhtml" >
+                                <ui:param name="presentItem" value="#{searchBean.searchData.selectedRelatedProduct}" />
+                            </ui:include>
+                        </c:when>
+                        <c:when test="#{not empty searchBean.searchData.selectedRelatedProduct.properties['hasEOPMetadata'].value}">							
+                            <ui:include src="eop/details.xhtml" >
+                                <ui:param name="presentItem" value="#{searchBean.searchData.selectedRelatedProduct}" />
+                            </ui:include>
+                        </c:when>
+                        <c:when test="#{not empty searchBean.searchData.selectedRelatedProduct.properties['hasISOMetadata'].value}">							
+                            <ui:include src="gmd/details.xhtml">
+                                <ui:param name="presentItem" value="#{searchBean.searchData.selectedRelatedProduct}" />
+                            </ui:include>
+                        </c:when>
+                        <c:otherwise>
+                            <ui:include src="atom/datasetAtom.xhtml">
+                                <ui:param name="presentItem" value="#{searchBean.searchData.selectedRelatedProduct}" />
+                            </ui:include>
+                        </c:otherwise>
+                    </c:choose>	
+                </c:when>
+                <c:otherwise>
+                    <br/>
+                    <h:outputText value="#{varNoResultsText}" styleClass="no-results-text" />
+                </c:otherwise>
+            </c:choose>
+        </c:when>
+    </c:choose>
+</ui:composition>

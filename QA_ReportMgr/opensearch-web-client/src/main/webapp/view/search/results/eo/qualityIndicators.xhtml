@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"			
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">    
+
+    <ui:repeat var="qualityIndicator" value="#{presentItem.qualityIndicators}">
+        <i class="fa fa-fw fa-plus-square-o" 
+           onclick="fedeoclient_webapp_slideToggle(this)" 
+           title="View more details"/>
+        <h:outputText value="#{searchBean.qualityIndicatorMeasurementLabel(qualityIndicator.isMeasurementOf)}: " 
+                      styleClass="details-text-label"
+                      style="margin-left: 3px;"
+                      rendered="#{not empty qualityIndicator.isMeasurementOf}"/>
+        <h:outputText value="Measurement: " 
+                      styleClass="details-text-label"
+                      rendered="#{empty qualityIndicator.isMeasurementOf}"/>        
+        <h:outputText value="#{qualityIndicator.value}" 
+                      rendered="#{not empty qualityIndicator.value}"/>
+        <div class="collapse-expand-contents"> 
+            <h:panelGroup rendered="#{qualityIndicator.lineage != null}">            
+                <h:outputText value="Lineage: " 
+                              styleClass="details-text-label"
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.lineage}"/>
+                <br/>
+            </h:panelGroup>
+            
+            <h:panelGroup rendered="#{not empty qualityIndicator.status}">
+                <h:outputText value="Status: " 
+                              styleClass="details-text-label"
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.status}"/>
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{qualityIndicator.isisComplete() != null}">            
+                <h:outputText value="Complete: " 
+                              styleClass="details-text-label"
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.isisComplete()}"/>
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.date}">
+                <h:outputText value="Date: " 
+                              styleClass="details-text-label"
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.date}"/>
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.generatedAtTime}">
+                <h:outputText value="Generated at time: " 
+                              styleClass="details-text-label"
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.generatedAtTime}"/>
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.attribute3}">
+                <h:outputText value="Attribute 3: " 
+                              styleClass="details-text-label"
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.attribute3}"/>
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.filename}">
+                <h:outputText value="File name: " 
+                              styleClass="details-text-label"
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.filename}"/>
+                <br/>
+            </h:panelGroup>            
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.searchDate}">
+                <h:outputText value="Search date: " 
+                              styleClass="details-text-label" 
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.searchDate}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.searchDateUpdate}">
+                <h:outputText value="Search date update: " 
+                              styleClass="details-text-label" 
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.searchDateUpdate}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.value}">
+                <h:outputText value="Value: " 
+                              styleClass="details-text-label" 
+                              style="margin-left: 17px;" />
+                <h:outputText value="#{qualityIndicator.value}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.type}">
+                <h:outputText value="Type: " 
+                              styleClass="details-text-label" 
+                              style="margin-left: 17px;"/>
+                <h:outputText value="#{qualityIndicator.type}" />
+                <br/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.level1}">  
+                <i class="fa fa-fw fa-plus-square-o" 
+                   style="margin-left: 17px;"
+                   onclick="fedeoclient_webapp_slideToggle(this)" 
+                   title="View more details"/>
+                <h:outputText value="Level 1 " 
+                              styleClass="details-text-label" 
+                              style="margin-left: 3px;"/>                
+                <div class="collapse-expand-contents">
+                    <ui:include src="level.xhtml">
+                        <ui:param name="level" value="#{qualityIndicator.level1}" />
+                    </ui:include>
+                </div>
+
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty qualityIndicator.level2}">
+                <br/>
+                <i class="fa fa-fw fa-plus-square-o" 
+                   style="margin-left: 17px;"
+                   onclick="fedeoclient_webapp_slideToggle(this)"
+                   title="View more details"/>
+                <h:outputText value="Level 2 " 
+                              styleClass="details-text-label" 
+                              style="margin-left: 3px;"/>                
+                <div class="collapse-expand-contents">                
+                    <ui:include src="level.xhtml">
+                        <ui:param name="level" value="#{qualityIndicator.level2}" />
+                    </ui:include>
+                </div>
+                <br/>
+            </h:panelGroup>
+            <h:outputText value="#{searchBean.jsonMapToHtml(qualityIndicator.any(), 17)}" escape="false"/>            
+        </div>
+        <br/>
+    </ui:repeat>	
+</ui:composition>

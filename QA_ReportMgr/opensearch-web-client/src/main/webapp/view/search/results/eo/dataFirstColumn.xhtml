@@ -1,0 +1,489 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:spb="http://www.spacebel.be/jsf"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <div class="details-unit">
+        <div class="details-unit-header">								
+            Administrative information                                               
+        </div>
+        <div class="details-unit-content">
+            <h:outputText value="Parent identifier: " styleClass="details-text-label"
+                          rendered="#{not empty presentItem.properties['parentId'].value}"/>
+            <h:outputText value="#{spb:removeIdPrefix(presentItem.properties['parentId'].value,configBean.configuration.identifierPrefix)}"
+                          title="#{spb:removeIdPrefix(presentItem.properties['parentId'].value,configBean.configuration.identifierPrefix)}"/>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['collection'].value}">
+                <br/>
+                <h:outputText value="Collection: " styleClass="details-text-label"/>
+                <h:outputText value="#{spb:removeIdPrefix(presentItem.properties['collection'].value,configBean.configuration.identifierPrefix)}"
+                              title="#{spb:removeIdPrefix(presentItem.properties['collection'].value,configBean.configuration.identifierPrefix)}"/>
+            </h:panelGroup>
+
+            <ui:fragment rendered="#{not empty presentItem.productId}"><br /></ui:fragment>
+            <h:outputText value="Identifier: " styleClass="details-text-label" rendered="#{not empty presentItem.productId}"/>
+            <h:outputText value="#{spb:removeIdPrefix(presentItem.productId,configBean.configuration.identifierPrefix)}" 
+                          title="#{spb:removeIdPrefix(presentItem.productId,configBean.configuration.identifierPrefix)}"
+                          rendered="#{not empty presentItem.productId}"/>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['title'].value}">
+                <br />
+                <h:outputText value="Title " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['title'].value}"/>            
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['abstract'].value}">
+                <br />
+                <h:outputText value="Abstract: " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['abstract'].value}"/>            
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['creationDate'].value}">
+                <br />
+                <h:outputText value="Creation date: " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['creationDate'].value}" />
+            </h:panelGroup>						
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['doi'].value}">
+                <br />
+                <h:outputText value="DOI: " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['doi'].value}"/>
+            </h:panelGroup>             
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['status'].value}">
+                <br />
+                <h:outputText value="Product status: " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['status'].value}"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['statusSubType'].value}">
+                <br />
+                <h:outputText value="Status sub type: " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['statusSubType'].value}"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['statusDetail'].value}">
+                <br />
+                <h:outputText value="Status detail: " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['statusDetail'].value}"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['imageQualityDegradation'].value}">
+                <br />
+                <h:outputText value="Image quality degradation: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['imageQualityDegradation'].value}"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['productQualityDegradation'].value}">
+                <br />
+                <h:outputText value="Product quality degradation: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['productQualityDegradation'].value}"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['imageQualityDegradationQuotationMode'].value}">
+                <br />
+                <h:outputText value="Image quality degradation quotation mode: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['imageQualityDegradationQuotationMode'].value}"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['productQualityDegradationQuotationMode'].value}">
+                <br />
+                <h:outputText value="Product quality degradation quotation mode: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['productQualityDegradationQuotationMode'].value}"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['imageQualityStatus'].value}">
+                <br />
+                <h:outputText value="Image quality status: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['imageQualityStatus'].value}"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['productQualityStatus'].value}">
+                <br />
+                <h:outputText value="Product quality status: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['productQualityStatus'].value}"/>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['imageQualityDegradationTag1'].value}">
+                <br />
+                <h:outputText value="Image quality degradation tag: " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['imageQualityDegradationTag1'].value}"/>
+                <h:outputText value="; #{presentItem.properties['imageQualityDegradationTag2'].value}" rendered="#{not empty presentItem.properties['imageQualityDegradationTag2'].value}"/>
+                <h:outputText value="; #{presentItem.properties['imageQualityDegradationTag3'].value}" rendered="#{not empty presentItem.properties['imageQualityDegradationTag3'].value}"/>
+                <h:outputText value="; #{presentItem.properties['imageQualityDegradationTag4'].value}" rendered="#{not empty presentItem.properties['imageQualityDegradationTag4'].value}"/>
+                <h:outputText value="; #{presentItem.properties['imageQualityDegradationTag5'].value}" rendered="#{not empty presentItem.properties['imageQualityDegradationTag5'].value}"/>
+                <h:outputText value="; #{presentItem.properties['imageQualityDegradationTag6'].value}" rendered="#{not empty presentItem.properties['imageQualityDegradationTag6'].value}"/>
+                <h:outputText value="; #{presentItem.properties['imageQualityDegradationTag7'].value}" rendered="#{not empty presentItem.properties['imageQualityDegradationTag7'].value}"/>
+                <h:outputText value="; #{presentItem.properties['imageQualityDegradationTag8'].value}" rendered="#{not empty presentItem.properties['imageQualityDegradationTag8'].value}"/>
+                <h:outputText value="; #{presentItem.properties['imageQualityDegradationTag9'].value}" rendered="#{not empty presentItem.properties['imageQualityDegradationTag9'].value}"/>
+                <h:outputText value="; #{presentItem.properties['imageQualityDegradationTag10'].value}" rendered="#{not empty presentItem.properties['imageQualityDegradationTag10'].value}"/>				
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['productQualityDegradationTag1'].value}">
+                <br />
+                <h:outputText value="Product quality degradation tag: " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['productQualityDegradationTag1'].value}"/>
+                <h:outputText value="; #{presentItem.properties['productQualityDegradationTag2'].value}" rendered="#{not empty presentItem.properties['productQualityDegradationTag2'].value}"/>
+                <h:outputText value="; #{presentItem.properties['productQualityDegradationTag3'].value}" rendered="#{not empty presentItem.properties['productQualityDegradationTag3'].value}"/>
+                <h:outputText value="; #{presentItem.properties['productQualityDegradationTag4'].value}" rendered="#{not empty presentItem.properties['productQualityDegradationTag4'].value}"/>
+                <h:outputText value="; #{presentItem.properties['productQualityDegradationTag5'].value}" rendered="#{not empty presentItem.properties['productQualityDegradationTag5'].value}"/>
+                <h:outputText value="; #{presentItem.properties['productQualityDegradationTag6'].value}" rendered="#{not empty presentItem.properties['productQualityDegradationTag6'].value}"/>
+                <h:outputText value="; #{presentItem.properties['productQualityDegradationTag7'].value}" rendered="#{not empty presentItem.properties['productQualityDegradationTag7'].value}"/>
+                <h:outputText value="; #{presentItem.properties['productQualityDegradationTag8'].value}" rendered="#{not empty presentItem.properties['productQualityDegradationTag8'].value}"/>
+                <h:outputText value="; #{presentItem.properties['productQualityDegradationTag9'].value}" rendered="#{not empty presentItem.properties['productQualityDegradationTag9'].value}"/>
+                <h:outputText value="; #{presentItem.properties['productQualityDegradationTag10'].value}" rendered="#{not empty presentItem.properties['productQualityDegradationTag10'].value}"/>				
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['imageQualityReportURL'].value}">
+                <br />
+                <h:outputText value="Image quality report URL: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['imageQualityReportURL'].value}" />
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['productKind'].value}">
+                <br />
+                <h:outputText value="Product kind: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['productKind'].value}" />
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['productQualityReportURL'].value}">
+                <br />
+                <h:outputText value="Product quality report URL: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['productQualityReportURL'].value}" />
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['productGroupId'].value}">
+                <br />
+                <h:outputText value="Product group id: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['productGroupId'].value}" />
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['updatedDate'].value}">
+                <br />
+                <h:outputText value="Modified: " styleClass="details-text-label" />
+                <h:outputText value="#{presentItem.properties['updatedDate'].value}" />
+            </h:panelGroup>            
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['publishedDate'].value}">
+                <br />
+                <h:outputText value="Published: " styleClass="details-text-label"/>
+                <h:outputText value="#{presentItem.properties['publishedDate'].value}" />
+            </h:panelGroup>							
+        </div>
+    </div>
+
+    <h:panelGroup rendered="#{(not empty presentItem.properties['startDate'].value) or (not empty presentItem.properties['endDate'].value)}">
+        <div class="details-unit">
+            <div class="details-unit-header">								
+                Temporal extent
+            </div>
+            <div class="details-unit-content">
+                <h:panelGroup rendered="#{not empty presentItem.properties['startDate'].value}">
+                    <h:outputText value="Start date: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['startDate'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['endDate'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['startDate'].value}"><br /></ui:fragment>
+                    <h:outputText value="End date: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['endDate'].value}"/>	
+                </h:panelGroup>				
+            </div>
+        </div>					                                        
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{searchBean.hasProperties(presentItem,'multiSurfacePolygon1,georssPolygon1,georssBox,georssLine,georssPoint,multiPoint1,multiLineString1')}">
+        <div class="details-unit">
+            <div class="details-unit-header">								
+                Location
+            </div>
+            <div class="details-unit-content">
+                <ui:include src="../geographic.xhtml" >
+                    <ui:param name="presentItem" value="#{presentItem}" />
+                </ui:include>
+            </div>
+        </div>
+    </h:panelGroup>
+
+
+    <h:panelGroup rendered="#{(not empty presentItem.properties['species'].value) 
+                              or (not empty presentItem.properties['unit'].value) 
+                              or (not empty presentItem.properties['algorithmName'].value) 
+                              or (not empty presentItem.properties['algorithmVersion'].value)}">					
+        <div class="details-unit">
+            <div class="details-unit-header">								
+                Atmospherical sensor
+            </div>
+            <div class="details-unit-content">
+                <h:panelGroup rendered="#{not empty presentItem.properties['species'].value}">
+                    <h:outputText value="Species: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['species'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['unit'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['species'].value}"><br /></ui:fragment>
+                    <h:outputText value="Unit: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['unit'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['algorithmName'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['species'].value 
+                                             or not empty presentItem.properties['unit'].value}"><br /></ui:fragment>
+                    <h:outputText value="Algorithm name: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['algorithmName'].value}"/>
+                </h:panelGroup>			  
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['algorithmVersion'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['species'].value 
+                                             or not empty presentItem.properties['unit'].value 
+                                             or not empty presentItem.properties['algorithmName'].value}"><br /></ui:fragment>
+                    <h:outputText value="Algorithm version: " styleClass="details-text-label" />
+                    <h:outputText value="#{presentItem.properties['algorithmVersion'].value}"/>			
+                </h:panelGroup>
+            </div>
+        </div>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{(not empty presentItem.properties['polarisationMode'].value) 
+                              or (not empty presentItem.properties['polarisationChannels'].value) 
+                              or (not empty presentItem.properties['antennaLookDirection'].value) 
+                              or (not empty presentItem.properties['minimumIncidenceAngle'].value) 
+                              or (not empty presentItem.properties['maximumIncidenceAngle'].value) 
+                              or (not empty presentItem.properties['incidenceAngleVariation'].value) 
+                              or (not empty presentItem.properties['dopplerFrequency'].value)}">
+        <div class="details-unit">
+            <div class="details-unit-header">								
+                Radar sensor
+            </div>
+            <div class="details-unit-content">
+                <h:panelGroup rendered="#{not empty presentItem.properties['polarisationMode'].value}">
+                    <h:outputText value="Polarisation mode: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['polarisationMode'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['polarisationChannels'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['polarisationMode'].value}"><br /></ui:fragment>
+                    <h:outputText value="Polarisation channels: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['polarisationChannels'].value}"/>	
+                </h:panelGroup>			  
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['antennaLookDirection'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['polarisationMode'].value 
+                                             or not empty presentItem.properties['polarisationChannels'].value}"><br /></ui:fragment>
+                    <h:outputText value="Antenna look direction: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['antennaLookDirection'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['minimumIncidenceAngle'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['polarisationMode'].value 
+                                             or not empty presentItem.properties['polarisationChannels'].value 
+                                             or not empty presentItem.properties['antennaLookDirection'].value}"><br /></ui:fragment>
+                    <h:outputText value="Minimum incidence angle: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['minimumIncidenceAngle'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['maximumIncidenceAngle'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['polarisationMode'].value 
+                                             or not empty presentItem.properties['polarisationChannels'].value 
+                                             or not empty presentItem.properties['antennaLookDirection'].value 
+                                             or not empty presentItem.properties['minimumIncidenceAngle'].value}"><br /></ui:fragment>
+                    <h:outputText value="Maximum incidence angle: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['maximumIncidenceAngle'].value}"/>
+                </h:panelGroup>				
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['incidenceAngleVariation'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['polarisationMode'].value 
+                                             or not empty presentItem.properties['polarisationChannels'].value 
+                                             or not empty presentItem.properties['antennaLookDirection'].value 
+                                             or not empty presentItem.properties['minimumIncidenceAngle'].value 
+                                             or not empty presentItem.properties['maximumIncidenceAngle'].value}"><br /></ui:fragment>
+                    <h:outputText value="Incidence angle variation: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['incidenceAngleVariation'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['dopplerFrequency'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['polarisationMode'].value 
+                                             or not empty presentItem.properties['polarisationChannels'].value 
+                                             or not empty presentItem.properties['antennaLookDirection'].value 
+                                             or not empty presentItem.properties['minimumIncidenceAngle'].value 
+                                             or not empty presentItem.properties['maximumIncidenceAngle'].value 
+                                             or not empty presentItem.properties['incidenceAngleVariation'].value}"><br /></ui:fragment>
+                    <h:outputText value="Doppler frequency: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['dopplerFrequency'].value}"/>
+                </h:panelGroup>
+            </div>
+        </div>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{(not empty presentItem.properties['cycleNumber'].value) 
+                              or (not empty presentItem.properties['isSegment'].value) 
+                              or (not empty presentItem.properties['relativePassNumber'].value)}">
+        <div class="details-unit">
+            <div class="details-unit-header">
+                Altimetric sensor
+            </div>
+            <div class="details-unit-content">
+                <h:panelGroup rendered="#{not empty presentItem.properties['cycleNumber'].value}">
+                    <h:outputText value="Cycle number:" styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['cycleNumber'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['isSegment'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['cycleNumber'].value}"><br /></ui:fragment>
+                    <h:outputText value="Is segment: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['isSegment'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['relativePassNumber'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['cycleNumber'].value or not empty presentItem.properties['isSegment'].value}"><br /></ui:fragment>
+                    <h:outputText value="Relative pass number: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['relativePassNumber'].value}"/>
+                </h:panelGroup>			  
+            </div>
+        </div>
+    </h:panelGroup>	
+
+    <h:panelGroup rendered="#{(not empty presentItem.properties['observationMode'].value) or (not empty presentItem.properties['verticalResolution'].value)}">
+        <div class="details-unit">
+            <div class="details-unit-header">
+                Limb looking
+            </div>
+            <div class="details-unit-content">
+                <h:panelGroup rendered="#{not empty presentItem.properties['observationMode'].value}">
+                    <h:outputText value="Observation mode: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['observationMode'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['verticalResolution'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['observationMode'].value}"><br /></ui:fragment>
+                    <h:outputText value="Vertical resolution: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['verticalResolution'].value}"/>
+                </h:panelGroup>				  
+            </div>			
+        </div>
+    </h:panelGroup>	
+
+    <h:panelGroup rendered="#{(not empty presentItem.properties['sspCloudCoverPercentage'].value) 
+                              or (not empty presentItem.properties['sspSnowCoverPercentage'].value) 
+                              or (not empty presentItem.properties['derivedFrom1'].value) 
+                              or (not empty presentItem.properties['nominalDate'].value)}">
+        <div class="details-unit">
+            <div class="details-unit-header">
+                Synthesis and systematic
+            </div>
+            <div class="details-unit-content">
+                <h:panelGroup rendered="#{not empty presentItem.properties['sspCloudCoverPercentage'].value}">
+                    <h:outputText value="Cloud cover:" styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['sspCloudCoverPercentage'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['sspSnowCoverPercentage'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['sspCloudCoverPercentage'].value}"><br /></ui:fragment>
+                    <h:outputText value="Snow cover: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['sspSnowCoverPercentage'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['nominalDate'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['sspCloudCoverPercentage'].value 
+                                             or not empty presentItem.properties['sspSnowCoverPercentage'].value}">
+                        <br />
+                    </ui:fragment>
+                    <h:outputText value="Nominal date: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['nominalDate'].value}"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not empty presentItem.properties['derivedFrom1'].value}">
+                    <ui:fragment rendered="#{not empty presentItem.properties['sspCloudCoverPercentage'].value 
+                                             or not empty presentItem.properties['sspSnowCoverPercentage'].value 
+                                             or not empty presentItem.properties['nominalDate'].value}"><br /></ui:fragment>
+                    <h:outputText value="Derived from: " styleClass="details-text-label"/>
+                    <h:outputText value="#{presentItem.properties['derivedFrom1'].value}"/>
+                    <h:outputText value="; #{presentItem.properties['derivedFrom2'].value}" rendered="#{not empty presentItem.properties['derivedFrom2'].value}"/>
+                    <h:outputText value="; #{presentItem.properties['derivedFrom3'].value}" rendered="#{not empty presentItem.properties['derivedFrom3'].value}"/>
+                    <h:outputText value="; #{presentItem.properties['derivedFrom4'].value}" rendered="#{not empty presentItem.properties['derivedFrom4'].value}"/>
+                    <h:outputText value="; #{presentItem.properties['derivedFrom5'].value}" rendered="#{not empty presentItem.properties['derivedFrom5'].value}"/>
+                    <h:outputText value="; #{presentItem.properties['derivedFrom6'].value}" rendered="#{not empty presentItem.properties['derivedFrom6'].value}"/>
+                    <h:outputText value="; #{presentItem.properties['derivedFrom7'].value}" rendered="#{not empty presentItem.properties['derivedFrom7'].value}"/>
+                    <h:outputText value="; #{presentItem.properties['derivedFrom8'].value}" rendered="#{not empty presentItem.properties['derivedFrom8'].value}"/>
+                    <h:outputText value="; #{presentItem.properties['derivedFrom9'].value}" rendered="#{not empty presentItem.properties['derivedFrom9'].value}"/>
+                    <h:outputText value="; #{presentItem.properties['derivedFrom10'].value}" rendered="#{not empty presentItem.properties['derivedFrom10'].value}"/>				
+                </h:panelGroup>
+            </div>
+        </div>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty presentItem.properties['categories'].groups}">
+        <div class="details-unit">
+            <div class="details-unit-header">
+                Categories
+            </div>
+            <div class="details-unit-content">
+                <h:outputText value="Label: "  styleClass="details-text-label"/>
+                <ui:repeat var="category" value="#{presentItem.properties['categories'].groups}" varStatus="status">
+                    <h:outputText value="#{category['label'].value}" styleClass="details-text-link"/>
+                    <h:outputText value=", " rendered="#{not status.last}"/>
+                </ui:repeat>
+            </div>	
+        </div>
+    </h:panelGroup>
+
+    <ui:repeat var="contact" value="#{presentItem.properties['contact'].groups}">        
+        <h:panelGroup rendered="#{(not empty contact['individualName'].value) 
+                                  or (not empty contact['organisationName'].value) 
+                                  or (not empty contact['positionName'].value) 
+                                  or (not empty contact['phone'].value) 
+                                  or (not empty contact['facsimile'].value) 
+                                  or (not empty contact['locality'].value) 
+                                  or (not empty contact['street'].value) 
+                                  or (not empty contact['deliveryPoint'].value) 
+                                  or (not empty contact['city'].value) 
+                                  or (not empty contact['administrativeArea'].value) 
+                                  or (not empty contact['postalCode'].value) 
+                                  or (not empty contact['country'].value) 
+                                  or (not empty contact['electronicMail'].value) 
+                                  or (not empty contact['onlineRsLinkage'].value) 
+                                  or (not empty contact['onlineRsProtocol'].value) 
+                                  or (not empty contact['onlineRsName'].value) 
+                                  or (not empty contact['onlineRsDescription'].value) 
+                                  or (not empty contact['onlineRsFunction'].value) 
+                                  or (not empty contact['hoursOfService'].value) 
+                                  or (not empty contact['contactInstructions'].value)                                   
+                                  or (not empty contact['role'].value)}">
+            <div class="details-unit">
+                <div class="details-unit-header">
+                    Contact                   	
+                </div>
+                <div class="details-unit-content">
+                    <ui:include src="./contact.xhtml" />
+                </div>
+            </div>
+        </h:panelGroup>
+    </ui:repeat>
+
+    <h:panelGroup rendered="#{not empty presentItem.properties['eopPlatform'].groups and (not empty presentItem.qualityIndicators) }">
+        <ui:include src="platformAndInstrument.xhtml">
+            <ui:param name="presentItem" value="#{presentItem}" />
+        </ui:include>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{presentItem.hasAcquisitionParameter and (not empty presentItem.qualityIndicators)}">
+        <ui:include src="acquisitionParameters.xhtml">
+            <ui:param name="presentItem" value="#{presentItem}" />
+        </ui:include>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty presentItem.additionalAttributes and (not empty presentItem.qualityIndicators)}">
+        <div class="details-unit">
+            <div class="details-unit-header">								
+                Additional attributes
+            </div>
+            <div class="details-unit-content">
+                <h:outputText value="#{presentItem.additionalAttributes}" escape="false"/>                
+            </div>
+        </div>
+    </h:panelGroup>
+</ui:composition>

@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"	               
+                xmlns:p="http://primefaces.org/ui"	
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <p:commandButton icon="fa fa-fw fa-close"
+                     actionListener="#{layoutBean.closeUndockedOutput()}"
+                     rendered="#{not configBean.configuration.layoutDocked}"
+                     title="Close"	
+                     styleClass="toggle-results-panel-close-icon"
+                     oncomplete="fedeoclient_webapp_closeUndockedResultsPanel()" 
+                     onerror="fedeoclient_webapp_closeUndockedResultsPanel()"
+                     update=":toolbarForm :searchInputForm :messageForm"/>
+
+    <p:selectBooleanButton value="#{layoutBean.outputToggle}"
+                           onIcon="fa fa-fw fa-compress" offIcon="fa fa-fw fa-expand" 
+                           title="#{layoutBean.outputToggle ? 'Compact': 'Expand'}"
+                           onLabel="ui-button" offLabel="ui-button"				
+                           rendered="#{not configBean.configuration.layoutDocked}"
+                           styleClass="toggle-results-panel-icon-list-view"
+                           onchange="fedeoclient_webapp_maximumUndockedResultsPanel();fedeoclient_webapp_redrawResultsForm()"/>
+</ui:composition>

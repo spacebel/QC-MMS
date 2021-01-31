@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"                
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:spb="http://www.spacebel.be/jsf"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"               
+	xmlns:ui="http://java.sun.com/jsf/facelets">    
+	<div class="thumbnails-view">	
+		<pe:fluidGrid id="os-product-search-results-carrousel"                          
+			value="#{searchBean.searchData.datasetPaginator.data.fluidItems}" 
+			var="fluidItem"
+			fitWidth="false" hGutter="1" vGutter="1">			
+			<c:choose>
+				<c:when test="#{configBean.configuration.layoutDocked 
+					or (not configBean.configuration.layoutDocked and layoutBean.outputToggle)}">
+					<pe:fluidGridItem styleClass="fluidgrid-cell">
+						<ui:include src="datasetThumbnailCell.xhtml"/>
+					</pe:fluidGridItem>
+				</c:when>
+				<c:otherwise>
+					<pe:fluidGridItem styleClass="fluidgrid-cell-small">
+						<ui:include src="datasetThumbnailCell.xhtml"/>
+					</pe:fluidGridItem>
+				</c:otherwise>
+			</c:choose>
+		</pe:fluidGrid>
+	</div>
+</ui:composition>

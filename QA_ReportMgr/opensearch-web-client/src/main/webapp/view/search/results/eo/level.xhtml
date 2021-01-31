@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"			
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">    
+
+    <h:panelGroup rendered="#{level.isisRastersComplete() != null}">
+        <h:outputText value="Rasters complete: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.isisRastersComplete()}" />
+        <br/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{level.isisCalibrationMetadata() != null}">
+        <h:outputText value="Calibration metadata: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.isisCalibrationMetadata()}" />
+        <br/>
+    </h:panelGroup> 
+
+    <h:panelGroup rendered="#{level.isisRastersRead() != null}">
+        <h:outputText value="Rasters read: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.isisRastersRead()}" />
+        <br/>
+    </h:panelGroup> 
+
+    <h:panelGroup rendered="#{level.isisMetadataRead() != null}">
+        <h:outputText value="Metadata read: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.isisMetadataRead()}" />
+        <br/>
+    </h:panelGroup> 
+
+    <h:panelGroup rendered="#{level.isisCharacteristicsCompliant() != null}">
+        <h:outputText value="Characteristics compliant: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.isisCharacteristicsCompliant()}" />
+        <br/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{level.bits != null}">
+        <h:outputText value="Bits: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.bits}" />
+        <br/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{level.columns != null}">
+        <h:outputText value="Columns: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.columns}" />
+        <br/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{level.rows != null}">
+        <h:outputText value="Rows: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.rows}" />
+        <br/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{level.channels != null}">
+        <h:outputText value="Channels: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.channels}" />
+        <br/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty level.format}">
+        <h:outputText value="Format: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.format}" />
+        <br/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{level.epsg != null}">
+        <h:outputText value="EPSG: " styleClass="details-text-label" style="margin-left: 54px;" />
+        <h:outputText value="#{level.epsg}" />
+        <br/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{level.bands != null and (not empty level.bands)}">
+        <i class="fa fa-fw fa-plus-square-o" 
+           style="margin-left: 54px;"
+           onclick="fedeoclient_webapp_slideToggle(this)"
+           title="View more details"/>
+        <h:outputText value="Bands: " 
+                      styleClass="details-text-label" 
+                      style="margin-left: 3px;" />        
+        <div class="collapse-expand-contents">
+            <ui:repeat var="band" value="#{level.bands}">
+                <h:outputText value="#{searchBean.jsonToHtml(band, 74)}" escape="false"/>                  
+            </ui:repeat>
+        </div>
+    </h:panelGroup>
+</ui:composition>

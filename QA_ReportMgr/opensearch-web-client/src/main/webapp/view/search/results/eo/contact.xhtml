@@ -1,0 +1,298 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"			
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:panelGroup rendered="#{not empty contact['organisationName'].value}">			
+        <h:outputText value="Organisation name: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['organisationName'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['individualName'].value}">	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value}"><br /></ui:fragment>
+        <h:outputText value="Individual name: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['individualName'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['positionName'].value}" >
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value}"><br /></ui:fragment>
+        <h:outputText value="Position name: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['positionName'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['phone'].value}" >
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value}"><br /></ui:fragment>
+        <h:outputText value="Phone: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['phone'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['facsimile'].value}">
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value}"><br /></ui:fragment>
+        <h:outputText value="Facsimile: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['facsimile'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['deliveryPoint'].value}" >
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value}"><br /></ui:fragment>
+        <h:outputText value="Delivery point: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['deliveryPoint'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['city'].value}" >	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value}"><br /></ui:fragment>
+        <h:outputText value="City: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['city'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['administrativeArea'].value}" >	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value}"><br /></ui:fragment>
+        <h:outputText value="Administrative area: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['administrativeArea'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['postalCode'].value}" >	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value}"><br /></ui:fragment>
+        <h:outputText value="Postal code: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['postalCode'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['street'].value}" >	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value
+                                 or not empty contact['postalCode'].value }"><br /></ui:fragment>
+        <h:outputText value="Street: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['street'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['locality'].value}" >	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value                                  
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value
+                                 or not empty contact['postalCode'].value
+                                 or not empty contact['street'].value}"><br /></ui:fragment>
+        <h:outputText value="Locality: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['locality'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['country'].value}">
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value 
+                                 or not empty contact['postalCode'].value
+                                 or not empty contact['street'].value
+                                 or not empty contact['locality'].value}"><br /></ui:fragment>
+        <h:outputText value="Country: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['country'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['electronicMail'].value}">
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value  
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value 
+                                 or not empty contact['postalCode'].value
+                                 or not empty contact['street'].value
+                                 or not empty contact['locality'].value
+                                 or not empty contact['country'].value}"><br /></ui:fragment>
+        <h:outputText value="E-mail: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['electronicMail'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['onlineRsLinkage'].value}">
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value 
+                                 or not empty contact['postalCode'].value
+                                 or not empty contact['street'].value
+                                 or not empty contact['locality'].value
+                                 or not empty contact['country'].value 
+                                 or not empty contact['electronicMail'].value}"><br /></ui:fragment>
+        <h:outputText value="Online resource" styleClass="details-text-label"/>
+        <h:outputText value=" (#{contact['onlineRsFunction'].value})" rendered="#{not empty contact['onlineRsFunction'].value}" styleClass="details-text-label"/>	
+        <h:outputText value=": " styleClass="details-text-label"/>
+        <a href="#{contact['onlineRsLinkage'].value}" target="_blank" class="href-icon">#{contact['onlineRsLinkage'].value}</a>		
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['onlineRsProtocol'].value}" >
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value 
+                                 or not empty contact['postalCode'].value
+                                 or not empty contact['street'].value
+                                 or not empty contact['locality'].value
+                                 or not empty contact['country'].value 
+                                 or not empty contact['electronicMail'].value 
+                                 or not empty contact['onlineRsLinkage'].value}"><br /></ui:fragment>
+        <h:outputText value="Resource protocol:" styleClass="details-text-label"/>
+        <h:outputText value="#{contact['onlineRsProtocol'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['onlineRsName'].value}" >	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value 
+                                 or not empty contact['postalCode'].value 
+                                 or not empty contact['street'].value
+                                 or not empty contact['locality'].value
+                                 or not empty contact['country'].value 
+                                 or not empty contact['electronicMail'].value 
+                                 or not empty contact['onlineRsLinkage'].value 
+                                 or not empty contact['onlineRsProtocol'].value}"><br /></ui:fragment>
+        <h:outputText value="Resource name: " styleClass="details-text-label"/>			
+        <h:outputText value="#{contact['onlineRsName'].value}" />
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['onlineRsDescription'].value}">	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value 
+                                 or not empty contact['postalCode'].value 
+                                 or not empty contact['street'].value
+                                 or not empty contact['locality'].value
+                                 or not empty contact['country'].value 
+                                 or not empty contact['electronicMail'].value 
+                                 or not empty contact['onlineRsLinkage'].value 
+                                 or not empty contact['onlineRsProtocol'].value 
+                                 or not empty contact['onlineRsName'].value}"><br /></ui:fragment>
+        <h:outputText value="Resource description: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['onlineRsDescription'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['hoursOfService'].value}">	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value 
+                                 or not empty contact['postalCode'].value 
+                                 or not empty contact['street'].value
+                                 or not empty contact['locality'].value
+                                 or not empty contact['country'].value 
+                                 or not empty contact['electronicMail'].value 
+                                 or not empty contact['onlineRsLinkage'].value 
+                                 or not empty contact['onlineRsProtocol'].value 
+                                 or not empty contact['onlineRsName'].value 
+                                 or not empty contact['onlineRsDescription'].value}"><br /></ui:fragment>
+        <h:outputText value="Hours of service: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['hoursOfService'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['contactInstructions'].value}" >	
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value 
+                                 or not empty contact['postalCode'].value 
+                                 or not empty contact['street'].value
+                                 or not empty contact['locality'].value
+                                 or not empty contact['country'].value 
+                                 or not empty contact['electronicMail'].value
+                                 or not empty contact['onlineRsLinkage'].value 
+                                 or not empty contact['onlineRsProtocol'].value 
+                                 or not empty contact['onlineRsName'].value 
+                                 or not empty contact['onlineRsDescription'].value 
+                                 or not empty contact['hoursOfService'].value}"><br /></ui:fragment>
+        <h:outputText value="Instructions: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['contactInstructions'].value}"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty contact['role'].value}" >
+        <ui:fragment rendered="#{not empty contact['organisationName'].value 
+                                 or not empty contact['individualName'].value 
+                                 or not empty contact['positionName'].value 
+                                 or not empty contact['phone'].value 
+                                 or not empty contact['facsimile'].value 
+                                 or not empty contact['deliveryPoint'].value 
+                                 or not empty contact['city'].value 
+                                 or not empty contact['administrativeArea'].value 
+                                 or not empty contact['postalCode'].value 
+                                 or not empty contact['street'].value
+                                 or not empty contact['locality'].value
+                                 or not empty contact['country'].value 
+                                 or not empty contact['electronicMail'].value 
+                                 or not empty contact['onlineRsLinkage'].value 
+                                 or not empty contact['onlineRsProtocol'].value 
+                                 or not empty contact['onlineRsName'].value 
+                                 or not empty contact['onlineRsDescription'].value 
+                                 or not empty contact['hoursOfService'].value 
+                                 or not empty contact['contactInstructions'].value}"><br /></ui:fragment>
+        <h:outputText value="Role: " styleClass="details-text-label"/>
+        <h:outputText value="#{contact['role'].value}" />
+    </h:panelGroup>
+</ui:composition>

@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"			
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+    <div class="details-unit">
+        <div class="details-unit-header">
+            Platform and instrument
+        </div>
+        <div class="details-unit-content">
+            <h:panelGroup rendered="#{not empty presentItem.properties['eopPlatform'].groups}">
+                <ui:repeat var="platform" value="#{presentItem.properties['eopPlatform'].groups}" varStatus="status">
+                    <ui:fragment rendered="#{not status.first}"><br /></ui:fragment>
+
+                    <h:panelGroup rendered="#{not empty platform['shortName'].value}">						
+                        <h:outputText value="Platform: " styleClass="details-text-label" />
+                        <h:outputText value="#{platform['shortName'].value}" />
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty platform['serialIdentifier'].value}">
+                        <ui:fragment rendered="#{not empty platform['shortName'].value}"><br /></ui:fragment>
+                        <h:outputText value="Serial identifier: " styleClass="details-text-label" />
+                        <h:outputText value="#{platform['serialIdentifier'].value}" />
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty platform['orbitType'].value}">
+                        <ui:fragment rendered="#{not empty platform['shortName'].value or not empty platform['serialIdentifier'].value}"><br /></ui:fragment>
+                        <h:outputText value="Orbit Type: " styleClass="details-text-label" />
+                        <h:outputText value="#{platform['orbitType'].value}"/>
+                    </h:panelGroup>
+                </ui:repeat>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['instrument'].groups}">
+                <ui:fragment rendered="#{not empty presentItem.properties['eopPlatform'].groups}"><br /></ui:fragment>
+
+                <ui:repeat var="instrument" value="#{presentItem.properties['instrument'].groups}" varStatus="status">												
+                    <ui:fragment rendered="#{not status.first}"><br /></ui:fragment>
+
+                    <h:panelGroup rendered="#{not empty instrument['shortName'].value}">
+                        <h:outputText value="Instrument: " styleClass="details-text-label" />
+                        <h:outputText value="#{instrument['shortName'].value}" styleClass="series-details-grid-value" />
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty instrument['description'].value}">
+                        <ui:fragment rendered="#{not empty instrument['shortName'].value}"><br /></ui:fragment>
+                        <h:outputText value="Instrument description: " styleClass="details-text-label" />
+                        <h:outputText value="#{instrument['description'].value}" styleClass="series-details-grid-value" />
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty instrument['type'].value}">
+                        <ui:fragment rendered="#{not empty instrument['shortName'].value or not empty instrument['description'].value}"><br /></ui:fragment>
+                        <h:outputText value="Instrument type: " styleClass="details-text-label" />
+                        <h:outputText value="#{instrument['type'].value}" styleClass="series-details-grid-value" />
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty instrument['auxiliaryType'].value}">
+                        <ui:fragment rendered="#{not empty instrument['shortName'].value or not empty instrument['description'].value or not empty instrument['type'].value}"><br /></ui:fragment>
+                        <h:outputText value="Instrument auxiliary type: " styleClass="details-text-label" />
+                        <h:outputText value="#{instrument['auxiliaryType'].value}" styleClass="series-details-grid-value" />
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty instrument['sensorType'].value}">
+                        <ui:fragment rendered="#{not empty instrument['shortName'].value 
+                                                 or not empty instrument['description'].value 
+                                                 or not empty instrument['type'].value
+                                                 or not empty instrument['auxiliaryType'].value }"><br /></ui:fragment>
+                        <h:outputText value="Sensor type: " styleClass="details-text-label" />
+                        <h:outputText value="#{instrument['sensorType'].value}" styleClass="series-details-grid-value" />
+                    </h:panelGroup>
+                </ui:repeat>					
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['auxiliaryInstrument'].groups}">
+                <ui:fragment rendered="#{not empty presentItem.properties['eopPlatform'].groups or not empty presentItem.properties['instrument'].groups}"><br /></ui:fragment>
+
+                <ui:repeat var="instrument" value="#{presentItem.properties['instrument'].groups}" varStatus="status">												
+                    <ui:fragment rendered="#{not status.first}"><br /></ui:fragment>
+
+                    <h:panelGroup rendered="#{not empty instrument['shortName'].value}">
+                        <h:outputText value="Auxiliary instrument: " styleClass="details-text-label" />
+                        <h:outputText value="#{instrument['shortName'].value}" styleClass="series-details-grid-value" />
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty instrument['description'].value}">
+                        <ui:fragment rendered="#{not empty instrument['shortName'].value}"><br /></ui:fragment>
+                        <h:outputText value="Auxiliary instrument description: " styleClass="details-text-label" />
+                        <h:outputText value="#{instrument['description'].value}" styleClass="series-details-grid-value" />
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty instrument['type'].value}">
+                        <ui:fragment rendered="#{not empty instrument['shortName'].value or not empty instrument['description'].value}"><br /></ui:fragment>
+                        <h:outputText value="Auxiliary instrument type: " styleClass="details-text-label" />
+                        <h:outputText value="#{instrument['type'].value}" styleClass="series-details-grid-value" />
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{not empty instrument['auxiliaryType'].value}">
+                        <ui:fragment rendered="#{not empty instrument['shortName'].value or not empty instrument['description'].value or not empty instrument['type'].value}"><br /></ui:fragment>
+                        <h:outputText value="Auxiliary type: " styleClass="details-text-label" />
+                        <h:outputText value="#{instrument['auxiliaryType'].value}" styleClass="series-details-grid-value" />
+                    </h:panelGroup>
+                </ui:repeat>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty presentItem.properties['sensorDetails'].groups}">							
+                <ui:fragment rendered="#{not empty presentItem.properties['eopPlatform'].groups or not empty presentItem.properties['instrument'].groups or not empty presentItem.properties['auxiliaryInstrument'].groups}"><br /></ui:fragment>
+                <ui:include src="sensor.xhtml">
+                    <ui:param name="presentItem" value="#{presentItem}" />
+                </ui:include>
+            </h:panelGroup>
+        </div>		
+    </div>    
+</ui:composition>

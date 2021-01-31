@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"			
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:outputText value="MultiSurface: " styleClass="details-text-label"
+		rendered="#{not empty presentItem.properties['multiSurfacePolygon1'].value}"/>
+	<ui:repeat var="proValue" value="#{searchBean.iteratePropertyValues(presentItem,'multiSurfacePolygon')}">
+		<ui:fragment rendered="#{(not empty proValue)}"><br /></ui:fragment>
+		<h:outputText value="#{proValue}" rendered="#{not empty proValue}"/>
+	</ui:repeat>		
+	
+	<ui:fragment rendered="#{not empty presentItem.properties['georssPolygon1'].value 
+		and (not empty presentItem.properties['multiSurfacePolygon1'].value)}"><br /></ui:fragment>
+	<h:outputText value="Polygon: " styleClass="details-text-label"
+		rendered="#{not empty presentItem.properties['georssPolygon1'].value}"/>
+	<ui:repeat var="proValue" value="#{searchBean.iteratePropertyValues(presentItem,'georssPolygon')}">
+		<ui:fragment rendered="#{(not empty proValue)}"><br /></ui:fragment>
+		<h:outputText value="#{proValue}" rendered="#{not empty proValue}"/>
+	</ui:repeat>		
+	
+	<ui:fragment rendered="#{(not empty presentItem.properties['georssBox'].value) 
+                                 and (searchBean.hasProperties(presentItem,'multiSurfacePolygon1,georssPolygon1'))}"><br /></ui:fragment>
+	<h:outputText value="Box: " styleClass="details-text-label"
+		rendered="#{not empty presentItem.properties['georssBox'].value}"/>
+	<h:outputText value="#{presentItem.properties['georssBox'].value}" 
+		rendered="#{not empty presentItem.properties['georssBox'].value}"/>
+
+	<ui:fragment rendered="#{(not empty presentItem.properties['georssLine'].value) 
+		and (searchBean.hasProperties(presentItem,'multiSurfacePolygon1,georssPolygon1,georssBox')) }"><br /></ui:fragment>
+	<h:outputText value="Line: " styleClass="details-text-label"
+		rendered="#{not empty presentItem.properties['georssLine'].value}"/>
+	<h:outputText value="#{presentItem.properties['georssLine'].value}" 
+		rendered="#{not empty presentItem.properties['georssLine'].value}"/>
+	
+	<ui:fragment rendered="#{(not empty presentItem.properties['georssPoint'].value) 
+		and (searchBean.hasProperties(presentItem,'multiSurfacePolygon1,georssPolygon1,georssBox,georssLine'))}"><br /></ui:fragment>
+	<h:outputText value="Point: " styleClass="details-text-label"
+		rendered="#{not empty presentItem.properties['georssPoint'].value}"/>
+	<h:outputText value="#{presentItem.properties['georssPoint'].value}" 
+		rendered="#{not empty presentItem.properties['georssPoint'].value}"/>
+		
+	<ui:fragment rendered="#{(not empty presentItem.properties['multiPoint1'].value) 
+		and (searchBean.hasProperties(presentItem,'multiSurfacePolygon1,georssPolygon1,georssBox,georssLine,georssPoint'))}"><br /></ui:fragment>
+	<h:outputText value="MultiPoint: " styleClass="details-text-label"
+		rendered="#{not empty presentItem.properties['multiPoint1'].value}"/>	
+	<ui:repeat var="proValue" value="#{searchBean.iteratePropertyValues(presentItem,'multiPoint')}">
+		<h:outputText value="#{proValue} " rendered="#{not empty proValue}"/>
+	</ui:repeat>
+	
+	<ui:fragment rendered="#{(not empty presentItem.properties['multiPoint1'].value) 
+		and (searchBean.hasProperties(presentItem,'multiSurfacePolygon1,georssPolygon1,georssBox,georssLine,georssPoint,multiPoint1'))}"><br /></ui:fragment>
+	<h:outputText value="MultiLine: " styleClass="details-text-label"
+		rendered="#{not empty presentItem.properties['multiLineString1'].value}"/>		
+	<ui:repeat var="proValue" value="#{searchBean.iteratePropertyValues(presentItem,'multiLineString')}">
+		<ui:fragment rendered="#{(not empty proValue)}"><br /></ui:fragment>
+		<h:outputText value="#{proValue}" rendered="#{not empty proValue}"/>
+	</ui:repeat>
+		
+</ui:composition>
