@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"	
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:composition>
+		<p:outputPanel rendered="#{not empty preview}">
+			<img src="#{preview}" style="max-width: 80px; max-height: 80px;" />
+		</p:outputPanel>
+		<p:outputPanel rendered="#{empty preview and (not empty mediaThumbnail)}">
+			<img src="#{mediaThumbnail}" style="max-width: 80px; max-height: 80px;" />
+		</p:outputPanel>
+		<p:outputPanel rendered="#{(empty preview) and (empty mediaThumbnail) and (not empty mediaQuicklook)}">
+			<img src="#{mediaQuicklook}" style="max-width: 80px; max-height: 80px;" />
+		</p:outputPanel>
+		<p:outputPanel
+			rendered="#{(empty preview) and (empty mediaThumbnail) and (empty mediaQuicklook) and (not empty image)}">
+			<img src="#{image}" style="max-width: 80px; max-height: 80px;" />
+		</p:outputPanel>
+		<p:outputPanel rendered="#{(empty preview) and (empty mediaThumbnail) and (empty mediaQuicklook) and (empty image) and (not empty icon)}">
+			<img src="#{icon}" style="max-width: 80px; max-height: 80px;" />
+		</p:outputPanel>
+	</ui:composition>
+</html>

@@ -1,0 +1,729 @@
+
+
+/* Fixing OpenLayers CSS */
+.ol-control button {
+    background: none;
+    display: block;
+}
+
+/* FLUID GRID */
+.pe-fluidgrid-item.ui-widget-header {
+    background: none;
+    border: none;
+}
+
+.pe-fluidgrid {
+    /*max-width: 900px;*/
+
+}
+
+.pe-fluidgrid .pe-fluidgrid-item {
+    width: 60px;
+    height: 14px;
+    /*border-radius: 5px;*/
+    padding:0;
+    /*
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    */
+    text-align: center;
+    display: flex;	
+}
+
+.ellipsis-div {
+    display: block;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+/* hover display div */
+.hoverDisplayDivContainer {
+    background-color: rgba(20, 20, 50, 0.2);
+
+    visibility: visible;
+}
+/* hover display div*/
+.hoverDisplayDivContainer:hover {
+    background-color: rgba(20, 20, 50, 0.4);
+    visibility: visible;
+    font-color: white;
+}
+
+.hoverDisplayDivContainer:hover .hoverDisplayDiv {
+    visibility: visible;
+}
+
+.hoverDisplayDivContainer .hoverDisplayDiv {
+    visibility: hidden;
+    /* put buttons at real bottom*/
+}
+
+.hoverDisplayDivContainer  .seriesInfoLabel {
+    color: white;
+    /*text-transform: uppercase;*/
+    font-weight: bold;
+}
+
+.hoverDisplayDivContainer  .seriesInfoValue {
+    width: initial;
+    text-shadow: 0 0 4px #000;
+    text-align: center;
+    padding: 4px;
+    color: white;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.seriesInfoLabel {
+    text-align: left;
+    width: 80px;
+    color: grey;
+    /*text-transform: uppercase;*/
+}
+
+.productsInfoLabel {
+    text-align: left;
+    color: grey;
+    /*text-transform: uppercase;*/
+    width: 110px;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.seriesInfoValue {
+    width: 200px;
+    font-weight: normal;
+    text-align: justify
+}
+
+.productsInfoValue {
+    width: 200px;
+    font-weight: normal;
+    text-align: justify
+}
+
+.pe-fluidgrid-item.w2 {
+    width: 130px;
+}
+
+.pe-fluidgrid-item.w3 {
+    width: 200px;
+}
+
+.pe-fluidgrid-item.w4 {
+    width: 270px;
+}
+
+.pe-fluidgrid-item.w4half {
+    width: 300px;
+}
+
+.pe-fluidgrid-item.h2 {
+    height: 28px;
+}
+
+.pe-fluidgrid-item.h3 {
+    font-size: inherit;
+    font-weight: inherit;
+    height: 40px;
+}
+
+.pe-fluidgrid-item.himage {
+    font-size: inherit;
+    font-weight: inherit;
+    height: 125px;
+}
+/* end fluid grid */
+
+/* no border on toolbar*/
+.ui-toolbar.ui-widget-header {
+    border: none !important;
+}
+
+/* increase icon padding in commandbutton*/
+.ui-button-text-icon-left .ui-button-text {
+    padding-left: 2.5em !important;
+}
+/* flat button */
+
+/* resize fa icons*/
+.os-client-layout-content .fa {
+    text-shadow: none;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+.os-client-layout-content .ui-button-text {
+    text-shadow: none;
+}
+
+.os-client-layout-content .ui-widget .blackFlatButton.ui-state-hover {
+    color: green;
+    outline: none;
+}
+
+.os-client-layout-content .ui-widget .blackFlatButton.ui-state-focus {
+    color: orange;
+    outline: none;
+}
+
+.os-client-layout-content .ui-widget .blackFlatButton {
+    box-shadow: none;
+    border-radius: 0;
+    border-color: black;
+    color: #FFF;
+    font-size: 14px;
+    background-color: black;
+    transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -webkit-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+}
+
+.os-client-layout-content .ui-widget .blackFlatButton span {
+    background-color: black;
+}
+
+.os-client-layout-content .ui-widget .whiteFlatButton {
+    box-shadow: none;
+    border-radius: 0;
+    border-color: transparent;
+    background-image: none;
+    color: darkgrey;
+    font-size: 14px;
+    background-color: transparent;
+    transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -webkit-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+}
+
+.os-client-layout-content .ui-widget .whiteFlatButton span {
+    background-color: transparent;
+}
+
+.os-client-layout-content .ui-widget .whiteFlatButton.ui-state-hover,
+.os-client-layout-content .ui-widget .whiteFlatButton.ui-state-hover.ui-state-focus
+{
+    color: green;
+    outline: none;
+}
+
+.os-client-layout-content .ui-widget .whiteFlatButton.ui-state-focus {
+    color: darkgrey;
+    outline: none;
+}
+
+/** auto height layout unit */
+div.autoheight, .autoheight>div {
+    height: auto !important;
+}
+
+.ui-button-icon-only .ui-button-text {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.rtlHeader .ui-widget-header {
+    overflow: hidden;
+    direction: rtl;
+}
+
+.smallInput input {
+    width: 120px;
+}
+
+.ui-widget-overlay {
+    background: #FFFFFF !important;
+}
+
+.ui-paginator .ui-paginator-current {
+    position: absolute;
+    right: 5px;
+}
+
+.ui-paginator .pageInfo {
+    position: absolute;
+    left: 1px;
+    padding: 2px 6px;
+}
+
+.nopadding .pe-layout-pane-content {
+    padding: 0px;
+}
+
+.forceAutoWidth {
+    width: auto !important;
+}
+
+/** Remove borders in panel , layout unit, and menu and arrange margin */
+div.ui-panel {
+    border: 0px;
+}
+
+.ui-panel {
+    padding: 0em !important;
+}
+
+div.ui-layout-unit {
+    border: 0px;
+    padding: 0px;
+}
+
+div.ui-menu {
+    padding: 0px;
+    /*width: inherit;*/
+}
+/** end borders */
+
+/*** Primefaces Liferay support ***/
+.ui-panel .ui-panel-titlebar {
+    padding: 0.3em 1em 0.1em;
+}
+
+.ui-tabs .ui-tabs-panel {
+    padding: 0em 0em 0em !important;
+}
+
+.ui-datatable .ui-paginator, .ui-datatable .ui-paginator {
+    line-height: 14px;
+}
+
+.smallFont td {
+    font-size: 11px;
+}
+
+.portlet-body li {
+    line-height: 12px;
+    font-size: 12px;
+}
+
+input, select, textarea, button, keygen, isindex, legend, a {
+    font-size: 12px;
+    font-family: Arial, Verdana, sans-serif;
+    color: #000000;
+}
+
+.ui-button-text-icon-left .ui-button-text {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.ui-button-text-only .ui-button-text {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+label, input, button, select, textarea {
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 20px;
+}
+
+.portlet-body .ui-accordion-header {
+    height: 12px;
+    font-size: 12px;
+    line-height: 12px;
+    margin: 0 .2em 1px 0;
+}
+
+.ui-tree {
+    width: auto;
+    min-width: 120px;
+}
+
+.portlet-body select, .portlet-body input[type="text"], .portlet-body input[type="password"],
+.portlet-body input[type="datetime"], .portlet-body input[type="datetime-local"],
+.portlet-body input[type="date"], .portlet-body input[type="month"],
+.portlet-body input[type="time"], .portlet-body input[type="week"],
+.portlet-body input[type="number"], .portlet-body input[type="email"],
+.portlet-body input[type="url"], .portlet-body input[type="search"],
+.portlet-body input[type="tel"], .portlet-body input[type="color"],
+.portlet-body  .uneditable-input {
+    display: inline-block;
+    height: 20px;
+    padding: 0px 6px;
+    margin-bottom: 2px;
+    margin-right: 2px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #555555;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    vertical-align: middle;
+}
+
+.dynamicPanelGrid table {
+    width: auto;
+    width: initial !important;
+}
+
+.noheaderTable thead {
+    display: none;
+}
+
+.noheaderTable .ui-widget-header {
+    height: 0px;
+}
+
+.portlet-body .ui-selectonemenu {
+    height: 22px;
+}
+
+.portlet-body .ui-inputfield {
+    padding: 2px;
+    padding-bottom: 0px;
+}
+
+.ui-datepicker-trigger {
+    height: 20px;
+}
+
+.ui-helper-hidden {
+    display: none;
+}
+
+.portlet-body .ui-widget, .ui-widget label, .ui-widget label, .ui-widget input,
+.ui-widget button, .ui-widget select, .ui-widget textarea,
+.ui-helper-reset {
+    /*font-size: 12px;*/
+    /*font-family: Arial, 'Lucida Grande', 'Lucida Sans', sans-serif;*/
+    font-family: Arial, Verdana, sans-serif;
+}
+
+.ui-state-hover a, .ui-widget-content .ui-state-hover a,
+.ui-widget-header .ui-state-hover a, .ui-state-focus a,
+.ui-widget-content .ui-state-focus a, .ui-widget-header .ui-state-focus a
+{
+    font-weight: bold;
+}
+
+.ui-state-default a, .ui-widget-content .ui-state-default a,
+.ui-widget-header .ui-state-default  a {
+    font-weight: bold;
+}
+
+.ui-widget-content ul, .ui-widget-content ol {
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
+/*SelectOneMenu*/
+.ui-selectonemenu .ui-widget {
+    font-size: 1.1em;
+}
+
+.portlet-content h1, .portlet-content h2, .portlet-content h3 {
+    line-height: 20px;
+    margin: 0px;
+}
+
+.ui-selectonemenu-label {
+    margin-bottom: 0px;
+}
+
+.ui-widget input {
+    font-size: 1em;
+}
+
+/*link in menu*/
+.ui-widget-content a {
+    color: #362b36;
+}
+
+li.ui-menuitem a.ui-state-hover{
+    background: #eee;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover,
+.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus
+{
+    border: 1px solid #74b2e2;
+    background: #e4f1fb
+        url("/showcase/javax.faces.resource/images/ui-bg_glass_100_e4f1fb_1x400.png.xhtml?ln=primefaces-cupertino")
+        50% 50% repeat-x;
+    font-weight: bold;
+    color: #0070a3;
+}
+
+/**
+Cupertino Tab
+*/
+.ui-accordion-header {
+    height: 18px;
+    font-size: 14px;
+    line-height: inherit;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    font-weight: bold;
+    /*color: #2779aa;*/
+}
+
+.ui-panel-title {
+    font-weight: bold;
+    /* color: #2779aa; */
+}
+
+/** CUPERTINO
+ .ui-state-active, .ui-widget-content .ui-state-active,  .ui-widget-header .ui-state-active
+        {
+        font-weight: bold;
+        color: #ffffff;
+}
+*/
+
+/* input fields */
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield
+{
+    background: #ffffff;
+    -moz-box-shadow: inset 0 2px 2px #8f8f8f;
+    -webkit-box-shadow: inset 0 2px 2px #8f8f8f;
+    box-shadow: inset 0 2px 2px #8f8f8f;
+    color: #222222;
+    font-weight: normal;
+}
+
+.ui-fieldset legend {
+    width: auto;
+    font-size: 12px;
+    line-height: 12px;
+}
+
+/** CUPERTINO
+ .ui-state-active,  .ui-widget-content .ui-state-active,  .ui-widget-header .ui-state-active
+        {
+        border: 1px solid #2694e8;
+        font-weight: bold;
+        color: #ffffff;
+}
+*/
+div.portlet-content {
+    border: none;
+    padding: 0px;
+    padding-top: 1px;
+}
+
+/********** GENERAL **********/
+.os-client-layout-content {
+    /* nothing here, used to wrap the whole content of the portlet, 
+       in order to avoid css collision with other portlet providers 
+    */
+
+}
+
+.noborder-table tbody, .noborder-table tr, .noborder-table .ui-datatable-data td,
+.noborder-table .ui-datatable-data-empty td {
+    border-style: none !important;
+}
+
+.os-client-layout-content a {
+    text-decoration: underline;
+}
+
+.os-client-layout-content .disabled, .os-client-layout-content .disabled:focus,
+.os-client-layout-content .disabled:hover {
+    background-color: #CCC !important;
+    cursor: progress;
+}
+
+.os-client-layout-content table {
+    /*border-collapse: separate;*/
+}
+
+.os-client-layout-content .searchInput table thead tr {
+    display: none;
+}
+
+.os-client-layout-content .fullTable table {
+    min-width: 100%;
+}
+
+.os-client-layout-content .borderless table thead th,
+.os-client-layout-content .borderless table tbody,
+.os-client-layout-content .borderless table tbody tr,
+.os-client-layout-content .borderless table tbody td {
+    border-style: none;
+}
+
+.os-client-layout-content .searchInput .ui-datatable .ui-datatable-data td,
+.ui-datatable .ui-datatable-data-empty td {
+    border-style: none;
+}
+
+.os-client-layout-content .searchInput .ui-datatable .ui-datatable-data tr,
+.ui-datatable .ui-datatable-data-empty tr {
+    border-style: none;
+}
+
+.os-client-layout-content .center {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.os-client-layout-content textarea {
+    resize: none;
+}
+
+.os-client-layout-content .valign-top {
+    vertical-align: top;
+}
+
+.os-client-layout-content .ui-datatable .searchOutputForm-label {
+    border-width: 0px;
+    font-weight: bold;
+    padding-right: 2px;
+    padding-left: 2px;
+    vertical-align: top;
+    max-width: 156px;
+    width: 1%;
+    white-space: nowrap !important;
+}
+
+.os-client-layout-content .ui-datatable .searchOutputForm-label-narrow
+{
+    border-width: 0px;
+    font-weight: bold;
+    padding-right: 2px;
+    padding-left: 2px;
+    vertical-align: top;
+    white-space: nowrap !important;
+    max-width: 60px;
+    width: 1%;
+}
+
+.os-client-layout-content .ui-datatable .searchOutputForm-label-narrow-90
+{
+    border-width: 0px;
+    font-weight: bold;
+    padding-right: 2px;
+    padding-left: 2px;
+    vertical-align: top;
+    white-space: nowrap !important;
+    max-width: 90px;
+}
+
+.os-client-layout-content .ui-datatable .searchOutputForm-value {
+    border-width: 0px;
+    text-align: justify;
+    overflow: auto;
+    word-wrap: break-word;
+    padding-right: 2px;
+    white-space: normal;
+    vertical-align: top;
+    max-width: 250px;
+}
+
+.os-client-layout-content .ui-datatable thead th,
+.os-client-layout-content .ui-datatable tbody td,
+.os-client-layout-content .ui-datatable tfoot td {
+    padding: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-bottom-color: grey;
+}
+
+.os-client-layout-content .presentOutputForm-label {
+    width: 200px;
+    border-width: 0px;
+    font-weight: bold;
+    padding-right: 1px;
+    padding-left: 1px;
+    margin-left: 5px;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.os-client-layout-content .presentOutputForm-value {
+    border-width: 0px;
+    text-align: justify;
+    white-space: normal;
+    vertical-align: top;
+}
+
+.os-client-layout-content .fieldset {
+    padding: 1px 5px;
+    margin: 1px;
+}
+
+.os-client-layout-content .fieldset .legend {
+    font-size: 12px;
+    font-weight: bold;
+    /*font-family: "Lucida Grande", "Lucida Sans", Arial, sans-serif;*/
+    font-family: Arial, Verdana, sans-serif;
+    /* color: #2779AA;*/
+    margin-bottom: 0px;
+    width: auto;
+    line-height: 15px;
+    padding: 1px 10px;
+}
+
+.os-client-layout-content .ui-datatable-scrollable-body table {
+    width: auto;
+}
+
+/** Theme customs **/
+.ui-accordion .ui-accordion-content {
+    padding: 5px 10px;
+}
+
+.smallbutton button {
+    height: 12px;
+    width: 12px;
+}
+
+.CodeMirror-scroll {
+    overflow: auto;
+    height: 500px !important;
+    position: relative;
+    outline: none;
+}
+
+hr {
+    margin: 0px 0px;
+}
+
+/****** NQMINH *************/
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield
+{
+    width: 120px;
+}
+
+.ui-panel .ui-panel-content {
+    padding: 0px 0px 0px 2em;
+}
+
+.os-client-layout-content .toolbarFormStyle .ui-selectbooleanbutton.ui-button.ui-state-active, .ui-selectonebutton .ui-button.ui-state-active, .ui-selectmanybutton .ui-button.ui-state-active {
+    border: none;
+    background: orange;
+    color: #000;
+}
+
+.os-client-layout-content .toolbarFormStyle .ui-button, button.ui-button.ui-state-default, .ui-button.ui-state-default {
+    border: none;
+    color: #000;
+    background: #fff;
+}
+
+
+.os-client-layout-content .undocked-advanced-search-panel div.advanced-search-tab .ui-selectbooleanbutton.ui-button.ui-state-active, .ui-selectonebutton .ui-button.ui-state-active, .ui-selectmanybutton .ui-button.ui-state-active {
+    border: none;
+    background: orange;
+    color: #000;
+}
+
+.os-client-layout-content .undocked-advanced-search-panel div.advanced-search-tab .ui-button, button.ui-button.ui-state-default, .ui-button.ui-state-default {
+    border: none;
+    color: #000;
+    background: #fff;
+}

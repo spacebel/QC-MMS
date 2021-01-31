@@ -1,0 +1,291 @@
+/**
+ * CSS Styles used in Spacebel Web Map Viewer
+ * Spacebel - Christophe NOEL -  2014
+ * Note: be careful this CSS must be loaded AFTER OL/theme/default/main.css
+ */
+
+/* north button */
+.ol-rotate.ol-control {
+    right: 50px;
+}
+
+/*.ol-rotate {
+    top: 50px;
+}*/
+
+/* layer switcher button*/
+.layer-switcher button {    
+    /* MNG: Change to circle     
+    background-color: rgba(0, 60, 136, 0.5);
+    width: 22px;
+    height: 22px;
+    background-size: contain;
+     background-position:0px;
+    */
+    width: 35px !important;
+    height: 35px !important;
+    background-size: 50% !important;
+    background-image: url("../../resources/images/layers.png") !important;
+    background-position:center center !important;
+    border-radius: 50% !important; 
+}
+.layer-switcher, .layer-switcher label {
+    color:black;}
+
+.nopadding {
+    padding: 0;
+}
+
+/** panelGrid invisible*/
+.blankGrid, .blankGrid td.ui-panelgrid-cell,.blankGrid tr {
+    border:0px;
+    border-width:0px;
+
+}
+.blankGrid td.ui-panelgrid-cell {
+    background-color:inherit;
+}
+
+/** Remove borders in panel , layout unit, and menu and arrange margin */
+.aui div.ui-panel {
+    border: 0px;
+}
+
+.aui div.ui-layout-unit {
+    border: 0px;
+}
+
+div.ui-menu {
+    padding: 0px;
+}
+/** end borders */
+.noborder td,.noborder thead,.noborder tr,.noborder th,.noborder tbody,.noborder table
+{
+    border: 0px !important;
+}
+
+.noborderGrid td,.noborderGrid thead,.noborderGrid tr,.noborderGrid th,.noborderGrid tbody,.noborderGrid
+{
+    border: 0px !important;
+    padding:4px !important;
+}
+
+.aui .nopadding .ui-panel-content {
+    padding: 0px;
+}
+
+.aui .portlet-body li {
+    line-height: 14px;
+}
+
+/** Primefaces dialog fix (move on resize) workaround */
+.ui-dialog {
+    position: fixed !important;
+}
+
+.stretch-first {
+    display: inline-block;
+}
+
+.stretch-first td {
+    padding: 0px 5px !important;
+}
+
+.stretch-first td:first-child {
+    padding-right: 5px;
+    white-space: nowrap !important;
+    width: 1%;
+}
+
+/* Openlayers Viewer: 100% height and default usual css */
+.ui-widget {
+    /*font-size: 11px !important;*/
+}
+
+.hoverButton img:hover {
+    border: 1px solid black;
+}
+
+.spacemap {
+    height: 100%;
+    width: 100%;
+    /*font-size: 80%;*/
+    font-size:16px;
+    /*
+    color: #222;
+    background: #fff;
+    margin: 1em 1.5em;
+    */
+    text-shadow: none!important;
+}
+.spacemap button,.spacemap button:hover {
+
+    text-shadow: none!important;
+}
+.spacemap button:hover {
+    background-image:none;
+}
+.olPopup {
+    font-weight: initial !important;
+}
+/*
+.spacemap a[href] {
+        color: #436976;
+        background-color: transparent;
+}
+*/
+#spacemapStatus {
+
+}
+
+/* Wrapper for the map fit size to container + status bar */
+.mapWrapperClass {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.mapWrapperClass td {
+    padding: 0px;
+    height: 100%;
+}
+
+/* error in default theme*/
+.spacemap .olControlAttribution {
+    bottom: 5px;
+}
+
+.spacemap .olControlMousePosition {
+    left: 5px !important;
+    max-width: 210px !important;
+    background-color: white !important;
+    opacity: 0.5 !important;
+    font-size: 9px;
+}
+
+/* Adapt zoom z-index to Primefaces menu*/
+div.olControlZoom {
+    z-index: 999 !important;
+}
+
+/*primefaces styles ovveride liferay theme defaults*/
+.primefacesStyles {
+    font-size: 12px !important;
+    font-color: black !important;
+    line-height: normal !important;
+}
+
+.primefacesStyles input {
+    line-height: normal !important;
+}
+
+.primefacesStyles ul,.primefacesStyles textarea,.primefacesStyles textarea
+{
+    padding: 0px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.primefacesStyles a {
+    color: black !important;
+}
+
+/* remove border and padding in layer switcher table*/
+.ui-datatable-padding tbody td {
+    padding: 2px 2px !important;
+    border: none !important;
+}
+/* align correctly the slider due to previous rule*/
+.ui-datatable-padding div.ui-slider {
+    margin-right: 10px;
+    margin-left: 5px;
+    top: 7px;
+    font-size: 10px !important;
+}
+
+.ui-datatable-padding .ui-chkbox .ui-chkbox-box {
+    width: 12px !important;
+    height: 12px !important;
+    vertical-align: middle !important;
+}
+
+.primefacesStyles .ui-inputfield,.primefacesStyles  .ui-widget-content .ui-inputfield,.primefacesStyles  .ui-widget-header .ui-inputfield
+{
+    background: #ffffff !important;
+    -moz-box-shadow: inset 0 2px 2px #8f8f8f !important;
+    -webkit-box-shadow: inset 0 2px 2px #8f8f8f !important;
+    box-shadow: inset 0 2px 2px #8f8f8f !important;
+    color: #222222 !important;
+    margin-bottom: 0px !important;
+}
+
+.primefacesStyles {input { height:15px!important;
+
+                   }
+
+}
+.primefacesStyles  .ui-corner-all {
+    -moz-border-radius: 6px !important;
+    -webkit-border-radius: 6px !important;
+}
+
+/* old rules */
+.viewerPanelFull,.viewerPanelFull div,.viewerPanelFull form {
+    height: 100%;
+}
+
+.viewerPanelFull .ui-panel-content {
+    padding-bottom: 5px;
+}
+
+.olLayerSwitcherLayerContainer div {
+    height: initial;
+}
+
+.aui form {
+    margin: 0px;
+}
+
+.ol-control button{
+    width: 35px;
+    height: 35px;
+    border-radius: 50% !important;    
+    background-color: #fff;
+    color: #000;
+}
+
+.ol-zoom .ol-zoom-in{
+    width: 35px;
+    height: 35px;
+    border-radius: 50% !important;    
+    background-color: #fff;
+    color: #000;
+}
+
+.ol-zoom .ol-zoom-out{
+    width: 35px;
+    height: 35px;
+    border-radius: 50% !important;
+    background-color: #fff;
+    color: #000;
+}
+
+.ol-zoom {
+    top: 130px;
+    right: .5em;
+}
+
+.layer-switcher {  
+    top: 210px !important;    
+}
+
+.layer-switcher ul{
+    padding: 0;
+    margin: 0;
+}
+
+.ol-attribution.ol-logo-only{
+    display:none;
+}
