@@ -1,0 +1,1 @@
+docker build -t spacebel/qa-voila:1.0 .
