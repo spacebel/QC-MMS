@@ -10,17 +10,16 @@ This repository publishes the QC-MMS components implemented by Spacebel and publ
 
 ## QI_MetadataCatalog
 The Quality Indicators (QIs)  Metadata Catalog provides a REST interface to manage (insert, update, delete, retrieve) the metadata information including the quality information (quality indicators) 
-associated to the different products and processing steps involved in the land monitoring products generation. The catalogue also stores the Quality Report definition that can be used to generate a Quality report
-during the processing of the Land Product.
+associated to the different products and processing steps involved in the land monitoring product generation. The catalogue also stores the Quality Report definition that can be used to generate a Quality report during the processing of the Land Product.
 The Catalog provides an OpenSearch interface to retrieve the product metadata that are returned following the application/geo+json (OGC 17-047) media type format.
 
 ## QA_ReportMgr
 
 The QA Report Manager is a Web client for the QI Metadata Catalog. It allows to search and display the product quality metadata stored in the catalog. 
-It also allows to display the Quality Report.
+It also allows to display the Quality Report associated to a Land Product.
 
 ## QA Report
-This component based on the Voilà OSS allows to visualize a live Quality Report as the ouput of the Quality Report (Jupyter notebook) execution.
+This component based on the Voilà OSS allows to visualize a live Quality Report as the ouput of a Jupyter notebook execution.
 
 
 
