@@ -6,7 +6,7 @@ early identification of potential risks in the production stages and report stan
 This project is a GSTP ESA project implemented by Spacebel and Mapradix. 
 
 # QC-MMS Components
-This repository publishes the QC-MMS components implemented by Spacebel and published under Apache License 2.0. The implemtation of these components uses third party packages published under licenses listed in the 3rd-party-licenses text file.
+This repository publishes the QC-MMS components implemented by Spacebel and published under Apache License 2.0. The implementation of these components uses third party packages published under licenses listed in the 3rd-party-licenses text file.
 
 ## QI_MetadataCatalog
 The Quality Indicators (QIs)  Metadata Catalog provides a REST interface to manage (insert, update, delete, retrieve) the metadata information including the quality information (quality indicators) 
