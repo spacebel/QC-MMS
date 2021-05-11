@@ -11,7 +11,7 @@ This repository publishes the QC-MMS components implemented by Spacebel and publ
 ## QI_MetadataCatalog
 The Quality Indicators (QIs)  Metadata Catalog provides a REST interface to manage (insert, update, delete, retrieve) the metadata information including the quality information (quality indicators) 
 associated to the different products and processing steps involved in the land monitoring product generation. The catalogue also stores the Quality Report definition that can be used to generate a Quality report during the processing of the Land Product.
-The Catalog provides an OpenSearch interface to retrieve the product metadata that are returned following the application/geo+json (OGC 17-047) media type format.
+The Catalog provides [an OpenSearch interface](https://docs.opengeospatial.org/is/13-026r8/13-026r8.html) to retrieve the product metadata that are returned following the application/geo+json ([OGC 17-047](https://docs.opengeospatial.org/is/17-047r1/17-047r1.html)) media type format.
 
 ## QA_ReportMgr
 
