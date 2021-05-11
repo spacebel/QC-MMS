@@ -3,7 +3,7 @@
 The QC-MMS project goal is to design and implement a Quality Control Metadata Management System for Land Monitoring Services.
 The purpose is  to assure traceability of all processing metadata (with known data provenance), allow repeatability of the processed intermediate results as well as the final products, 
 early identification of potential risks in the production stages and report standardized QA results.
-This project is a GSTP ESA project implemented by Spacebel and Mapradix. 
+This project is a GSTP ESA project implemented by [Spacebel](http://www.spacebel.be) and Mapradix. 
 
 # QC-MMS Components
 This repository publishes the QC-MMS components implemented by Spacebel and published under Apache License 2.0. The implementation of these components uses third party packages published under licenses listed in the 3rd-party-licenses text file.
