@@ -19,7 +19,7 @@ The QA Report Manager is a Web client for the QI Metadata Catalog. It allows to 
 It also allows to display the Quality Report associated to a Land Product.
 
 ## QA Report
-This component based on the Voilà OSS allows to visualize a live Quality Report as the ouput of a Jupyter notebook execution.
+This component based on the Voilà OSS allows to visualize a live Quality Report as the output of a Jupyter notebook execution.
 
 
 
